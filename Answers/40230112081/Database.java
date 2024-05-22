@@ -1,9 +1,9 @@
-import javax.print.DocFlavor;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Calendar;
+
 
 public class Database {
     private String password;
@@ -33,5 +33,28 @@ public class Database {
         }catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    public boolean searchInTable(String _column_, String _thing_){
+        boolean flag = false;
+        ArrayList<String> col = new ArrayList<>();
+        try {
+            Connection connection = DriverManager.getConnection(this.url, this.name, this.password);
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM "+this.table);
+            while (resultSet.next()){
+                col.add(resultSet.getString(_column_));
+            }
+
+            if(col.contains(_thing_))
+                flag = true;
+            else{
+                flag = false;
+            }
+
+        }catch (Exception e){
+            System.out.println("Connection is interrupted. :-| ");
+        }
+        return flag;
     }
 }
