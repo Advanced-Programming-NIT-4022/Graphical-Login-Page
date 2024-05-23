@@ -1,14 +1,14 @@
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-
 import javax.swing.*;
 
 public class Register
 {
-    JLabel label0 , label1 , label2 , label3 , label4;
+    JLabel label0 , label1 , label2 , label3 , label4 ,label5;
     JButton login , register;
     JTextField username , email;
     JPasswordField password;
@@ -90,6 +90,108 @@ public class Register
                 }
             }
         });
+
+        JLabel label5_1 , label5_2;
+        label5 = new JLabel();
+        label5_1 = new JLabel("the password must be atleast 8 characters long.");
+        label5_2 = new JLabel("the password must contain uppercase ,lowercase ,number and special character.");
+        label5_1.setBounds(5, 30, 300, 30);
+        label5_2.setBounds(5, 50, 470, 30);
+
+        JFrame error = new JFrame("Error");
+        error.setSize(475, 200);
+        error.setLayout(null);
+        JButton errorButton = new JButton("Ok");
+        errorButton.setBounds(200, 120, 50, 25);
+        error.add(errorButton);
+
+
+        register.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                String pass = new String(password.getPassword());
+                //to convert JPasswordField to String
+                PasswordUtils check = new PasswordUtils();
+                int t = check.checkpassword(pass);
+                switch (t)
+                {
+                    case 5:
+                    {
+                        label5.setText("very high");
+                        label5.setForeground(Color.GREEN);
+                        label5.setBounds(250, 185, 70, 30);
+                        Register.add(label5);
+                        break;
+                    }
+                    case 4:
+                    {
+                        label5.setText("high");
+                        label5.setForeground(Color.GREEN);
+                        label5.setBounds(250, 185, 70, 30);
+                        Register.add(label5);
+                        break;
+                    }
+                    case 3:
+                    {
+                        label5.setText("medium");
+                        label5.setForeground(Color.YELLOW);
+                        label5.setBounds(250, 185, 70, 30);
+                        Register.add(label5);
+                        break;
+                    }
+                    case 2:
+                    {
+                        label5.setText("low.");
+                        label5.setForeground(Color.RED);
+                        label5.setBounds(5, 10, 30, 30);
+                        error.add(label5);
+                        error.add(label5_1);
+                        error.add(label5_2);
+                        error.setVisible(true);
+                        errorButton.addActionListener(new ActionListener() {
+                            @Override
+                            public void actionPerformed(ActionEvent e)
+                            {
+                                error.dispose();
+                            }
+                        });
+                        break;
+                    }
+                    case 1:
+                    {
+                        label5.setText("very low.");
+                        label5.setForeground(Color.RED);
+                        label5.setBounds(5, 10, 50, 30);
+                        error.add(label5);
+                        error.add(label5_1);
+                        error.add(label5_2);
+                        error.setVisible(true);
+                        errorButton.addActionListener(new ActionListener() {
+                            @Override
+                            public void actionPerformed(ActionEvent e)
+                            {
+                                error.dispose();
+                            }
+                        });
+                        break;
+                    }
+                    default:
+                        break;
+                }
+            }
+        });
+
+        /*try
+        {
+            File file = new File("User.txt"); 
+            FileWriter Write = new FileWriter("User.txt",true);
+            //Write.write();
+        } 
+        catch (Exception e)
+        {
+            // TODO: handle exception
+        }*/
 
         Register.setSize(400, 400);
         Register.setLayout(null);
