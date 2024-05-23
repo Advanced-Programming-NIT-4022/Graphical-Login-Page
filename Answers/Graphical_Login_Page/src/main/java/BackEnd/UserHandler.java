@@ -119,7 +119,7 @@ public class UserHandler implements AppMethods {
         }
     }
 
-    // this method convert password to hash(ssh256) :
+    // this method convert password to hash(SHA-256) :
     @Override
     public String passwordToHash(String password) {
         return DigestUtils.sha256Hex(password);
