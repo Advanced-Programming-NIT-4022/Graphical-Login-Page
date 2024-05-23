@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import org.apache.commons.codec.digest.DigestUtils;
 
 // start of user handler class :
@@ -28,8 +29,8 @@ public class UserHandler implements AppMethods {
 
     // this method receive information of new user and add it to the usersArrayList, then save changes in file :
     @Override
-    public void registerNewUser(String userName, String password, String email) {
-        User newUser = new User(userName, passwordToHash(password), email);
+    public void registerNewUser(String userName, String hashedPassword, String email) {
+        User newUser = new User(userName, hashedPassword, email);
         users.add(newUser);
         saveChangesToFile();
     }

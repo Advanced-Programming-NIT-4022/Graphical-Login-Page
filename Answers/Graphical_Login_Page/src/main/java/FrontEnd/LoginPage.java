@@ -47,7 +47,7 @@ public class LoginPage{
         login.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(app.loginUser(userName.getText(), app.passwordToHash(app.passwordToHash(password.getText())))){
+                if(app.loginUser(userName.getText(), app.passwordToHash(password.getText()))){
                     JOptionPane.showMessageDialog(null,"You logged in successfully.");
                     loginFrame.dispose();
                 } else{
