@@ -1,4 +1,5 @@
 package org.example;
 
-public class User {
+class User{
+
 }
