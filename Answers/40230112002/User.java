@@ -14,7 +14,17 @@ public class User {
         this.Password = Password;
     }
 
-    private String Hash_SHA_256(String Password) {
+    public User(String username, String hashedPassword, String email, boolean hashed) {
+        this.UserName = username;
+        if (hashed) {
+            this.Password = hashedPassword; // Use the provided hashed password directly
+        } else {
+            this.Password = Hash_SHA_256(hashedPassword); // Hash the password
+        }
+        this.Email = email;
+    }
+
+    public static String Hash_SHA_256(String Password) {
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
             /*
