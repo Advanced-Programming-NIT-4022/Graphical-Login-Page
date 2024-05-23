@@ -23,7 +23,7 @@ public class UserStore {
     // Method to retrieve user data from the file
     public static List<User> getUsers() {
         List<User> users = new ArrayList<>();
-        try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("DataStorage.txt"))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] userData = line.split(",");
