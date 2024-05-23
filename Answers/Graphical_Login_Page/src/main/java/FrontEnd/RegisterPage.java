@@ -54,7 +54,7 @@ public class RegisterPage{
                 } else if (app.checkUserNameExistence(userName.getText())) {
                     JOptionPane.showMessageDialog(null,"userName already taken.");
                 } else if (app.getPasswordComplexity(password.getText())<3) {
-                    JOptionPane.showMessageDialog(null,"Password is week.");
+                    JOptionPane.showMessageDialog(null,"Password is weak.");
                 } else {
                     app.registerNewUser(userName.getText(),app.passwordToHash(password.getText()),email.getText());
                     JOptionPane.showMessageDialog(null,"You registered successfully.");
