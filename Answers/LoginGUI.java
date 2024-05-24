@@ -21,7 +21,6 @@ public class LoginGUI
         myApp.add(userNameLabel);
 
         JTextField userName = new JTextField();
-        userName.setText("ex : Ali54");
         userName.setBorder(null);
         userName.setBackground(Color.decode("#F3F8FA"));
         myApp.add(userName);
@@ -59,7 +58,7 @@ public class LoginGUI
                 loginButton.setForeground(Color.decode("#FFFFFF"));
             }
         });
-        myApp.add(loginButton);
+
 
         JButton registrationButton =  new JButton("Register");
         registrationButton.setBackground(Color.decode("#1847A1"));
@@ -78,7 +77,79 @@ public class LoginGUI
                 registrationButton.setForeground(Color.decode("#FFFFFF"));
             }
         });
+
+        JLabel alertLabel = new JLabel();
         myApp.add(registrationButton);
+
+        registrationButton.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                String usernameSTR = userName.getText();
+                String passwordSTR = Password.getText();
+                String emailSTR = email.getText();
+
+                if (usernameSTR.isEmpty() && passwordSTR.isEmpty() && emailSTR.isEmpty())
+                {
+                    alertLabel.setText("You have entered nothing!");
+                }
+
+                else if (usernameSTR.isEmpty() && emailSTR.isEmpty())
+                {
+                    alertLabel.setText("You have not entered the username and email!");
+                }
+                else if (passwordSTR.isEmpty() && emailSTR.isEmpty())
+                {
+                    alertLabel.setText("You have not entered the password and email!");
+                }
+                else if (usernameSTR.isEmpty() && passwordSTR.isEmpty())
+                {
+                    alertLabel.setText("You have not entered the username and password!");
+                }
+                else if (usernameSTR.isEmpty())
+                {
+                    alertLabel.setText("You have not entered the username!");
+                }
+                else if (passwordSTR.isEmpty())
+                {
+                    alertLabel.setText("You have not entered the password!");
+                }
+                else if (emailSTR.isEmpty())
+                {
+                    alertLabel.setText("You have not entered the email!");
+                }
+
+            }
+        });
+
+        loginButton.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                String usernameSTR = userName.getText();
+                String passwordSTR = Password.getText();
+
+                if (usernameSTR.isEmpty() && passwordSTR.isEmpty())
+                {
+                    alertLabel.setText("You have entered nothing!");
+                }
+                else if (usernameSTR.isEmpty())
+                {
+                    alertLabel.setText("You have not entered the username!");
+                }
+                else if (passwordSTR.isEmpty())
+                {
+                    alertLabel.setText("You have not entered the password!");
+                }
+
+            }
+        });
+
+
+        myApp.add(loginButton);
+        myApp.add(alertLabel);
 
         myApp.setVisible(true);
     }
