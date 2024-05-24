@@ -120,6 +120,13 @@ public class LoginGUI
                     alertLabel.setText("You have not entered the email!");
                 }
 
+                PasswordUtils passwordUtilsObj = new PasswordUtils();
+
+                if (passwordUtilsObj.PasswordDifficulty(passwordSTR) != "Password is Strong.")
+                {
+                    alertLabel.setText(passwordUtilsObj.PasswordDifficulty(passwordSTR));
+                }
+
             }
         });
 
