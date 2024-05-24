@@ -2,7 +2,7 @@ public class User
 {
     private String email;
     private String username;
-    private String password;
+    private String password;    
     PasswordUtils hash = new PasswordUtils();
 
     User(String email , String username , String password)

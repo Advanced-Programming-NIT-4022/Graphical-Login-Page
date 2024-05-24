@@ -182,17 +182,6 @@ public class Register
             }
         });
 
-        /*try
-        {
-            File file = new File("User.txt"); 
-            FileWriter Write = new FileWriter("User.txt",true);
-            //Write.write();
-        } 
-        catch (Exception e)
-        {
-            // TODO: handle exception
-        }*/
-
         Register.setSize(400, 400);
         Register.setLayout(null);
         Register.setVisible(true);
