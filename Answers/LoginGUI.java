@@ -3,16 +3,17 @@ package Answers;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Objects;
 
 public class LoginGUI
 {
     public void UI()
     {
         JFrame myApp = new JFrame("Login or Registration page");
-        myApp.setSize(400,600);
+        myApp.setSize(400,500);
         myApp.setDefaultCloseOperation(myApp.EXIT_ON_CLOSE);
         myApp.setLocationRelativeTo(null); // باعث میشه بیاد در مرکز صفحه نمایشی قرار بگیره
-        myApp.setLayout(new GridLayout(12,1,0,10));
+        myApp.setLayout(new GridLayout(10,1,0,10));
         Container container = myApp.getContentPane();
         container.setBackground(Color.white);
 
@@ -122,7 +123,7 @@ public class LoginGUI
 
                 PasswordUtils passwordUtilsObj = new PasswordUtils();
 
-                if (passwordUtilsObj.PasswordDifficulty(passwordSTR) != "Password is Strong.")
+                if (!Objects.equals(passwordUtilsObj.PasswordDifficulty(passwordSTR), "Password is Strong."))
                 {
                     alertLabel.setText(passwordUtilsObj.PasswordDifficulty(passwordSTR));
                 }
@@ -132,6 +133,20 @@ public class LoginGUI
                 if (!emailValidatorObj.isEmailValid(emailSTR))
                 {
                     alertLabel.setText("You have entered a incorrect email!");
+                }
+
+                HashingPassword hashingPasswordObj = new HashingPassword();
+                String hashedPasswordSTR = hashingPasswordObj.hashingPassword(passwordSTR);
+
+                Users usersObj = new Users();
+                if (Objects.equals(usersObj.registerUser(usernameSTR, hashedPasswordSTR, emailSTR), "This username is taken!"))
+                {
+                    alertLabel.setText("This username is taken!");
+                }
+                else
+                {
+                    usersObj.registerUser(usernameSTR,hashedPasswordSTR,emailSTR);
+                    alertLabel.setText("Registration successful:)");
                 }
             }
         });
@@ -157,6 +172,8 @@ public class LoginGUI
                     alertLabel.setText("You have not entered the password!");
                 }
 
+                HashingPassword hashingPasswordObj = new HashingPassword();
+                String HashedPasswordSTR = hashingPasswordObj.hashingPassword(passwordSTR);
             }
         });
 
