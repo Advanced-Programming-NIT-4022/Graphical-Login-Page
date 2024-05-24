@@ -1,6 +1,7 @@
 package Answers;
 
 import java.io.*;
+import java.security.PublicKey;
 import java.util.Objects;
 
 public class Users
@@ -18,7 +19,7 @@ public class Users
         }
         catch (IOException e)
         {
-            return "An error occurred";
+            return "An error occurred.";
         }
     }
 
@@ -30,7 +31,7 @@ public class Users
             while ((line = reader.readLine()) != null)
             {
                 String[] parts = line.split(",");
-                if (parts.length == 3 && parts[0].equals(username))
+                if (parts[0].equals(username))
                 {
                     return "Yes";
                 }
@@ -38,8 +39,29 @@ public class Users
         }
         catch (IOException e)
         {
-            return "An error occurred";
+            return "An error occurred.";
         }
         return "No";
+    }
+
+    public String loginUser(String username , String hashedPassword)
+    {
+        try(BufferedReader reader = new BufferedReader(new FileReader("users.txt")))
+        {
+            String line;
+            while ((line = reader.readLine()) != null)
+            {
+                String[] parts = line.split(",");
+                if (Objects.equals(parts[0], username) && Objects.equals(parts[1], hashedPassword))
+                {
+                    return "Login successful.";
+                }
+            }
+        }
+        catch (IOException e)
+        {
+            return "An error occurred.";
+        }
+        return "username or password is incorrect!";
     }
 }

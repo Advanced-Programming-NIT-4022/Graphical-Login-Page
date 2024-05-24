@@ -173,7 +173,17 @@ public class LoginGUI
                 }
 
                 HashingPassword hashingPasswordObj = new HashingPassword();
-                String HashedPasswordSTR = hashingPasswordObj.hashingPassword(passwordSTR);
+                String hashedPasswordSTR = hashingPasswordObj.hashingPassword(passwordSTR);
+
+                Users usersObj = new Users();
+                if (Objects.equals(usersObj.loginUser(usernameSTR, hashedPasswordSTR), "username or password is incorrect!"))
+                {
+                    alertLabel.setText("username or password is incorrect!");
+                }
+                else
+                {
+                    alertLabel.setText(usersObj.loginUser(usernameSTR, hashedPasswordSTR));
+                }
             }
         });
 
