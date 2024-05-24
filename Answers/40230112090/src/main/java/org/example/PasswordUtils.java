@@ -17,8 +17,8 @@ public class PasswordUtils {
             } else {
                 JOptionPane.showMessageDialog(null, "Your password has a weak security level.\n Please use lowercase and uppercase letters,\nnumbers and special characters such as\n( @ , - , _ , . )in your password.", null, JOptionPane.ERROR_MESSAGE);
             }
-
-
+        }else{
+            JOptionPane.showMessageDialog(null , "The desired password is invalid");
         }
     }
 }

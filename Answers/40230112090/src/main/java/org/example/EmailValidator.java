@@ -1,5 +1,6 @@
 package org.example;
 
+import javax.swing.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -10,6 +11,8 @@ public class EmailValidator {
         Matcher matcher = pattern.matcher(email);
         if (matcher.matches()){
             this.email = matcher.group() ;
+        }else{
+            JOptionPane.showMessageDialog(null , "The email in question is not valid");
         }
     }
 }
