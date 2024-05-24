@@ -127,6 +127,12 @@ public class LoginGUI
                     alertLabel.setText(passwordUtilsObj.PasswordDifficulty(passwordSTR));
                 }
 
+                EmailValidator emailValidatorObj = new EmailValidator();
+
+                if (!emailValidatorObj.isEmailValid(emailSTR))
+                {
+                    alertLabel.setText("You have entered a incorrect email!");
+                }
             }
         });
 
