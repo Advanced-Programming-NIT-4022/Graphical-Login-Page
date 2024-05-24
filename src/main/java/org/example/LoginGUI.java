@@ -18,24 +18,27 @@ class LoginGUI{
         JButton registerButton = new JButton("Register");
         JButton loginButton = new JButton("Login");
 
-        JTextField email = new JTextField(50);
-        JTextField username = new JTextField(50);
-        JTextField password = new JTextField(50);
+        JTextField registerEmail = new JTextField("email",35);
+        JTextField registerUsername = new JTextField("username",35);
+        JTextField registerPassword = new JTextField("password",35);
+
+        JTextField loginUsername = new JTextField("username",35);
+        JTextField loginPassword = new JTextField("password",35);
 
         JButton button1 = new JButton("Login");
         JButton button2 = new JButton("Register");
 
-        GridLayout layout = new GridLayout(4,1);
+        GridLayout layout = new GridLayout(5,1);
         FlowLayout layout1 = new FlowLayout();
 
-        loginPanel.add(username);
-        loginPanel.add(password);
+        loginPanel.add(loginUsername);
+        loginPanel.add(loginPassword);
         loginPanel.add(loginButton);
 
         registerPanel.add(registerButton);
-        registerPanel.add(username);
-        registerPanel.add(password);
-        registerFrame.add(email);
+        registerPanel.add(registerUsername);
+        registerPanel.add(registerPassword);
+        registerPanel.add(registerEmail);
 
         frame.add(button1);
         frame.add(button2);
@@ -43,9 +46,9 @@ class LoginGUI{
         loginFrame.add(loginPanel);
         registerFrame.add(registerPanel);
 
-        registerFrame.setSize(500,500);
+        registerFrame.setSize(1000,500);
         loginFrame.setSize(500,500);
-        frame.setSize(500,500);
+        frame.setSize(1000,500);
 
         frame.setLayout(layout1);
         loginFrame.setLayout(layout);
