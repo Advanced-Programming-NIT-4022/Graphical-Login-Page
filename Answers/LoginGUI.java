@@ -91,63 +91,78 @@ public class LoginGUI
                 String passwordSTR = Password.getText();
                 String emailSTR = email.getText();
 
-                if (usernameSTR.isEmpty() && passwordSTR.isEmpty() && emailSTR.isEmpty())
+                for (int i = 0 ; i <1 ; i++)
                 {
-                    alertLabel.setText("You have entered nothing!");
+                    if (usernameSTR.isEmpty() && passwordSTR.isEmpty() && emailSTR.isEmpty())
+                    {
+                        alertLabel.setText("You have entered nothing!");
+                        break;
+                    }
+
+                    else if (usernameSTR.isEmpty() && emailSTR.isEmpty())
+                    {
+                        alertLabel.setText("You have not entered the username and email!");
+                        break;
+                    }
+                    else if (passwordSTR.isEmpty() && emailSTR.isEmpty())
+                    {
+                        alertLabel.setText("You have not entered the password and email!");
+                        break;
+                    }
+                    else if (usernameSTR.isEmpty() && passwordSTR.isEmpty())
+                    {
+                        alertLabel.setText("You have not entered the username and password!");
+                        break;
+                    }
+                    else if (usernameSTR.isEmpty())
+                    {
+                        alertLabel.setText("You have not entered the username!");
+                        break;
+                    }
+                    else if (passwordSTR.isEmpty())
+                    {
+                        alertLabel.setText("You have not entered the password!");
+                        break;
+                    }
+                    else if (emailSTR.isEmpty())
+                    {
+                        alertLabel.setText("You have not entered the email!");
+                        break;
+                    }
+
+                    PasswordUtils passwordUtilsObj = new PasswordUtils();
+
+                    if (!Objects.equals(passwordUtilsObj.PasswordDifficulty(passwordSTR), "Password is Strong."))
+                    {
+                        alertLabel.setText(passwordUtilsObj.PasswordDifficulty(passwordSTR));
+                        break;
+                    }
+
+                    EmailValidator emailValidatorObj = new EmailValidator();
+
+                    if (!emailValidatorObj.isEmailValid(emailSTR))
+                    {
+                        alertLabel.setText("You have entered a incorrect email!");
+                        break;
+                    }
+
+                    HashingPassword hashingPasswordObj = new HashingPassword();
+                    String hashedPasswordSTR = hashingPasswordObj.hashingPassword(passwordSTR);
+
+                    Users usersObj = new Users();
+                    if (Objects.equals(usersObj.registerUser(usernameSTR, hashedPasswordSTR, emailSTR), "This username is taken!"))
+                    {
+                        alertLabel.setText("This username is taken!");
+                        break;
+                    }
+                    else
+                    {
+                        usersObj.registerUser(usernameSTR,hashedPasswordSTR,emailSTR);
+                        alertLabel.setText("Registration successful:)");
+                        break;
+                    }
                 }
 
-                else if (usernameSTR.isEmpty() && emailSTR.isEmpty())
-                {
-                    alertLabel.setText("You have not entered the username and email!");
-                }
-                else if (passwordSTR.isEmpty() && emailSTR.isEmpty())
-                {
-                    alertLabel.setText("You have not entered the password and email!");
-                }
-                else if (usernameSTR.isEmpty() && passwordSTR.isEmpty())
-                {
-                    alertLabel.setText("You have not entered the username and password!");
-                }
-                else if (usernameSTR.isEmpty())
-                {
-                    alertLabel.setText("You have not entered the username!");
-                }
-                else if (passwordSTR.isEmpty())
-                {
-                    alertLabel.setText("You have not entered the password!");
-                }
-                else if (emailSTR.isEmpty())
-                {
-                    alertLabel.setText("You have not entered the email!");
-                }
-
-                PasswordUtils passwordUtilsObj = new PasswordUtils();
-
-                if (!Objects.equals(passwordUtilsObj.PasswordDifficulty(passwordSTR), "Password is Strong."))
-                {
-                    alertLabel.setText(passwordUtilsObj.PasswordDifficulty(passwordSTR));
-                }
-
-                EmailValidator emailValidatorObj = new EmailValidator();
-
-                if (!emailValidatorObj.isEmailValid(emailSTR))
-                {
-                    alertLabel.setText("You have entered a incorrect email!");
-                }
-
-                HashingPassword hashingPasswordObj = new HashingPassword();
-                String hashedPasswordSTR = hashingPasswordObj.hashingPassword(passwordSTR);
-
-                Users usersObj = new Users();
-                if (Objects.equals(usersObj.registerUser(usernameSTR, hashedPasswordSTR, emailSTR), "This username is taken!"))
-                {
-                    alertLabel.setText("This username is taken!");
-                }
-                else
-                {
-                    usersObj.registerUser(usernameSTR,hashedPasswordSTR,emailSTR);
-                    alertLabel.setText("Registration successful:)");
-                }
             }
         });
 
@@ -159,30 +174,38 @@ public class LoginGUI
                 String usernameSTR = userName.getText();
                 String passwordSTR = Password.getText();
 
-                if (usernameSTR.isEmpty() && passwordSTR.isEmpty())
+                for (int i = 0 ; i <1 ; i++)
                 {
-                    alertLabel.setText("You have entered nothing!");
-                }
-                else if (usernameSTR.isEmpty())
-                {
-                    alertLabel.setText("You have not entered the username!");
-                }
-                else if (passwordSTR.isEmpty())
-                {
-                    alertLabel.setText("You have not entered the password!");
-                }
+                    if (usernameSTR.isEmpty() && passwordSTR.isEmpty())
+                    {
+                        alertLabel.setText("You have entered nothing!");
+                        break;
+                    }
+                    else if (usernameSTR.isEmpty())
+                    {
+                        alertLabel.setText("You have not entered the username!");
+                        break;
+                    }
+                    else if (passwordSTR.isEmpty())
+                    {
+                        alertLabel.setText("You have not entered the password!");
+                        break;
+                    }
 
-                HashingPassword hashingPasswordObj = new HashingPassword();
-                String hashedPasswordSTR = hashingPasswordObj.hashingPassword(passwordSTR);
+                    HashingPassword hashingPasswordObj = new HashingPassword();
+                    String hashedPasswordSTR = hashingPasswordObj.hashingPassword(passwordSTR);
 
-                Users usersObj = new Users();
-                if (Objects.equals(usersObj.loginUser(usernameSTR, hashedPasswordSTR), "username or password is incorrect!"))
-                {
-                    alertLabel.setText("username or password is incorrect!");
-                }
-                else
-                {
-                    alertLabel.setText(usersObj.loginUser(usernameSTR, hashedPasswordSTR));
+                    Users usersObj = new Users();
+                    if (Objects.equals(usersObj.loginUser(usernameSTR, hashedPasswordSTR), "username or password is incorrect!"))
+                    {
+                        alertLabel.setText("username or password is incorrect!");
+                        break;
+                    }
+                    else
+                    {
+                        alertLabel.setText(usersObj.loginUser(usernameSTR, hashedPasswordSTR));
+                        break;
+                    }
                 }
             }
         });
