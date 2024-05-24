@@ -17,8 +17,10 @@ class PasswordUtils{
         return DigestUtils.sha256Hex(password).equals(hashedPassword);
     }
 
-    //String passwordLevel(String password){
-        //if
-   // }
+    @Override
+    public String toString() {
+        return hashedPassword;
+    }
+
 
 }
