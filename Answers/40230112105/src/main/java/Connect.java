@@ -1,7 +1,7 @@
 import java.sql.*;
 
 public class Connect {
-    static void getConnect(String Query) {
+    static void getConnectUpdate(String Query) {
         int rs;
         try{
             Connection myConn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/account", "postgres", "Nima2325!");

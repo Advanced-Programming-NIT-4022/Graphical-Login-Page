@@ -37,6 +37,14 @@ public class LoginGUI {
     private void registerActionlistener() {
         JFrame f2 = new JFrame("Register");
 
+        JLabel l5 = new JLabel("username: ");
+        l5.setBounds(96, 95, 70, 20);
+        f2.add(l5);
+
+        JTextField tf3 = new JTextField();
+        tf3.setBounds(170, 97, 200, 20);
+        f2.add(tf3);
+
         JLabel l1 = new JLabel("Gmail:");
         l1.setBounds(120, 120, 50, 20);
         f2.add(l1);
@@ -73,6 +81,33 @@ public class LoginGUI {
         JButton b1 = new JButton("Register");
         b1.setBounds(170, 231, 150, 30);
         f2.add(b1);
+
+        b1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(EmailValidator.validation(tf1.getText())){
+                    if(!EmailValidator.found(tf1.getText())){
+                        if(!EmailValidator.usernamefound(tf3.getText())){
+                            JFrame f3 = new JFrame("Welcome");
+                            JLabel l4 = new JLabel("Your registered successful");
+                            l4.setBounds(140, 200, 200, 20);
+                            f3.add(l4);
+                            f3.setSize(480, 480);
+                            f3.setLayout(null);
+                            f2.setVisible(false);
+                            f3.setVisible(true);
+                            PasswordUtils.hashing(tf3.getText(), tf2.getText(), tf1.getText());
+                        } else {
+                            l3.setText("username was used");
+                        }
+                    } else {
+                        l3.setText("email was registered");
+                    }
+                } else {
+                    l3.setText("Invalid Email");
+                }
+            }
+        });
 
         f2.setSize(480, 480);
         f2.setLayout(null);
