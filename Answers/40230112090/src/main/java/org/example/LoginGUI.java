@@ -29,7 +29,6 @@ public class LoginGUI {
         });
         button1.addActionListener(e13 -> {
             frame.dispose(); // بستن پنجره پس از ورود موفق
-            // ادامه کد بعد از ورود موفق
         });
 
         button.addActionListener(e -> {
@@ -77,7 +76,6 @@ public class LoginGUI {
 
                         break;
                     case 1:
-//                        while (true) {
                         frame2 = new JFrame();
                         frame2.setSize(300, 300);
                         frame2.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -119,7 +117,6 @@ public class LoginGUI {
                         frame2.add(button5);
                         frame2.setLayout(null);
                         frame2.setVisible(true);
-//                        }
                 }
             }
         });
@@ -137,24 +134,5 @@ public class LoginGUI {
         frame.add(button1);
         frame.setLayout(null);
         frame.setVisible(true);
-
-
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
