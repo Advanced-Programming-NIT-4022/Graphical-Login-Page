@@ -7,6 +7,7 @@ public class User {
     public String username ;
     public String newPassword ;
     public User(String newPassword , int n)throws NoSuchAlgorithmException{
+
         MessageDigest md = MessageDigest.getInstance("SHA-256");
         md.update(newPassword.getBytes());
         byte[] digest = md.digest();
@@ -19,6 +20,7 @@ public class User {
         this.newPassword = hexString.toString() ;
     }
     public User(String username){
+
         username = username.trim();
         String[] words = username.split(" ");
         StringBuilder formatted = new StringBuilder();

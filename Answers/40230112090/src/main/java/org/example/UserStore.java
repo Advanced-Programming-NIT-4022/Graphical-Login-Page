@@ -8,6 +8,7 @@ public class UserStore {
     public String status;
 
     public UserStore(String username, String password) {
+
         ArrayList<String> arrayList = new ArrayList<>();
         try {
             BufferedReader reader = new BufferedReader(new FileReader("store.txt"));

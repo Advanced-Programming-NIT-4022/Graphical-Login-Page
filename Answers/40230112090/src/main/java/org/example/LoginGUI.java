@@ -19,7 +19,7 @@ public class LoginGUI {
         label = new JLabel("Hell,welcome.In to your user panel ");
         label.setBounds(50, 50, 300, 50);
         label1 = new JLabel("and introduce yourself before taking any action");
-        label1.setBounds(50 , 70 , 300 , 50);
+        label1.setBounds(50, 70, 300, 50);
         button = new JButton("Login to the user panel");
         button1 = new JButton("Exit");
         button.setBounds(50, 150, 200, 30);
@@ -55,10 +55,9 @@ public class LoginGUI {
                         button2.addActionListener(e13 -> {
 
                             try {
-                                if (new PasswordUtils(text1.getText()).level.equals("false")){
-                                JOptionPane.showMessageDialog(null , "Please enter the correct password.\n register first if you have not registered." ,null , JOptionPane.ERROR_MESSAGE);
-                            }
-                                else if (!new UserStore(new User(text.getText()).username, new User(new PasswordUtils(text1.getText()).level, 2).newPassword).getStatus().isEmpty()) {
+                                if (new PasswordUtils(text1.getText()).level.equals("false")) {
+                                    JOptionPane.showMessageDialog(null, "Please enter the correct password.\n register first if you have not registered.", null, JOptionPane.ERROR_MESSAGE);
+                                } else if (!new UserStore(new User(text.getText()).username, new User(new PasswordUtils(text1.getText()).level, 2).newPassword).getStatus().isEmpty()) {
                                     frame1.dispose();
                                 }
                             } catch (NoSuchAlgorithmException ex) {
@@ -100,10 +99,9 @@ public class LoginGUI {
                         button5.setBounds(170, 200, 80, 30);
                         button4.addActionListener(e13 -> {
                             try {
-                                if (new PasswordUtils(text3.getText()).level.equals("false")){
-                                    JOptionPane.showMessageDialog(null , "Your code level is lower than the specified level.\n Please avoid characters such as uppercase and lowercase letter, \nnumbers and special characters such as( @ , - , _ , . )use \nThe number of password digits must be at least 5" , null , JOptionPane.ERROR_MESSAGE);
-                                }
-                                else if (!new UserStore(new User(text2.getText()).username, new User(new PasswordUtils(text3.getText()).level, 2).newPassword, new EmailValidator(text4.getText()).email).getStatus().isEmpty()) {
+                                if (new PasswordUtils(text3.getText()).level.equals("false")) {
+                                    JOptionPane.showMessageDialog(null, "Your code level is lower than the specified level.\n Please avoid characters such as uppercase and lowercase letter, \nnumbers and special characters such as( @ , - , _ , . )use \nThe number of password digits must be at least 5", null, JOptionPane.ERROR_MESSAGE);
+                                } else if (!new UserStore(new User(text2.getText()).username, new User(new PasswordUtils(text3.getText()).level, 2).newPassword, new EmailValidator(text4.getText()).email).getStatus().isEmpty()) {
                                     frame2.dispose();
                                 }
                             } catch (NoSuchAlgorithmException ex) {
