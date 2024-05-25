@@ -2,7 +2,7 @@ package backend;
 
 import java.util.regex.Pattern;
 
-public class EmailValidator {
+class EmailValidator {
 
     private static final Pattern email_validator_pattern = Pattern.compile("^[a-zA-Z0-9]+@([a-zA-Z]+.)+[a-zA-Z]+$");
 
