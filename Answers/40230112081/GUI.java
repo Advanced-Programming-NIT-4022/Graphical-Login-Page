@@ -1,17 +1,24 @@
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.xml.crypto.Data;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Objects;
 
 public class GUI implements signupPanel {
 
     Database db;
     Validator vld;
     JFrame menu;
+    JFrame signup;
+    JFrame login;
+    ArrayList<String> list;
+    boolean e_f, p_f, u_f;
     public GUI(){
-        vld = new Validator();
-        db = new Database("jdbc:mysql://localhost:3306/users_swing","Amir13810325**","root","user_repo");
+
         menu = new JFrame();
         menu.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         menu.setSize(500,600);
@@ -81,8 +88,14 @@ public class GUI implements signupPanel {
 
     @Override
     public void signUpPanel() {
+        vld = new Validator();
+        db = new Database("jdbc:mysql://localhost:3306/users_swing","Amir13810325**","root","user_repo");
+        this.e_f = false;
+        this.u_f = false;
+        this.p_f = false;
+        list = new ArrayList<>();
         menu.setVisible(false);
-        JFrame signup = new JFrame("Sign up");
+        signup = new JFrame("Sign up");
         signup.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         signup.setSize(500, 600);
         GridLayout myLayout = new GridLayout(2,1);
@@ -93,8 +106,11 @@ public class GUI implements signupPanel {
         JLabel e_label = new JLabel("Email");
         JLabel u_label = new JLabel("Username");
         JLabel p_label = new JLabel("Password");
+        JLabel p_level = new JLabel();
         textFieldsPanel.setLayout(null);
         buttonsPanel.setLayout(null);
+        JButton signUp = new JButton("Sign up");
+        JButton back = new JButton("Back");
 
         // text fields panel
         JTextField email = new JTextField(100);
@@ -107,6 +123,7 @@ public class GUI implements signupPanel {
         e_label.setBounds(70,50,50,30);
         u_label.setBounds(70, 100, 100,30);
         p_label.setBounds(70, 150, 100,30);
+        p_level.setBounds(350,150, 100, 30);
         // visibility
         email.setVisible(true);
         username.setVisible(true);
@@ -114,6 +131,8 @@ public class GUI implements signupPanel {
         e_label.setVisible(true);
         p_label.setVisible(true);
         u_label.setVisible(true);
+        p_level.setVisible(true);
+        // adding actions
         // adding text fields & labels to panel
         textFieldsPanel.add(email);
         textFieldsPanel.add(username);
@@ -121,17 +140,39 @@ public class GUI implements signupPanel {
         textFieldsPanel.add(e_label);
         textFieldsPanel.add(u_label);
         textFieldsPanel.add(p_label);
+        textFieldsPanel.add(p_level);
         // buttons
-        JButton signUp = new JButton("Sign up");
-        JButton back = new JButton("Back");
 
         back.setBounds(50, 125,100,30);
-        signUp.setBounds(350, 125, 100, 30);
+        signUp.setBounds(250, 125, 100, 30);
         // button visibility
         back.setVisible(true);
         signUp.setVisible(true);
-
-
+        // button's action
+        back.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                signup.setVisible(false);
+                menu.setVisible(true);
+            }
+        });
+        signUp.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(db.searchInTable("email",email.getText()) || db.searchInTable("username",username.getText())) {
+                    JOptionPane.showMessageDialog(signup, "The email/Username is available in repository.");
+                    username.setText("");
+                    password.setText("");
+                    email.setText("");
+                }
+                else{
+                    list.add(username.getText());
+                    list.add(email.getText());
+                    list.add(vld.hashingPassword(password.getText()));
+                    JOptionPane.showMessageDialog(signup,db.insertToTable(list));
+                }
+            }
+        });
         // add buttons to panel
         buttonsPanel.add(back);
         buttonsPanel.add(signUp);
@@ -144,4 +185,118 @@ public class GUI implements signupPanel {
         signup.setLayout(myLayout);
         signup.setVisible(true);
     }
+
+
 }
+
+
+/*
+
+email.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                if(vld.emailValidator(email.getText()))
+                    e_f = true;
+                else{
+                    e_f = false;
+                }
+                signUp.setEnabled(p_f && e_f && u_f);
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                if(vld.emailValidator(email.getText()))
+                    e_f = true;
+                else
+                    e_f = false;
+                signUp.setEnabled(p_f && e_f && u_f);
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                if(vld.emailValidator(email.getText()))
+                    e_f = true;
+                else
+                    e_f = false;
+                signUp.setEnabled(p_f && e_f && u_f);
+            }
+        });
+        username.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                u_f = true;
+                signUp.setEnabled(p_f && e_f && u_f);
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                u_f = true;
+                signUp.setEnabled(p_f && e_f && u_f);
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                signUp.setEnabled(p_f && e_f && u_f);
+            }
+        });
+password.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                if(vld.passwordValidator(password.getText())) {
+                    updateLabel();
+                    p_f = true;
+                }
+                else if(vld.passwordStrengthLevel(password.getText()).contains("wrong") && )
+                    p_f = false;
+                signUp.setEnabled(p_f && e_f && u_f);
+
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                if(vld.passwordValidator(password.getText())) {
+                    updateLabel();
+                    p_f = true;
+                }else
+                   p_f = false;
+               signUp.setEnabled(p_f && e_f && u_f);
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                if(vld.passwordValidator(password.getText())) {
+                    updateLabel();
+                    p_f = true;
+                }else
+                    p_f = false;
+                signUp.setEnabled(p_f && e_f && u_f);
+            }
+
+            public void updateLabel(){
+                String text = password.getText();
+                String level = vld.passwordStrengthLevel(text);
+                p_level.setText(level);
+                labelColor(level);
+            }
+            public void labelColor(String text){
+                if(text.equals("easy")){
+                    p_level.setForeground(Color.GREEN);
+                }
+                else if(text.equals("intermediate")){
+                    p_level.setForeground(Color.GREEN);
+                }
+                else if(text.equals("medium")){
+                    p_level.setForeground(Color.ORANGE);
+                }
+                else if(text.equals("hard")){
+                    p_level.setForeground(Color.orange);
+                }
+                else if(text.equals("Very hard")){
+                    p_level.setForeground(Color.RED);
+                }
+            }
+
+        });
+
+
+ */
