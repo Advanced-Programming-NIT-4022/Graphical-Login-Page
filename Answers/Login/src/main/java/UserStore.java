@@ -6,12 +6,19 @@ import java.util.List;
 public class UserStore {
     private final List<User> users = new ArrayList<>();
     private static final String User_File_Name = "users.txt";
-    Password password = new Password();
+    Password passobj = new Password();
+
+    public void addUser(String userName,String password,String email){
+        users.add(new User(userName,password,email));
+        writeUser();
+    }
+
+
     private void writeUser(){
         try(BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(User_File_Name,true))){
         try {
             bufferedWriter.write(users.getLast().getUserName() + ",");
-            bufferedWriter.write(password.hashPassword(users.getLast().getPassword()) + ",");
+            bufferedWriter.write(passobj.hashPassword(users.getLast().getPassword()) + ",");
             bufferedWriter.write(users.getLast().getEmail() + "\n");
             System.out.println("User added successfully.");
         } catch (NoSuchAlgorithmException ae){
@@ -25,6 +32,11 @@ public class UserStore {
 
     public boolean checkUser(String userName,String password){
         File file = new File(User_File_Name);
+        try {
+            password = passobj.hashPassword(password);
+        } catch (NoSuchAlgorithmException ae){
+            ae.getMessage();
+        }
         boolean found = false;
         if (file.exists()){
             try (BufferedReader bufferedReader = new BufferedReader(new FileReader(User_File_Name))){
@@ -43,5 +55,4 @@ public class UserStore {
         }
         return found;
     }
-
 }

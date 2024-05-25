@@ -92,7 +92,7 @@ public class GUI {
         jFrame.add(loginPanel);
 
 
-        //Result message
+
         
 
 
