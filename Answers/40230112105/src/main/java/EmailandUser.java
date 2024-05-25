@@ -2,7 +2,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.regex.Pattern;
 
-public class EmailValidator {
+public class EmailandUser {
     static boolean validation(String email){
         if(Pattern.matches("^[^0-9][a-zA-Z0-9!#$%^&*.]{4,}[^.$]@[^.](?=.*[a-zA-Z]{1,})[a-zA-Z0-9.]*$",email)){
             return true;
