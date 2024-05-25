@@ -4,6 +4,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Password {
+
+    //Checking password security level
     public static boolean passwordLevel(String password){
         Pattern patternLevel1 = Pattern.compile("^[a-zA-Z0-9]+$");
         Matcher matcher1 = patternLevel1.matcher(password);
