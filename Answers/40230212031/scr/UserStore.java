@@ -7,7 +7,6 @@ public class UserStore {
     private static final String USERS_FILE = "users.txt";
     private List<User> userList;
 
-    // متد برای ذخیره کردن کاربران در فایل
     private void saveUsers() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(USERS_FILE))) {
             for (User user : userList) {
@@ -18,6 +17,11 @@ public class UserStore {
             e.printStackTrace();
         }
     }
+    public void addUser(User user) {
+        userList.add(user);
+        saveUsers();
+    }
+
     public int findUser(String login, String password) {
         for (int i = 0; i < userList.size(); i++) {
             if (userList.get(i).enter(login, password)) {
