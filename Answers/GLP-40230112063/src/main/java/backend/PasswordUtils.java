@@ -8,12 +8,12 @@ import java.util.regex.Pattern;
 
 class PasswordUtils {
 
-    protected static Pattern password_whitespace_pattern = Pattern.compile("^( )*$");
-    protected static Pattern password_leve1_pattern = Pattern.compile("^(([a-z]+\\s*(?:[a-z])*)|([A-Z]+\\s*(?:[A-Z])*)|([0-9]+\\s*(?:[0-9])*))$");
-    protected static Pattern password_level2_pattern = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])[a-zA-Z][a-zA-Z\\s]*$");
-    protected static Pattern password_level3_pattern = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9][a-zA-Z0-9\\s]*$");
-    protected static Pattern password_level4_pattern = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$-_.])[a-zA-Z0-9!@#$-_.][a-zA-Z0-9!@#$-_.\\s]*$");
-    protected static Pattern password_level5_pattern = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$-_.])[a-zA-Z0-9!@#$-_.][a-zA-Z0-9!@#$-_.\\s]{7,}$");
+    private static final Pattern password_whitespace_pattern = Pattern.compile("^( )*$");
+    private static final Pattern password_leve1_pattern = Pattern.compile("^(([a-z]+\\s*(?:[a-z])*)|([A-Z]+\\s*(?:[A-Z])*)|([0-9]+\\s*(?:[0-9])*))$");
+    private static final Pattern password_level2_pattern = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])[a-zA-Z][a-zA-Z\\s]*$");
+    private static final Pattern password_level3_pattern = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9][a-zA-Z0-9\\s]*$");
+    private static final Pattern password_level4_pattern = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$-_.])[a-zA-Z0-9!@#$-_.][a-zA-Z0-9!@#$-_.\\s]*$");
+    private static final Pattern password_level5_pattern = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$-_.])[a-zA-Z0-9!@#$-_.][a-zA-Z0-9!@#$-_.\\s]{7,}$");
 
     protected static int passwordValidator(String password) {
 
