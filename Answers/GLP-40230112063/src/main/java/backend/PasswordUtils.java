@@ -8,12 +8,30 @@ import java.util.regex.Pattern;
 
 class PasswordUtils {
 
-    protected Pattern password_whitespace_pattern = Pattern.compile("^( )*$");
-    protected Pattern password_leve1_pattern = Pattern.compile("^(([a-z]+\\s*(?:[a-z])*)|([A-Z]+\\s*(?:[A-Z])*)|([0-9]+\\s*(?:[0-9])*))$");
-    protected Pattern password_level2_pattern = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])[a-zA-Z][a-zA-Z\\s]*$");
-    protected Pattern password_level3_pattern = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9][a-zA-Z0-9\\s]*$");
-    protected Pattern password_level4_pattern = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$-_.])[a-zA-Z0-9!@#$-_.][a-zA-Z0-9!@#$-_.\\s]*$");
-    protected Pattern password_level5_pattern = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$-_.])[a-zA-Z0-9!@#$-_.][a-zA-Z0-9!@#$-_.\\s]{7,}$");
+    protected static Pattern password_whitespace_pattern = Pattern.compile("^( )*$");
+    protected static Pattern password_leve1_pattern = Pattern.compile("^(([a-z]+\\s*(?:[a-z])*)|([A-Z]+\\s*(?:[A-Z])*)|([0-9]+\\s*(?:[0-9])*))$");
+    protected static Pattern password_level2_pattern = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])[a-zA-Z][a-zA-Z\\s]*$");
+    protected static Pattern password_level3_pattern = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9][a-zA-Z0-9\\s]*$");
+    protected static Pattern password_level4_pattern = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$-_.])[a-zA-Z0-9!@#$-_.][a-zA-Z0-9!@#$-_.\\s]*$");
+    protected static Pattern password_level5_pattern = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$-_.])[a-zA-Z0-9!@#$-_.][a-zA-Z0-9!@#$-_.\\s]{7,}$");
+
+    protected static int passwordValidator(String password) {
+
+        if (password_whitespace_pattern.matcher(password).find()) {
+            return -1; //whitespace error
+        } else if (password_leve1_pattern.matcher(password).find()) {
+            return 1;
+        } else if (password_level2_pattern.matcher(password).find()) {
+            return 2;
+        } else if (password_level3_pattern.matcher(password).find()) {
+            return 3;
+        } else if (password_level4_pattern.matcher(password).find()) {
+            return 4;
+        } else if (password_level5_pattern.matcher(password).find()) {
+            return 5;
+        } else return -2; //invalid password
+    }
+
 
     private static byte[] getSHA(String input) throws NoSuchAlgorithmException {
         // Static getInstance method is called with hashing SHA
