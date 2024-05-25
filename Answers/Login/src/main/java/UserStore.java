@@ -54,7 +54,7 @@ public class UserStore {
         return found;
     }
 
-    //method for hashing password
+    //hashing password
     public static String hashPassword(String password) throws NoSuchAlgorithmException {
         MessageDigest md = MessageDigest.getInstance("SHA-256");
         md.update(password.getBytes());
