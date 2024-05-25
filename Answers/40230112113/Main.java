@@ -54,10 +54,11 @@ public class Main
         frame.setLayout(new FlowLayout());
         frame.setSize(400, 400);        
         frame.setLayout(null);
+        frame.setResizable(false);
         frame.setVisible(true);
     }
 
-        //working with JPanel is harder than i imagined so i will just use JFrame instead.
+        //working with JPanel is harder than i imagined so i will use JFrame instead.
     public static void main(String[] args)
     {
         new Main();

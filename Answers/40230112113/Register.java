@@ -12,7 +12,7 @@ public class Register
     JButton login , register;
     JTextField username , email;
     JPasswordField password;
-    JCheckBox check;
+    JCheckBox check2;
 
     Register()
     {
@@ -72,11 +72,11 @@ public class Register
         password.setBounds(150, 185, 162, 25);
         Register.add(password);
 
-        check = new JCheckBox("Show Password");
-        check.setBounds(145, 210, 150, 30);
-        Register.add(check);
+        check2 = new JCheckBox("Show Password");
+        check2.setBounds(145, 210, 150, 30);
+        Register.add(check2);
 
-        check.addItemListener(new ItemListener() {
+        check2.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged (ItemEvent e)
             {
@@ -110,80 +110,99 @@ public class Register
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                String pass = new String(password.getPassword());
-                //to convert JPasswordField to String
-                PasswordUtils check = new PasswordUtils();
-                int t = check.checkpassword(pass);
-                switch (t)
+                EmailValidator check1 = new EmailValidator();
+                String mail = new String(email.getText());
+                if(check1.validate(mail)==1)
                 {
-                    case 5:
+                    String pass = new String(password.getPassword());
+                    //to convert JPasswordField to String
+                    PasswordUtils check2 = new PasswordUtils();
+                    int t = check2.checkpassword(pass);
+                    switch (t)
                     {
-                        label5.setText("very high");
-                        label5.setForeground(Color.GREEN);
-                        label5.setBounds(250, 185, 70, 30);
-                        Register.add(label5);
-                        break;
+                        case 2:
+                        {
+                            label5.setText("low.");
+                            label5.setForeground(Color.RED);
+                            label5.setBounds(5, 10, 30, 30);
+                            error.add(label5);
+                            error.add(label5_1);
+                            error.add(label5_2);
+                            error.setVisible(true);
+                            errorButton.addActionListener(new ActionListener() {
+                                @Override
+                                public void actionPerformed(ActionEvent e)
+                                {
+                                    error.dispose();
+                                }
+                            });
+                            break;
+                        }
+                        case 1:
+                        {
+                            label5.setText("very low.");
+                            label5.setForeground(Color.RED);
+                            label5.setBounds(5, 10, 50, 30);
+                            error.add(label5);
+                            error.add(label5_1);
+                            error.add(label5_2);
+                            error.setVisible(true);
+                            errorButton.addActionListener(new ActionListener() {
+                                @Override
+                                public void actionPerformed(ActionEvent e)
+                                {
+                                    error.dispose();
+                                }
+                            });
+                            break;
+                        }
+                        default:
+                        {
+                            User user = new User(mail, username.getText(), pass);
+                            UserStore userstore = new UserStore();
+                            userstore.Save(user);
+                            JFrame success = new JFrame("Notice");
+                            JLabel huh = new JLabel("successfully Registered");
+                            JButton hmm = new JButton("YAYY");
+                            huh.setBounds(5, 30, 300, 30);
+                            hmm.setBounds(200, 120, 70, 25);
+                            success.add(huh);
+                            success.add(hmm);
+                            success.setSize(475, 200);
+                            success.setLayout(null);
+                            success.setResizable(false);
+                            success.setVisible(true);
+                            hmm.addActionListener(new ActionListener() {
+                                @Override
+                                public void actionPerformed(ActionEvent e)
+                                {
+                                    success.dispose();
+                                }
+                            });
+                            break;
+                        }
                     }
-                    case 4:
-                    {
-                        label5.setText("high");
-                        label5.setForeground(Color.GREEN);
-                        label5.setBounds(250, 185, 70, 30);
-                        Register.add(label5);
-                        break;
-                    }
-                    case 3:
-                    {
-                        label5.setText("medium");
-                        label5.setForeground(Color.YELLOW);
-                        label5.setBounds(250, 185, 70, 30);
-                        Register.add(label5);
-                        break;
-                    }
-                    case 2:
-                    {
-                        label5.setText("low.");
-                        label5.setForeground(Color.RED);
-                        label5.setBounds(5, 10, 30, 30);
-                        error.add(label5);
-                        error.add(label5_1);
-                        error.add(label5_2);
-                        error.setVisible(true);
-                        errorButton.addActionListener(new ActionListener() {
-                            @Override
-                            public void actionPerformed(ActionEvent e)
-                            {
-                                error.dispose();
-                            }
-                        });
-                        break;
-                    }
-                    case 1:
-                    {
-                        label5.setText("very low.");
-                        label5.setForeground(Color.RED);
-                        label5.setBounds(5, 10, 50, 30);
-                        error.add(label5);
-                        error.add(label5_1);
-                        error.add(label5_2);
-                        error.setVisible(true);
-                        errorButton.addActionListener(new ActionListener() {
-                            @Override
-                            public void actionPerformed(ActionEvent e)
-                            {
-                                error.dispose();
-                            }
-                        });
-                        break;
-                    }
-                    default:
-                        break;
+                }
+                else
+                {
+                    label5.setText("email is not valid.");
+                    label5.setForeground(Color.RED);
+                    label5.setBounds(5, 10, 100, 30);
+                    error.add(label5);
+                    error.setVisible(true);
+                    errorButton.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e)
+                        {
+                            error.dispose();
+                        }
+                    });
                 }
             }
         });
-
         Register.setSize(400, 400);
         Register.setLayout(null);
+        Register.setResizable(false);
         Register.setVisible(true);
     }
 }

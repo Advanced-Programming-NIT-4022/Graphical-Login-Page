@@ -13,9 +13,9 @@ public class PasswordUtils
         String s="";
         block2 : try
         {
-            MessageDigest digesting = MessageDigest.getInstance("SHA-256");
-            byte[] hashing = digesting.digest(password.getBytes(StandardCharsets.UTF_8));
-            s = converter(hashing);
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] encodedhash = digest.digest(password.getBytes(StandardCharsets.UTF_8));
+            s=bytesToHex(encodedhash);
             break block2;
         }
         catch (Exception e)
@@ -25,19 +25,17 @@ public class PasswordUtils
         return s;
     }
 
-    private static String converter(byte[] hashing)
+    private static String bytesToHex(byte[] hash)
     {
-        StringBuilder hex1 = new StringBuilder(2*hashing.length);
-        for (int i=1;i<=hashing.length;i++)
-        {
-            String hex2=Integer.toHexString(0xff & hashing[i]);
-            if(hex2.length()==1)
-            {
-                hex1.append('0');
+        StringBuilder hexString = new StringBuilder(2 * hash.length);
+        for (int i = 0; i < hash.length; i++) {
+            String hex = Integer.toHexString(0xff & hash[i]);
+            if(hex.length() == 1) {
+                hexString.append('0');
             }
-            hex1.append(hex1);
+            hexString.append(hex);
         }
-        return hex1.toString();
+        return hexString.toString();
     }
 
     public int checkpassword(String password)

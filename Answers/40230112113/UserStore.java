@@ -5,7 +5,7 @@ import java.util.Scanner;
 public class UserStore
 {
     File file = new File("Users.txt");
-    public void Save(String username , String password, String email)
+    public void Save(User user)
     {
         try
         {
@@ -13,10 +13,10 @@ public class UserStore
             {
                 file.createNewFile();
             }
-            FileWriter write = new FileWriter(file);
-            write.write(username);
-            write.write(password);
-            write.write(email+"\n");
+            FileWriter write = new FileWriter(file,true);
+            write.write(user.getUsername()+",");
+            write.write(user.getPassword()+",");
+            write.write(user.getEmail()+"\n");
             write.close();
         }
         catch (Exception e)
@@ -25,9 +25,9 @@ public class UserStore
         }
     }
 
-    public Boolean Read(String username)
+    public int Read(String username , String password)
     {
-        boolean t=false;
+        int t=0;
         block1 : try 
         {
             if(!file.exists())
@@ -40,10 +40,20 @@ public class UserStore
                 String[] s = read.nextLine().split(",");
                 if (s[0].equals(username))
                 {
-                    t=true;
-                    break block1;
+                    PasswordUtils hash = new PasswordUtils();
+                    if(s[1].equals(hash.SHA_256(password)))
+                    {
+                        t=2;
+                        break block1;
+                    }
+                    else
+                    {
+                        t=1;
+                        break block1;
+                    }
                 }
             }
+            t=0;
             read.close();
         }
         catch (Exception e)
