@@ -1,9 +1,14 @@
-import java.sql.Connection;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Validator {
 
+    public boolean passwordValidator(String _password_){
+        Pattern p = Pattern.compile("[^@\\.\\-_A-Za-z0-9]");
+        return !p.matcher(_password_).find();
+    }
     public boolean emailValidator(String _email_)
     {
         Pattern pattern = Pattern.compile("^[^\\.][a-zA-Z0-9]+\\.?[^\\.][\\w]+@[^\\.][a-zA-Z]+\\.[a-z]{3,4}");
@@ -11,13 +16,81 @@ public class Validator {
     } // false : wrong email, true : correct email format
 
     public String passwordStrengthLevel(String _password_){
-        Pattern p1,p2,p3,p4,p5;
-        p1 = Pattern.compile("[a-z]"); // lower case
-        p2 = Pattern.compile("[A-Z]"); // upper case
-        p3 = Pattern.compile("[0-9]"); // numbers
-        p4 = Pattern.compile("[@\\-\\._]"); // special character
-        p5 = Pattern.compile("[a-zA-Z0-9@\\-\\._]{8,}"); // more than 8 character
-        if(p1.matcher(_password_).find() || !p2.matcher(_password_).find() || !p3.matcher(_password_).find()){
+        int level = 0;
+        String flag = "";
+        Pattern p1 = Pattern.compile("([a-z]+)");
+        Pattern p2 = Pattern.compile("([A-Z]+)");
+        Pattern p3 = Pattern.compile("([0-9+])");
+        Pattern p4 = Pattern.compile("([@\\.\\-_]+)");
+        Pattern p5 = Pattern.compile("[a-zA-Z0-9@\\.\\-_]{9,}");
+        if(p5.matcher(_password_).find())
+            level = 5;
+        else{
+            if(p1.matcher(_password_).find())
+                level++;
+            if(p2.matcher(_password_).find())
+                level++;
+            if(p3.matcher(_password_).find())
+                level++;
+            if(p4.matcher(_password_).find())
+                level++;
+        }
+
+        switch (level){
+            case 1:
+                flag = "easy";
+                break;
+            case 2:
+                flag = "intermediate";
+                break;
+            case 3:
+                flag = "medium";
+                break;
+            case 4:
+                flag = "hard";
+                break;
+            case 5:
+                flag = "Very hard";
+                break;
+            default:
+                flag = "wrong format";
+        }
+
+
+        return flag;
+    }
+
+    public String hashingPassword(String password) {
+        try {
+            // Create a MessageDigest instance for SHA-256
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+
+            // Apply the SHA-256 algorithm on the password bytes
+            byte[] hashBytes = digest.digest(password.getBytes());
+
+            // Convert the resulting byte array into a hexadecimal string
+            StringBuilder hexString = new StringBuilder();
+            for (byte b : hashBytes) {
+                String hex = Integer.toHexString(0xff & b);
+                if (hex.length() == 1) {
+                    hexString.append('0');
+                }
+                hexString.append(hex);
+            }
+
+            // Return the hexadecimal string representation of the hash
+            return hexString.toString();
+
+        } catch (NoSuchAlgorithmException e) {
+            // Handle the exception if the algorithm is not available in the environment
+            throw new RuntimeException(e);
+        }
+    }
+
+}
+
+/*
+if(p1.matcher(_password_).find() || !p2.matcher(_password_).find() || !p3.matcher(_password_).find()){
             return "easy";
         }
         else if(p2.matcher(_password_).find() || !p1.matcher(_password_).find() || !p3.matcher(_password_).find())
@@ -35,6 +108,4 @@ public class Validator {
         else{
             return "Wrong password format, delete space from your password.";
         }
-    }
-
-}
+ */
