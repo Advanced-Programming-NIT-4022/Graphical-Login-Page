@@ -91,6 +91,38 @@ public class GUI {
         jFrame.add(signUpPanel);
         jFrame.add(loginPanel);
 
+
+        //Result message
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         // Set frame properties
         jFrame.setSize(600, 350);
         jFrame.setLayout(null);
@@ -98,7 +130,4 @@ public class GUI {
         jFrame.setVisible(true);
     }
 
-    public static void main(String[] args) {
-        new GUI();
-    }
 }
