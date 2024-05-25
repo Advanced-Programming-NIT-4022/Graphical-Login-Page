@@ -1,2 +1,8 @@
-package PACKAGE_NAME;public class Main {
-}
+
+    public class Main {
+        public static void main(String[] args) {
+            System.out.println("Welcome to the login ");
+            LoginGUI login = new LoginGUI();
+        }
+    }
+
