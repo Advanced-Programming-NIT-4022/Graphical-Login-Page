@@ -74,15 +74,15 @@ public class LoginGUI implements ActionListener {
         panel.add(passwordLabel);
 
         JPasswordField passwordField = new JPasswordField(20);
-        passwordField.setBounds(100,20,165,25);
+        passwordField.setBounds(100,50,165,25);
         panel.add(passwordField);
 
         JLabel emailLabel = new JLabel("Email");
-        emailLabel.setBounds(10,50,80,25);
+        emailLabel.setBounds(10,80,80,25);
         panel.add(emailLabel);
 
         JTextField emailText = new JTextField(30);
-        emailText.setBounds(100,20,165,25);
+        emailText.setBounds(100,80,165,25);
         panel.add(emailText);
 
         frame.add(panel);
