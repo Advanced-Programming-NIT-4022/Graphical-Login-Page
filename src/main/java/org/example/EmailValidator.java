@@ -12,3 +12,4 @@ public class EmailValidator{
         return matcher.matches();
     }
 }
+//^(?:[a-zA-Z0-9][.]?){6,}[^.]@(?:[a-zA-Z0-9][.]?)+[a-z-A-Z0-9]{2}$

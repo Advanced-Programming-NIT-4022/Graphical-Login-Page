@@ -2,6 +2,9 @@ package org.example;
 
 import org.apache.commons.codec.digest.DigestUtils;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 class PasswordUtils{
     private String hashedPassword;
 
