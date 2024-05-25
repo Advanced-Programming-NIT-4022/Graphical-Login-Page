@@ -1,12 +1,15 @@
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Password {
-
-    //Checking password security level
-    public static boolean passwordLevel(String password){
+public class Validator {
+    //checking username validation
+    public static boolean userNameIsValid(String userName){
+        Pattern userNamePattern = Pattern.compile("^[A-Za-z0-9._-]{3,16}$");
+        Matcher matcher = userNamePattern.matcher(userName);
+        return matcher.find();
+    }
+    //checking password validation
+    public static boolean passwordIsValid(String password){
         Pattern patternLevel1 = Pattern.compile("^[a-zA-Z0-9]+$");
         Matcher matcher1 = patternLevel1.matcher(password);
         Pattern patternLevel2 = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z]).+$");
@@ -31,18 +34,11 @@ public class Password {
             return false;
         }
     }
-
-        //hashing password
-        public static String hashPassword(String password) throws NoSuchAlgorithmException {
-            MessageDigest md = MessageDigest.getInstance("SHA-256");
-            md.update(password.getBytes());
-            byte[] digest = md.digest();
-            StringBuilder hexString = new StringBuilder();
-            for (byte b : digest) {
-                String hex = Integer.toHexString(0xff & b);
-                if(hex.length() == 1) hexString.append('0');
-                hexString.append(hex);
-            }
-            return hexString.toString();
-        }
+    //checking email validation
+    public static boolean emailIsValid(String email){
+    Pattern emailPattern = Pattern.compile("\\b(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@"
+            + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,4})\\b");
+    Matcher matcher = emailPattern.matcher(email);
+    return matcher.find();
     }
+}
