@@ -78,38 +78,23 @@ public class LoginGUI {
             public void actionPerformed(ActionEvent e) {
                 String usernameOrEmail = userText.getText();
                 String password = new String(passwordField.getPassword());
-                boolean isAuthenticated = false;
-
+                boolean isAuthenticated;
                 try {
-                    String hashedInputPassword = PasswordUtils.hashPassword(password);
-                    File file = new File("users.txt");
-                    BufferedReader reader = new BufferedReader(new FileReader(file));
-                    String line;
-
-                    while ((line = reader.readLine()) != null) {
-                        String[] userDetails = line.split(",");
-                        if ((userDetails[0].equals(usernameOrEmail) || userDetails[1].equals(usernameOrEmail))
-                                && userDetails[2].equals(hashedInputPassword)) {
-                            isAuthenticated = true;
-                            break;
-                        }
-                    }
-                    reader.close();
-
-                    if (isAuthenticated) {
-                        JOptionPane.showMessageDialog(loginDialog,
-                                "Login Successful!",
-                                "Success",
-                                JOptionPane.INFORMATION_MESSAGE);
-                        loginDialog.dispose();
-                    } else {
-                        JOptionPane.showMessageDialog(loginDialog,
-                                "Invalid username/email or password.",
-                                "Login Failed",
-                                JOptionPane.ERROR_MESSAGE);
-                    }
-                } catch (IOException | NoSuchAlgorithmException ex) {
-                    ex.printStackTrace();
+                    isAuthenticated = UserStore.validateUser(usernameOrEmail, password);
+                } catch (IOException e1) {
+                    isAuthenticated = false;
+                }
+                if (isAuthenticated) {
+                    JOptionPane.showMessageDialog(loginDialog,
+                            "Login Successful!",
+                            "Success",
+                            JOptionPane.INFORMATION_MESSAGE);
+                    loginDialog.dispose();
+                } else {
+                    JOptionPane.showMessageDialog(loginDialog,
+                            "Invalid username/email or password.",
+                            "Login Failed",
+                            JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
