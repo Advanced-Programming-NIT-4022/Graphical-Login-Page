@@ -1,4 +1,5 @@
 import javax.swing.*;
+import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -111,7 +112,7 @@ public class GUI extends Validator {
                 } else if (!emailValid) {
                     JOptionPane.showMessageDialog(jFrame,"Your email is invalid please try again.","Error",JOptionPane.ERROR_MESSAGE);
                 } else {
-                    //userRepo.addUser(userName,password,email);
+                    userRepo.addUser(userName,password,email);
                     JOptionPane.showMessageDialog(jFrame,"Signed up successfully.","Done",JOptionPane.INFORMATION_MESSAGE);
                     signupUserNameTextField.setText("");
                     signupPasswordTextField.setText("");
@@ -126,8 +127,7 @@ public class GUI extends Validator {
             public void actionPerformed(ActionEvent e) {
                 String userName = loginUsernameTextField.getText();
                 String password = loginPasswordTextField.getText();
-                //boolean found = userRepo.checkUser(userName,password);
-                boolean found = true;
+                boolean found = userRepo.checkUser(userName,password);
                 if (found){
                     JOptionPane.showMessageDialog(jFrame,"Logged in successfully.","Welcome",JOptionPane.INFORMATION_MESSAGE);
                     loginUsernameTextField.setText("");
