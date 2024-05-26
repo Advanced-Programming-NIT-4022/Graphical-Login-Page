@@ -4,6 +4,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 
 public class GUI {
@@ -70,7 +74,17 @@ public class GUI {
         b.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                String id = t1.getText();
+                String pass = String.copyValueOf(p.getPassword());
+                boolean hasEmptyField = false;
 
+                if (id.isEmpty() || pass.isEmpty() || id.equals(" ") || pass.equals(" ")) {
+                    JLabel error = new JLabel("some fields are empty!");
+                    error.setBounds(20, 330, 200, 40);
+                    hasEmptyField = true;
+                    f.add(error);
+                    f.repaint();
+                }
             }
         });
         b2.addActionListener(new ActionListener() {
@@ -140,7 +154,7 @@ public class GUI {
                 User u = new User();
                 EmailValidator em = new EmailValidator();
                 if(!hasEmptyField) {
-                    String hashed;
+                    String hashed = null;
                     boolean emailIsValid = true;
                     emailIsValid = em.emailChecker(email);
                     if (!emailIsValid) {
@@ -148,12 +162,6 @@ public class GUI {
                         error.setBounds(20, 300, 200, 40);
                         f.add(error);
                         f.repaint();
-                    } else {
-                        try {
-                            hashed = u.toHexString(u.getSHA(pass));
-                        } catch (NoSuchAlgorithmException ex) {
-                            throw new RuntimeException(ex);
-                        }
                     }
                     int strength = u.passChecker(pass);
                     if(strength < 5) {
@@ -180,9 +188,26 @@ public class GUI {
                         f.add(error);
                         f.repaint();
                     }
+                    else {
+                        try {
+                            hashed = u.toHexString(u.getSHA(pass));
+                        } catch (NoSuchAlgorithmException ex) {
+                            throw new RuntimeException(ex);
+                        }
+                    }
 
                     if(emailIsValid && strength == 5) {
-                        ///NOW STORE THE INFO IN THE FILE
+
+                        UserStore.writingInfo(id, email, hashed);
+
+                        JFrame f2 = new JFrame("message");
+                        f2.setBounds(160, 150, 200, 130);
+                        f2.setLayout(null);
+                        JLabel l1 = new JLabel("Successfully signed up");
+                        l1.setBounds(20, 10, 150, 50);
+                        f2.add(l1);
+                        f2.setVisible(true);
+
                     }
                 }
             }
