@@ -2,6 +2,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 
 public class LoginGUI {
     private JFrame mainFrame;
@@ -23,7 +28,7 @@ public class LoginGUI {
         exitButton = new JButton("Exit");
 
         // Set button fonts and colors
-        Font buttonFont = new Font( null, Font.BOLD, 16);
+        Font buttonFont = new Font(null, Font.BOLD, 16);
         loginButton.setFont(buttonFont);
         registerButton.setFont(buttonFont);
         exitButton.setFont(buttonFont);
@@ -58,10 +63,69 @@ public class LoginGUI {
             }
         }
     }
-    private void handleLogin(){
 
+    private void handleLogin() {
+        JDialog loginDialog = new JDialog(mainFrame, "Login");
+        loginDialog.setSize(300, 200);
+
+        JLabel userLabel = new JLabel("Username or Email:");
+        JTextField userText = new JTextField(20);
+        JLabel passwordLabel = new JLabel("Password:");
+        JPasswordField passwordField = new JPasswordField(20);
+        JButton loginButton = new JButton("Login");
+
+        loginButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String usernameOrEmail = userText.getText();
+                String password = new String(passwordField.getPassword());
+                boolean isAuthenticated = false;
+
+                try {
+                    String hashedInputPassword = PasswordUtils.hashPassword(password);
+                    File file = new File("users.txt");
+                    BufferedReader reader = new BufferedReader(new FileReader(file));
+                    String line;
+
+                    while ((line = reader.readLine()) != null) {
+                        String[] userDetails = line.split(",");
+                        if ((userDetails[0].equals(usernameOrEmail) || userDetails[1].equals(usernameOrEmail))
+                                && userDetails[2].equals(hashedInputPassword)) {
+                            isAuthenticated = true;
+                            break;
+                        }
+                    }
+                    reader.close();
+
+                    if (isAuthenticated) {
+                        JOptionPane.showMessageDialog(loginDialog,
+                                "Login Successful!",
+                                "Success",
+                                JOptionPane.INFORMATION_MESSAGE);
+                        loginDialog.dispose();
+                    } else {
+                        JOptionPane.showMessageDialog(loginDialog,
+                                "Invalid username/email or password.",
+                                "Login Failed",
+                                JOptionPane.ERROR_MESSAGE);
+                    }
+                } catch (IOException | NoSuchAlgorithmException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
+
+        loginDialog.setLayout(new GridLayout(3, 2));
+        loginDialog.add(userLabel);
+        loginDialog.add(userText);
+        loginDialog.add(passwordLabel);
+        loginDialog.add(passwordField);
+        loginDialog.add(new JLabel());
+        loginDialog.add(loginButton);
+
+        loginDialog.setVisible(true);
     }
-    private void handleRegistration(){
+
+    private void handleRegistration() {
 
     }
 }
