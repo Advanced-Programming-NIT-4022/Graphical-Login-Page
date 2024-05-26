@@ -146,6 +146,23 @@ public class GUI implements signupPanel {
         textFieldsPanel.add(p_label);
         textFieldsPanel.add(p_level);
         // add actions to text fields
+        password.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+
+            }
+
+        });
         email.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
@@ -222,9 +239,9 @@ public class GUI implements signupPanel {
                     email.setText("");
                 }
                 else{
-                    list.add(username.getText());
+                    list.add(username.getText().toLowerCase());
                     list.add(vld.hashingPassword(password.getText()));
-                    list.add(email.getText());
+                    list.add(email.getText().toLowerCase());
                     message = db.insertToTable(list);
 
                     if(message.equals("Username exists.")){
