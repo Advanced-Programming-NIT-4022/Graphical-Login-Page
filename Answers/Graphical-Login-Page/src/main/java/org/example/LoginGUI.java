@@ -3,6 +3,9 @@ package org.example;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+
+import static org.example.EmailValidator.*;
+
 public class LoginGUI {
     UserStore userStore = new UserStore();
     User user = new User();
@@ -121,8 +124,7 @@ public class LoginGUI {
         return frame;
     }
     public JFrame SignUpFrame() {
-        userStore.ReadFile();
-        String[] word = new String[3];
+//        String[] word = new String[3];
         JFrame frame = new JFrame();
         frame.setTitle("Sign In");
         frame.setSize(500,500);
@@ -176,12 +178,20 @@ public class LoginGUI {
                 String input2 = textField2.getText();
                 String input3 = textField3.getText();
                 String hashed = user.HashingCode(input2);
-                String sentense = input1 + "," + hashed + "," + input3;
-                userStore.ReadFile();
-                userStore.getUser().add(sentense);
-                System.out.println("successful");
-                JOptionPane.showMessageDialog(frame,"success");
-                userStore.WriteFile();
+                if (Validated(input3))
+                {
+                    String sentense = input1 + "," + hashed + "," + input3;
+                    userStore.ReadFile();
+                    userStore.getUser().add(sentense);
+                    System.out.println("successful");
+                    JOptionPane.showMessageDialog(frame,"success");
+                    userStore.WriteFile();
+                }
+                else
+                {
+                    System.out.println("Try again");
+                    JOptionPane.showMessageDialog(frame,"error");
+                }
             }
         });
         JButton returnmain = new JButton();
