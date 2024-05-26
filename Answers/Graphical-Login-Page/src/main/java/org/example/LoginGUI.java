@@ -100,10 +100,12 @@ public class LoginGUI {
                 if (flag)
                 {
                     System.out.println("successful");
+                    JOptionPane.showMessageDialog(frame,"success");
                 }
                 else
                 {
                     System.out.println("Try Again");
+                    JOptionPane.showMessageDialog(frame,"error");
                 }
                 userStore.WriteFile();
             }
@@ -178,6 +180,7 @@ public class LoginGUI {
                 userStore.ReadFile();
                 userStore.getUser().add(sentense);
                 System.out.println("successful");
+                JOptionPane.showMessageDialog(frame,"success");
                 userStore.WriteFile();
             }
         });
