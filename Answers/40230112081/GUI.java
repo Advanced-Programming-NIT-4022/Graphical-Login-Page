@@ -1,3 +1,5 @@
+import org.w3c.dom.ls.LSSerializerFilter;
+
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -22,6 +24,7 @@ public class GUI implements signupPanel {
         menu = new JFrame();
         menu.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         menu.setSize(500,600);
+        menu.setResizable(true);
         GridLayout myLayout = new GridLayout(2,1);
         JPanel optionsPanel = new JPanel();
         optionsPanel.setSize(500, 300);
@@ -85,10 +88,11 @@ public class GUI implements signupPanel {
         menu.setLayout(myLayout);
         menu.setVisible(true);
     }
-
+    String message;
     @Override
     public void signUpPanel() {
         vld = new Validator();
+
         db = new Database("jdbc:mysql://localhost:3306/users_swing","Amir13810325**","root","user_repo");
         this.e_f = false;
         this.u_f = false;
@@ -141,6 +145,58 @@ public class GUI implements signupPanel {
         textFieldsPanel.add(u_label);
         textFieldsPanel.add(p_label);
         textFieldsPanel.add(p_level);
+        // add actions to text fields
+        email.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                if(vld.emailValidator(email.getText()))
+                    signUp.setEnabled(true);
+                else
+                    signUp.setEnabled(false);
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                if(vld.emailValidator(email.getText()))
+                    signUp.setEnabled(true);
+                else
+                    signUp.setEnabled(false);
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                if(vld.emailValidator(email.getText()))
+                    signUp.setEnabled(true);
+                else
+                    signUp.setEnabled(false);
+            }
+        });
+
+        password.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                if(vld.passwordValidator(password.getText()))
+                    signUp.setEnabled(true);
+                else
+                    signUp.setEnabled(false);
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                if(vld.passwordValidator(password.getText()))
+                    signUp.setEnabled(true);
+                else
+                    signUp.setEnabled(false);
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                if(vld.passwordValidator(password.getText()))
+                    signUp.setEnabled(true);
+                else
+                    signUp.setEnabled(false);
+            }
+        });
         // buttons
 
         back.setBounds(50, 125,100,30);
@@ -167,9 +223,23 @@ public class GUI implements signupPanel {
                 }
                 else{
                     list.add(username.getText());
-                    list.add(email.getText());
                     list.add(vld.hashingPassword(password.getText()));
-                    JOptionPane.showMessageDialog(signup,db.insertToTable(list));
+                    list.add(email.getText());
+                    message = db.insertToTable(list);
+
+                    if(message.equals("Username exists.")){
+                        JOptionPane.showMessageDialog(signup,message);
+                        username.setText("");
+                        password.setText("");
+                        email.setText("");
+                    }
+                    else{
+                        JOptionPane.showMessageDialog(signup,message);
+                        signup.setVisible(false);
+                        menu.setVisible(true);
+                    }
+
+
                 }
             }
         });
@@ -179,10 +249,10 @@ public class GUI implements signupPanel {
         // panels visibility
         textFieldsPanel.setVisible(true);
         buttonsPanel.setVisible(true);
-
         signup.add(textFieldsPanel);
         signup.add(buttonsPanel);
         signup.setLayout(myLayout);
+        //signup.setResizable(true);
         signup.setVisible(true);
     }
 
