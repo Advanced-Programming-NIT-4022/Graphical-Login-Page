@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.event.*;
 public class LoginGUI {
     UserStore userStore = new UserStore();
+    User user = new User();
     public void MainFrame() {
         JFrame frame = new JFrame();
         frame.setTitle("Welcome");
@@ -81,7 +82,7 @@ public class LoginGUI {
         returnmain.setIcon(imageIcon);
         returnmain.setToolTipText("Menu");
         returnmain.setFocusable(true);
-        panel.setLayout(new GridLayout(7, 1));
+        panel.setLayout(new GridLayout(6, 1));
         returnmain.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -94,10 +95,16 @@ public class LoginGUI {
             public void actionPerformed(ActionEvent e) {
                 String input1 = textField1.getText();
                 String input2 = textField2.getText();
-                String sentense = input1 + "," + input2;
                 userStore.ReadFile();
-                //
-                System.out.println("successful");
+                boolean flag = User.Checker(input1,input2);
+                if (flag)
+                {
+                    System.out.println("successful");
+                }
+                else
+                {
+                    System.out.println("Try Again");
+                }
                 userStore.WriteFile();
             }
         });
@@ -166,7 +173,8 @@ public class LoginGUI {
                 String input1 = textField1.getText();
                 String input2 = textField2.getText();
                 String input3 = textField3.getText();
-                String sentense = input1 + "," + "password" + "," + input3;
+                String hashed = user.HashingCode(input2);
+                String sentense = input1 + "," + hashed + "," + input3;
                 userStore.ReadFile();
                 userStore.getUser().add(sentense);
                 System.out.println("successful");
@@ -197,9 +205,5 @@ public class LoginGUI {
         frame.setResizable(false);
         frame.add(panel);
         return frame;
-    }
-    public static void main(String[] args) {
-       LoginGUI loginGUI = new LoginGUI();
-       loginGUI.MainFrame();
     }
 }
