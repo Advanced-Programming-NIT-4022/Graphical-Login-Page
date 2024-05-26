@@ -2,12 +2,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
-
 public class LoginGUI {
     private JFrame mainFrame;
     private JButton loginButton, registerButton, exitButton;
@@ -81,7 +79,7 @@ public class LoginGUI {
                 boolean isAuthenticated;
                 try {
                     isAuthenticated = UserStore.validateUser(usernameOrEmail, password);
-                } catch (IOException e1) {
+                } catch (NoSuchAlgorithmException | IOException e1) {
                     isAuthenticated = false;
                 }
                 if (isAuthenticated) {
@@ -111,6 +109,68 @@ public class LoginGUI {
     }
 
     private void handleRegistration() {
+        JDialog registrationDialog = new JDialog(mainFrame, "Registration");
+        registrationDialog.setSize(300, 200);
 
+        JLabel userLabel = new JLabel("Username:");
+        JTextField userText = new JTextField(20);
+        JLabel emailLabel = new JLabel("Email:");
+        JTextField emailText = new JTextField(20);
+        JLabel passwordLabel = new JLabel("Password:");
+        JPasswordField passwordField = new JPasswordField(20);
+        passwordField.setEchoChar('*');
+        JLabel passwordStrengthLabel = new JLabel("Password strength: 0");
+        JLabel emailValidationLabel = new JLabel("");
+        JButton submitButton = new JButton("Submit");
+
+        emailText.addKeyListener(new KeyAdapter() {
+            public void keyReleased(KeyEvent e) {
+                boolean matches = EmailValidator.validateEmail(emailText.getText());
+                emailValidationLabel.setText(matches ? "Email is valid" : "Email is invalid");
+                submitButton.setEnabled(matches
+                        && PasswordUtils.calculatePasswordStrength(new String(passwordField.getPassword())) >= 4);
+            }
+        });
+
+        passwordField.addKeyListener(new KeyAdapter() {
+            public void keyReleased(KeyEvent e) {
+                boolean matches = EmailValidator.validateEmail(emailText.getText());
+                int passwordStrength = PasswordUtils
+                        .calculatePasswordStrength(new String(passwordField.getPassword()));
+                passwordStrengthLabel.setText("Password strength: " + passwordStrength);
+                submitButton.setEnabled(passwordStrength >= 4 && matches);
+            }
+        });
+
+        submitButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    String hashedPassword = PasswordUtils.hashPassword(new String(passwordField.getPassword()));
+                    UserStore.addUser(userText.getText(), emailText.getText(), hashedPassword);
+                    JOptionPane.showMessageDialog(registrationDialog,
+                            "Registration Successful!",
+                            "Success",
+                            JOptionPane.INFORMATION_MESSAGE);
+                    registrationDialog.dispose();
+                } catch (IOException | NoSuchAlgorithmException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
+
+        registrationDialog.setLayout(new GridLayout(6, 2));
+        registrationDialog.add(userLabel);
+        registrationDialog.add(userText);
+        registrationDialog.add(emailLabel);
+        registrationDialog.add(emailText);
+        registrationDialog.add(emailValidationLabel);
+        registrationDialog.add(new JLabel());
+        registrationDialog.add(passwordLabel);
+        registrationDialog.add(passwordField);
+        registrationDialog.add(passwordStrengthLabel);
+        registrationDialog.add(new JLabel());
+        registrationDialog.add(submitButton);
+
+        registrationDialog.setVisible(true);
     }
 }
