@@ -1,8 +1,6 @@
 package org.example;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 
 public class UserStore {
     public static void writingInfo(String id, String email, String hashed) {
@@ -15,5 +13,29 @@ public class UserStore {
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
+    }
+    public static boolean readingInfo(String id, String hashed) {
+        try {
+            FileReader reader = new FileReader("UserInfo.txt");
+            BufferedReader buffer = new BufferedReader(reader);
+            String line;
+            while ((line = buffer.readLine()) != null) {
+                String[] info = line.split(",");
+                String savedId = info[0];
+                String savedHashed = info[1];
+
+                if(id.equalsIgnoreCase(savedId)) {
+                    if(hashed.equals(savedHashed)) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 }

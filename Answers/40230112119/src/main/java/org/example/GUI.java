@@ -76,6 +76,7 @@ public class GUI {
             public void actionPerformed(ActionEvent e) {
                 String id = t1.getText();
                 String pass = String.copyValueOf(p.getPassword());
+                String hashed = null;
                 boolean hasEmptyField = false;
 
                 if (id.isEmpty() || pass.isEmpty() || id.equals(" ") || pass.equals(" ")) {
@@ -84,6 +85,35 @@ public class GUI {
                     hasEmptyField = true;
                     f.add(error);
                     f.repaint();
+                }
+                if(!hasEmptyField) {
+
+                    User u = new User();
+                    try {
+                        hashed = u.toHexString(u.getSHA(pass));
+                    } catch (NoSuchAlgorithmException ex) {
+                        throw new RuntimeException(ex);
+                    }
+
+                    boolean userExists = UserStore.readingInfo(id, hashed);
+                    if(userExists) {
+                        JFrame f2 = new JFrame("message");
+                        f2.setBounds(160, 150, 200, 130);
+                        f2.setLayout(null);
+                        JLabel l1 = new JLabel("Successfully logged in");
+                        l1.setBounds(20, 10, 150, 50);
+                        f2.add(l1);
+                        f2.setVisible(true);
+                    }
+                    else {
+                        JFrame f2 = new JFrame("message");
+                        f2.setBounds(160, 150, 200, 130);
+                        f2.setLayout(null);
+                        JLabel l1 = new JLabel("No user found");
+                        l1.setBounds(20, 10, 150, 50);
+                        f2.add(l1);
+                        f2.setVisible(true);
+                    }
                 }
             }
         });
