@@ -6,7 +6,7 @@ import java.util.regex.Pattern;
 class User {
     String username;
     String password;
-    // PasswordUtils password;
+
     String email;
 
     public User(String username, String password, String email) {

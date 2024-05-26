@@ -78,33 +78,39 @@ class LoginGUI{
             public void actionPerformed(ActionEvent e) {
                 String usernameText = registerUsername.getText(); // Access the JTextField and retrieve its text
 
-                String passwordText = registerPassword.getText();
+                PasswordUtils password = new PasswordUtils();
+                password.storePassword(registerPassword.getText());
 
                 String emailText = registerEmail.getText();
 
-                if(!EmailValidator.emailValidator(emailText)){
-                JOptionPane.showMessageDialog(null,"your email is wrong!");
-                } else if (!User.userValidator(usernameText)) {
-                    JOptionPane.showMessageDialog(null,"your username is wrong!");
-                } //else if () {
+                password.storePassword(registerPassword.getText());
 
-                /*} else {
-                    User user = new User(usernameText,usernameText,emailText);
+                if (!EmailValidator.emailValidator(emailText)) {
+                    JOptionPane.showMessageDialog(null, "your email is wrong!");
+                } else if (!User.userValidator(usernameText)) {
+                    JOptionPane.showMessageDialog(null, "your username is wrong!");
+                } else if (PasswordUtils.checkPasswordLevel(registerPassword.getText()) < 3) {
+                        JOptionPane.showMessageDialog(null,"your password is weak!");
+                }
+                else {
+                    User user = new User(usernameText,password.toString(),emailText);
                     new UserStore(user);
                     JOptionPane.showMessageDialog(null, "your registration was successful :) ");
-                }*/
+                }
+}
 
-            }
         });
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
-                String usernameText = loginUsername.getText(); // Access the JTextField and retrieve its text
-                System.out.println("Text retrieved: " + usernameText);
-
+                String usernameText = loginUsername.getText();
                 String passwordText = loginPassword.getText();
-                System.out.println("Text retrieved: " + passwordText);
+                if(UserStore.userLogin(usernameText,passwordText))
+                    JOptionPane.showMessageDialog(null, "welcome! you have logged in successfully");
+                else
+                    JOptionPane.showMessageDialog(null,"the user dose not exist please check your password or username :)");
+
+
             }
         });
 
