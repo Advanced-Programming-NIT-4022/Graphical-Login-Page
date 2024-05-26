@@ -10,15 +10,15 @@ public class Validator {
     }
     //checking password validation
     public static boolean passwordIsValid(String password){
-        Pattern patternLevel1 = Pattern.compile("^[a-zA-Z0-9]+$");
+        Pattern patternLevel1 = Pattern.compile("\\b[a-zA-Z0-9]+\\b");
         Matcher matcher1 = patternLevel1.matcher(password);
-        Pattern patternLevel2 = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z]).+$");
+        Pattern patternLevel2 = Pattern.compile("\\b(?=.*[a-z])(?=.*[A-Z]).+\\b");
         Matcher matcher2 = patternLevel2.matcher(password);
-        Pattern patternLevel3 = Pattern.compile("^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).+$");
+        Pattern patternLevel3 = Pattern.compile("\\b(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).+\\b");
         Matcher matcher3 = patternLevel3.matcher(password);
-        Pattern patternLevel4 = Pattern.compile("^[\\w@\\-\\.]+$");
+        Pattern patternLevel4 = Pattern.compile("\\b[\\w@\\-\\.]+\\b");
         Matcher matcher4 = patternLevel4.matcher(password);
-        Pattern patternLevel5 = Pattern.compile("^.{9,}$");
+        Pattern patternLevel5 = Pattern.compile("\\b.{9,}\\b");
         Matcher matcher5 = patternLevel5.matcher(password);
         if (matcher1.find()){
             return false;
