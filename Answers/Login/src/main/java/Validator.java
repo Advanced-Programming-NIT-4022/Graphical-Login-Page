@@ -16,23 +16,15 @@ public class Validator {
         Matcher matcher2 = patternLevel2.matcher(password);
         Pattern patternLevel3 = Pattern.compile("\\b(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).+\\b");
         Matcher matcher3 = patternLevel3.matcher(password);
-        Pattern patternLevel4 = Pattern.compile("\\b[\\w@\\-\\.]+\\b");
+        Pattern patternLevel4 = Pattern.compile("(@|-|_|\\.)");
         Matcher matcher4 = patternLevel4.matcher(password);
         Pattern patternLevel5 = Pattern.compile("\\b.{9,}\\b");
         Matcher matcher5 = patternLevel5.matcher(password);
-        if (matcher1.find()){
-            return false;
-        } else if (matcher2.find()){
-            return false;
-        } else if (matcher3.find()){
-            return true;
-        } else if (matcher4.find()){
-            return true;
-        } else if (matcher5.find()){
-            return true;
-        } else {
-            return false;
+        boolean correct = false;
+        if (matcher3.find() || matcher4.find() || matcher5.find()){
+            correct = true;
         }
+        return correct;
     }
     //checking email validation
     public static boolean emailIsValid(String email){
