@@ -177,8 +177,10 @@ public class LoginGUI {
                 String input1 = textField1.getText();
                 String input2 = textField2.getText();
                 String input3 = textField3.getText();
+                PasswordUtils passwordUtils = new PasswordUtils();
+                int level = passwordUtils.checker(input2);
                 String hashed = user.HashingCode(input2);
-                if (Validated(input3))
+                if (Validated(input3) && level == 5)
                 {
                     String sentense = input1 + "," + hashed + "," + input3;
                     userStore.ReadFile();
