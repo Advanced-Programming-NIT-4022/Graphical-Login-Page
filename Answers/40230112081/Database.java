@@ -17,7 +17,7 @@ public class Database {
         this.table = _table;
     }
 
-    public void insertToTable(ArrayList<String> list){
+    public String insertToTable(ArrayList<String> list){
         int result;
         try {
             Connection connection = DriverManager.getConnection(this.url, this.name, this.password);
@@ -25,14 +25,13 @@ public class Database {
             result = statement.executeUpdate("INSERT INTO "+this.table+" VALUES(\""+list.get(0)+"\",\""+list.get(1)+
                                             "\",\""+list.get(2)+"\")");
             if(result == 1)
-                System.out.println("Insertion is successful");
-            else{
-                System.out.println("One error comes up");
-            }
+                return "Insertion is successful";
+
 
         }catch (Exception e){
-            e.printStackTrace();
+            return "Username exists.";
         }
+        return "Error in Insertion";
     }
 
     public boolean searchInTable(String _column_, String _thing_){
