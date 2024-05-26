@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Graphical_Login_Page:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Graphical_Login_Page_jar</output-path>
+    <root id="archive" name="Graphical_Login_Page.jar">
+      <element id="module-output" name="Graphical_Login_Page" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/commons-codec/commons-codec/1.16.0/commons-codec-1.16.0.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
