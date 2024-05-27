@@ -14,6 +14,7 @@ public class GUI {
     public void firstPanel() {
         JFrame frame = new JFrame("User Entry");
         frame.setSize(500, 500);
+//        frame.setIconImage(\C\Users\Asus\Downloads\silly.JFIF);
 
         JLabel welcome = new JLabel("Welcome. Please log in or sign up.");
         welcome.setBounds(90,10, 350, 250);
@@ -182,14 +183,23 @@ public class GUI {
                 }
 
                 User u = new User();
+                UserStore us = new UserStore();
                 EmailValidator em = new EmailValidator();
+
                 if(!hasEmptyField) {
                     String hashed = null;
                     boolean emailIsValid = true;
+                    boolean emailExist = UserStore.readingEmails(email);
                     emailIsValid = em.emailChecker(email);
                     if (!emailIsValid) {
                         JLabel error = new JLabel("Invalid email. Try again.");
                         error.setBounds(20, 300, 200, 40);
+                        f.add(error);
+                        f.repaint();
+                    }
+                    if(emailExist) {
+                        JLabel error = new JLabel("Email already signed up. Please log in.");
+                        error.setBounds(20, 315, 220, 40);
                         f.add(error);
                         f.repaint();
                     }

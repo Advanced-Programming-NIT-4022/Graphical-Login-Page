@@ -38,4 +38,26 @@ public class UserStore {
         }
 
     }
+
+    public static boolean readingEmails(String email) {
+        try {
+            FileReader reader = new FileReader("UserInfo.txt");
+            BufferedReader buffer = new BufferedReader(reader);
+            String line;
+            while ((line = buffer.readLine()) != null) {
+                String[] info = line.split(",");
+                String savedEmail = info[2];
+
+                if(email.equalsIgnoreCase(savedEmail)) {
+                    return true;
+                }
+            }
+            return false;
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
 }
