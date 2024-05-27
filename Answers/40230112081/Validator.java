@@ -11,53 +11,68 @@ public class Validator {
     }
     public boolean emailValidator(String _email_)
     {
-        Pattern pattern = Pattern.compile("^[^\\.][a-zA-Z0-9]+\\.?[^\\.][\\w]+@[^\\.][a-zA-Z]+\\.[a-z]{3,4}");
+        Pattern pattern = Pattern.compile("^[^\\.][a-zA-Z0-9]+\\.?[^\\.][\\w]+@[^\\.][a-zA-Z]+\\.[a-z]{3,4}$");
         return pattern.matcher(_email_).find();
     } // false : wrong email, true : correct email format
 
     public String passwordStrengthLevel(String _password_){
-        int level = 0;
-        String flag = "";
         Pattern p1 = Pattern.compile("([a-z]+)");
         Pattern p2 = Pattern.compile("([A-Z]+)");
-        Pattern p3 = Pattern.compile("([0-9+])");
+        Pattern p3 = Pattern.compile("([0-9]+)");
         Pattern p4 = Pattern.compile("([@\\.\\-_]+)");
         Pattern p5 = Pattern.compile("[a-zA-Z0-9@\\.\\-_]{9,}");
-        if(p5.matcher(_password_).find())
-            level = 5;
-        else{
+        boolean lower = false, upper = false, digit = false, special = false, longPass = false;
+        if(passwordValidator(_password_))
+        {
             if(p1.matcher(_password_).find())
-                level++;
+                lower = true;
             if(p2.matcher(_password_).find())
-                level++;
+                upper = true;
             if(p3.matcher(_password_).find())
-                level++;
+                digit = true;
             if(p4.matcher(_password_).find())
-                level++;
+                special = true;
+            if(p5.matcher(_password_).find())
+                longPass = true;
+            if(longPass)
+                return "Very hard";
+            else{
+                if(lower && !upper && !digit && !special)
+                    return "easy";
+                else if (lower && !upper && !digit && special)
+                    return "hard";
+                else if(lower && !upper && digit && !special)
+                    return "intermediate";
+                else if(lower && !upper && digit && special)
+                    return "hard";
+                else if(lower && upper && !digit && special)
+                    return "intermediate";
+                else if(lower && !upper && digit && special)
+                    return "hard";
+                else if(lower && upper && !digit && !special)
+                    return "intermediate";
+                else if(lower && upper && digit && !special)
+                    return "medium";
+                else if(lower && upper && digit && special)
+                    return "hard";
+                else if(!lower && !upper && !digit && special)
+                    return "Wrong Format";
+                else if(!lower && !upper && digit && !special)
+                    return "easy";
+                else if(!lower && !upper && digit && special)
+                    return "hard";
+                else if(!lower && upper && !digit && !special)
+                    return "easy";
+                else if(!lower && upper && !digit && special)
+                    return "hard";
+                else if(!lower && upper && digit && !special)
+                    return "intermediate";
+                else if(!lower && upper && digit && special)
+                    return "hard";
+
+            }
         }
-
-        switch (level){
-            case 1:
-                flag = "easy";
-                break;
-            case 2:
-                flag = "intermediate";
-                break;
-            case 3:
-                flag = "medium";
-                break;
-            case 4:
-                flag = "hard";
-                break;
-            case 5:
-                flag = "Very hard";
-                break;
-            default:
-                flag = "wrong format";
-        }
-
-
-        return flag;
+        return "Wrong Format";
     }
 
     public String hashingPassword(String password) {
