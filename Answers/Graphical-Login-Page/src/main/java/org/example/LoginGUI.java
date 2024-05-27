@@ -15,7 +15,7 @@ public class LoginGUI {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(500,500);
         frame.setLocationRelativeTo(null);
-//        frame.setResizable(false); // برای تغییر نکردن سایز frame
+        frame.setResizable(false); // برای تغییر نکردن سایز frame
         JPanel panel = new JPanel();
         JButton button1 = new JButton();
         JButton button2 = new JButton();
@@ -99,16 +99,23 @@ public class LoginGUI {
                 String input1 = textField1.getText();
                 String input2 = textField2.getText();
                 userStore.ReadFile();
-                boolean flag = User.Checker(input1,input2);
-                if (flag)
+                if (!input1.isEmpty() && !input2.isEmpty())
                 {
-                    System.out.println("successful");
-                    JOptionPane.showMessageDialog(frame,"success");
+                    boolean flag = User.Checker(input1,input2);
+                    if (flag)
+                    {
+                        System.out.println("successful");
+                        JOptionPane.showMessageDialog(frame,"success");
+                    }
+                    else
+                    {
+                        System.out.println("Try Again");
+                        JOptionPane.showMessageDialog(frame,"error");
+                    }
                 }
                 else
                 {
-                    System.out.println("Try Again");
-                    JOptionPane.showMessageDialog(frame,"error");
+                    JOptionPane.showMessageDialog(frame,"text field is empty");
                 }
                 userStore.WriteFile();
             }
@@ -180,19 +187,26 @@ public class LoginGUI {
                 PasswordUtils passwordUtils = new PasswordUtils();
                 int level = passwordUtils.checker(input2);
                 String hashed = user.HashingCode(input2);
-                if (Validated(input3) && level == 5)
+                if (!input1.isEmpty() && !input2.isEmpty() && !input3.isEmpty())
                 {
-                    String sentense = input1 + "," + hashed + "," + input3;
-                    userStore.ReadFile();
-                    userStore.getUser().add(sentense);
-                    System.out.println("successful");
-                    JOptionPane.showMessageDialog(frame,"success");
-                    userStore.WriteFile();
+                    if (Validated(input3) && level >= 3)
+                    {
+                        String sentense = input1 + "," + hashed + "," + input3;
+                        userStore.ReadFile();
+                        userStore.getUser().add(sentense);
+                        System.out.println("successful");
+                        userStore.WriteFile();
+                    }
+                    else
+                    {
+                        System.out.println("Try again");
+                        if (!Validated(input3)) { JOptionPane.showMessageDialog(frame,"email is incorrect"); }
+                        if (level < 3) { JOptionPane.showMessageDialog(frame,"password is weak"); }
+                    }
                 }
                 else
                 {
-                    System.out.println("Try again");
-                    JOptionPane.showMessageDialog(frame,"error");
+                    JOptionPane.showMessageDialog(frame,"text field is empty");
                 }
             }
         });
