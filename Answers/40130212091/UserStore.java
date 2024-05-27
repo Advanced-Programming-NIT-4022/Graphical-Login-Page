@@ -2,9 +2,9 @@ import java.util.ArrayList;
 
 public class UserStore {
 
-    ArrayList<User> users = new ArrayList<>();
+    static ArrayList<User> users = new ArrayList<>();
 
-    public boolean registerUser(String username, String password , String email){
+    public static boolean registerUser(String username, String password , String email){
         for(User user : users){
             if(user.getusername().equals(username)){
                 return false;
@@ -15,16 +15,15 @@ public class UserStore {
         return true;
     }
 
-    public boolean loginUser(String username , String password){
+    public static String loginUser(String username , String password){
         for(User user : users){
             if(user.getusername().equals(username)){
                 if(user.getPassword().equals(password)){
-                    return true;
+                    return null;
                 }
-                System.out.println("wrong password");
-                break;
+                return "wrong password";
             }
         }
-        return false;
+        return "username does not exist";
     }
 }
