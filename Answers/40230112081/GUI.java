@@ -192,26 +192,68 @@ public class GUI implements signupPanel {
         password.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
-                if(vld.passwordValidator(password.getText()))
+                if (vld.passwordValidator(password.getText())){
                     signUp.setEnabled(true);
-                else
+                    p_level.setText(vld.passwordStrengthLevel(password.getText()));
+                    set_color(password.getText());
+                }
+                else {
                     signUp.setEnabled(false);
+                    p_level.setText("Wrong format.");
+                    set_color(password.getText());
+                }
             }
 
             @Override
             public void removeUpdate(DocumentEvent e) {
-                if(vld.passwordValidator(password.getText()))
+                if(vld.passwordValidator(password.getText())){
                     signUp.setEnabled(true);
-                else
+                    p_level.setText(vld.passwordStrengthLevel(password.getText()));
+                    set_color(password.getText());
+                }
+                else {
                     signUp.setEnabled(false);
+                    p_level.setText("Wrong format.");
+                    set_color(password.getText());
+                }
             }
 
             @Override
             public void changedUpdate(DocumentEvent e) {
-                if(vld.passwordValidator(password.getText()))
+                if(vld.passwordValidator(password.getText())) {
                     signUp.setEnabled(true);
-                else
+                    p_level.setText(vld.passwordStrengthLevel(password.getText()));
+                    set_color(password.getText());
+                }
+                else {
                     signUp.setEnabled(false);
+                    p_level.setText("Wrong format.");
+                    set_color(password.getText());
+                }
+            }
+
+            public void set_color(String pass){
+                if(vld.passwordValidator(pass))
+                {
+                    String level = vld.passwordStrengthLevel(pass);
+                    if(level.equals("Wrong Format"))
+                        p_level.setForeground(Color.red);
+                    else if(level.equals("easy"))
+                        p_level.setForeground(Color.green);
+                    else if(level.equals("intermediate"))
+                        p_level.setForeground(Color.ORANGE);
+                    else if(level.equals("medium"))
+                        p_level.setForeground(Color.orange);
+                    else if(level.equals("hard"))
+                        p_level.setForeground(Color.red);
+                    else if(level.equals("Very hard"))
+                        p_level.setForeground(Color.RED);
+                    else
+                        p_label.setForeground(Color.black);
+                }
+                else
+                    p_level.setForeground(Color.BLACK);
+
             }
         });
         // buttons
