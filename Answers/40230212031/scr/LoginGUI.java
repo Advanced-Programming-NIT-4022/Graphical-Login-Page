@@ -3,8 +3,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class LoginGUI{
-
+public class LoginGUI {
     private UserStore userStore;
 
     public LoginGUI(UserStore userStore) {
@@ -12,13 +11,13 @@ public class LoginGUI{
 
         JFrame frame = new JFrame("Login and Registration");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(400, 200);
+        frame.setSize(600, 400);
 
         JPanel loginPanel = new JPanel();
-        loginPanel.setLayout(new GridLayout(4, 1));
+        loginPanel.setLayout(new GridLayout(5, 1));
 
-        JTextField usernameField = new JTextField(20);
-        JPasswordField passwordField = new JPasswordField(20);
+        JTextField usernameField = new JTextField(10);
+        JPasswordField passwordField = new JPasswordField(10);
         JButton loginButton = new JButton("Login");
         JButton registerButton = new JButton("Register");
 
@@ -41,14 +40,14 @@ public class LoginGUI{
             public void actionPerformed(ActionEvent e) {
                 JFrame registerFrame = new JFrame("Register");
                 registerFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                registerFrame.setSize(400, 200);
+                registerFrame.setSize(600, 400);
 
                 JPanel registerPanel = new JPanel();
-                registerPanel.setLayout(new GridLayout(5, 1));
+                registerPanel.setLayout(new GridLayout(6, 1));
 
-                JTextField newUsernameField = new JTextField(20);
-                JPasswordField newPasswordField = new JPasswordField(20);
-                JTextField newEmailField = new JTextField(20);
+                JTextField newUsernameField = new JTextField(10);
+                JPasswordField newPasswordField = new JPasswordField(10);
+                JTextField newEmailField = new JTextField(10);
                 JButton confirmButton = new JButton("Confirm");
 
                 confirmButton.addActionListener(new ActionListener() {
@@ -58,6 +57,16 @@ public class LoginGUI{
                         String newPassword = new String(newPasswordField.getPassword());
                         String newEmail = newEmailField.getText();
 
+                        if (!EmailValidator.validateEmail(newEmail)) {
+                            JOptionPane.showMessageDialog(registerFrame, "Invalid email format!");
+                            return;
+                        }
+
+                        PasswordUtils.PasswordStatus passwordStatus = PasswordUtils.evaluatePasswordStrength(newPassword);
+                        if (passwordStatus == PasswordUtils.PasswordStatus.INVALID || passwordStatus == PasswordUtils.PasswordStatus.WEAK) {
+                            JOptionPane.showMessageDialog(registerFrame, "Password is too weak!");
+                            return;
+                        }
 
                         User newUser = new User(newUsername, PasswordUtils.hashPassword(newPassword), newEmail);
                         userStore.addUser(newUser);

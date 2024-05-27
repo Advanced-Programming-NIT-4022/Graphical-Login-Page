@@ -1,11 +1,29 @@
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserStore {
     private static final String USERS_FILE = "users.txt";
     private List<User> userList;
+
+    public UserStore() {
+        userList = new ArrayList<>();
+        loadUsers();
+    }
+
+    private void loadUsers() {
+        try (BufferedReader reader = new BufferedReader(new FileReader(USERS_FILE))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] userData = line.split(",");
+                if (userData.length == 3) {
+                    userList.add(new User(userData[0], userData[1], userData[2]));
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     private void saveUsers() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(USERS_FILE))) {
@@ -17,6 +35,7 @@ public class UserStore {
             e.printStackTrace();
         }
     }
+
     public void addUser(User user) {
         userList.add(user);
         saveUsers();

@@ -17,13 +17,14 @@ public class User {
         return email;
     }
 
-    // متد برای بررسی صحت رمز عبور
     public boolean checkPassword(String password) {
         return this.hashedPassword.equals(PasswordUtils.hashPassword(password));
     }
+
     public boolean enter(String login, String password) {
         return this.username.equals(login) && checkPassword(password);
     }
+
     @Override
     public String toString() {
         return username + "," + hashedPassword + "," + email;
