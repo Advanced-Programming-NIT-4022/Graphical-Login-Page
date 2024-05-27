@@ -1,4 +1,7 @@
+import java.util.HashMap;
+
 public class User {
+
     public String getPasswordIn() {
         return passwordIn;
     }
