@@ -10,7 +10,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class GUI implements signupPanel {
+public class GUI implements signupPanel, loginPanel {
 
     Database db;
     Validator vld;
@@ -76,6 +76,9 @@ public class GUI implements signupPanel {
             public void actionPerformed(ActionEvent e) {
                 if(signup.isSelected()){
                     signUpPanel();
+                }
+                if(login.isSelected()){
+                    loginPanel();
                 }
             }
         });
@@ -149,17 +152,26 @@ public class GUI implements signupPanel {
         password.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
-
+                if(vld.passwordValidator(password.getText()))
+                    signUp.setEnabled(true);
+                else
+                    signUp.setEnabled(true);
             }
 
             @Override
             public void removeUpdate(DocumentEvent e) {
-
+                if(vld.passwordValidator(password.getText()))
+                    signUp.setEnabled(true);
+                else
+                    signUp.setEnabled(true);
             }
 
             @Override
             public void changedUpdate(DocumentEvent e) {
-
+                if(vld.passwordValidator(password.getText()))
+                    signUp.setEnabled(true);
+                else
+                    signUp.setEnabled(true);
             }
 
         });
@@ -281,7 +293,7 @@ public class GUI implements signupPanel {
                     email.setText("");
                 }
                 else{
-                    list.add(username.getText().toLowerCase());
+                    list.add(username.getText());
                     list.add(vld.hashingPassword(password.getText()));
                     list.add(email.getText().toLowerCase());
                     message = db.insertToTable(list);
@@ -316,6 +328,105 @@ public class GUI implements signupPanel {
     }
 
 
+    @Override
+    public void loginPanel() {
+        vld = new Validator();
+        db = new Database("jdbc:mysql://localhost:3306/users_swing","Amir13810325**","root","user_repo");
+        login = new JFrame();
+        menu.setVisible(false);
+        login.setSize(500, 600);
+        login.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        JPanel buttons, fields;
+        buttons = new JPanel();
+        buttons.setSize(500, 300);
+        fields = new JPanel();
+        fields.setSize(500, 300);
+        GridLayout myLayout = new GridLayout(2, 1);
+        // buttons
+        JButton loginButton = new JButton("Login");
+        JButton backButton  = new JButton("Back");
+        // buttons position
+        buttons.setLayout(null);
+        buttons.add(backButton);
+        buttons.add(loginButton);
+        loginButton.setBounds(75,130,100, 40);
+        backButton.setBounds(325, 130, 100, 40);
+        // buttons visibility
+        loginButton.setVisible(true);
+        backButton.setVisible(true);
+        // add buttons actions
+        backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                login.setVisible(false);
+                menu.setVisible(true);
+            }
+        });
+        // fields
+        fields.setLayout(null);
+        JTextField email;
+        JTextField username;
+        JPasswordField pass;
+        JLabel e_label, u_label, p_label;
+        email = new JTextField(100);
+        username = new JTextField(100);
+        pass = new JPasswordField(100);
+        e_label = new JLabel("Email");
+        u_label = new JLabel("Username");
+        p_label = new JLabel("Password");
+        email.setBounds(150,50,190,30);
+        username.setBounds(150, 100, 190, 30);
+        pass.setBounds(150, 150, 190, 30);
+        e_label.setBounds(70,50,50,30);
+        u_label.setBounds(70, 100, 100,30);
+        p_label.setBounds(70, 150, 100,30);
+        email.setVisible(true);
+        pass.setVisible(true);
+        username.setVisible(true);
+        p_label.setVisible(true);
+        e_label.setVisible(true);
+        u_label.setVisible(true);
+        // add validators to fields
+        email.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                if(vld.emailValidator(email.getText()))
+                    loginButton.setEnabled(true);
+                else
+                    loginButton.setEnabled(false);
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                if(vld.emailValidator(email.getText()))
+                    loginButton.setEnabled(true);
+                else
+                    loginButton.setEnabled(false);
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                if(vld.emailValidator(email.getText()))
+                    loginButton.setEnabled(true);
+                else
+                    loginButton.setEnabled(false);
+            }
+        });
+
+        // add components to panel
+        fields.add(email);
+        fields.add(username);
+        fields.add(pass);
+        fields.add(e_label);
+        fields.add(u_label);
+        fields.add(p_label);
+        // adding panel
+        fields.setVisible(true);
+        login.add(fields);
+        login.add(buttons);
+        login.setLayout(myLayout);
+        login.setVisible(true);
+    }
 }
 
 
