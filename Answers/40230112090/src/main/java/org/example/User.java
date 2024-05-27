@@ -1,5 +1,6 @@
 package org.example;
 
+import javax.swing.*;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -19,16 +20,31 @@ public class User {
         }
         this.newPassword = hexString.toString() ;
     }
-    public User(String username){
+    public User(String username) {
+        if (username.isEmpty()) {
+            this.username = "false";
+        } else {
+            username = username.trim();
+            String[] words = username.split(" ");
+            String condition = "true" ;
+            for (String s : words) {
+                if (s.isEmpty()) {
+                    condition = "false";
+                    break;
+                }
+            }
+            if (condition.equals("false")) {
+                JOptionPane.showMessageDialog(null, "Please enter your username correctly(use a space between first name and last name)", null, JOptionPane.ERROR_MESSAGE);
+            }else {
+                StringBuilder formatted = new StringBuilder();
+                for (String word : words) {
+                    formatted.append(Character.toUpperCase(word.charAt(0)))
+                            .append(word.substring(1).toLowerCase())
+                            .append(" ");
+                }
+                this.username = formatted.toString().trim();
 
-        username = username.trim();
-        String[] words = username.split(" ");
-        StringBuilder formatted = new StringBuilder();
-        for (String word : words) {
-            formatted.append(Character.toUpperCase(word.charAt(0)))
-                    .append(word.substring(1).toLowerCase())
-                    .append(" ");
+            }
         }
-         this.username = formatted.toString().trim();
     }
 }

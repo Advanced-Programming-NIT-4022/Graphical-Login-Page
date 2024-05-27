@@ -7,13 +7,16 @@ import java.util.regex.Pattern;
 public class EmailValidator {
     public String email ;
     public EmailValidator(String email){
-
-        Pattern pattern = Pattern.compile("^[a-zA-Z]{5,}[0-9]*@[a-zA-Z0-9]+\\.[a-z.]+[a-zA-Z]{2,4}$");
-        Matcher matcher = pattern.matcher(email);
-        if (matcher.matches()){
-            this.email = matcher.group() ;
-        }else{
-            JOptionPane.showMessageDialog(null , "The email in question is not valid");
+        if (email.isEmpty()){
+            this.email = "null" ;
+        }else {
+            Pattern pattern = Pattern.compile("^[a-zA-Z]{5,}(?=.*[.]).*[^.]@[a-zA-Z]+(?=.*[.\\-_]).?(?=.*[a-zA-Z0-9]).{2,}$");
+            Matcher matcher = pattern.matcher(email);
+            if (matcher.matches()) {
+                this.email = matcher.group();
+            } else {
+                JOptionPane.showMessageDialog(null, "The email in question is not valid");
+            }
         }
     }
 }

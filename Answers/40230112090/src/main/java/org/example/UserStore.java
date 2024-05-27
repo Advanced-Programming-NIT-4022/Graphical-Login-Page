@@ -29,6 +29,7 @@ public class UserStore {
             System.out.println(ex.getMessage());
         }
         String condition = "false";
+
         for (int i = 0; i < arrayList.toArray().length; i++) {
             if (username.equals(arrayList.get(i)) && password.equals(arrayList.get(i + 1))) {
                 JOptionPane.showMessageDialog(null, "You have successfully logged in");
@@ -79,12 +80,11 @@ public class UserStore {
                 writer.write(username + "  " + password + "  " + email);
                 writer.newLine();
                 writer.close();
-                JOptionPane.showMessageDialog(null , "You registration was successful");
-                this.status = "true" ;
+                JOptionPane.showMessageDialog(null, "You registration was successful");
+                this.status = "true";
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-
         }
     }
 }
