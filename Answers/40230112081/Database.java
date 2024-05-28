@@ -56,4 +56,22 @@ public class Database {
         }
         return flag;
     }
+
+    public String findPassword(String email){
+        try {
+            Connection connection = DriverManager.getConnection(this.url, this.name, this.password);
+            Statement statement = connection.createStatement();
+            ResultSet userSet = statement.executeQuery("SELECT * FROM user_repo");
+            while (userSet.next()){
+                if(userSet.getString("email").equals(email)){
+                    return userSet.getString("password");
+                }
+            }
+        }
+        catch (Exception e){
+            System.out.println("Connection is interrupted. :-|");
+        }
+        return "Not Found.";
+    }
+
 }
