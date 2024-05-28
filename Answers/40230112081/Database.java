@@ -1,7 +1,4 @@
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 
 
@@ -72,6 +69,26 @@ public class Database {
             System.out.println("Connection is interrupted. :-|");
         }
         return "Not Found.";
+    }
+
+    public String setNewPass(String colName, String newPass, String colValue){
+        Validator v = new Validator();
+        PreparedStatement p = null;
+        String query = "UPDATE "+this.table+" SET password=\""+v.hashingPassword(newPass)+"\" WHERE "+colName+"= \""+colValue+"\"";
+        boolean result;
+        try {
+            Connection connection = DriverManager.getConnection(this.url, this.name, this.password);
+            p = connection.prepareStatement(query);
+            System.out.println(query);
+            if(!p.execute())
+                return "Password has been updated successfully";
+            else
+                return "Operation denied. :-|";
+
+        }
+        catch (Exception e){
+            return "Connection is interrupted. :-|";
+        }
     }
 
 }
