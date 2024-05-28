@@ -262,7 +262,7 @@ public class GUI implements signupPanel, loginPanel, forgetPassword {
         signUp.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(db.searchInTable("email",email.getText()) || db.searchInTable("username",username.getText())) {
+                if(db.searchInTable("email",email.getText().toLowerCase()) || db.searchInTable("username",username.getText())) {
                     JOptionPane.showMessageDialog(signup, "The email/Username is available in repository.");
                     username.setText("");
                     password.setText("");
