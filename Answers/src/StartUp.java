@@ -1,4 +1,6 @@
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class StartUp extends JFrame {
     private JPasswordField password;
@@ -35,5 +37,11 @@ public class StartUp extends JFrame {
         this.add(username);
         this.add(butt);
         this.setVisible(true);
+        butt.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
     }
 }

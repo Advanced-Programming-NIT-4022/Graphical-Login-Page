@@ -1,3 +1,5 @@
+import java.sql.SQLException;
+
 public class User {
     private String Username;
     private String Email;
@@ -6,5 +8,9 @@ public class User {
         Username=username;
         Email=email;
         Password=password;
+    }
+    public void adduser(String username,String password,String email) throws SQLException {
+        Db db=new Db();
+        db.statement.executeUpdate("INSERT INTO loginpage (Name,Email,Password) VALUES ('"+username+"','"+email+"','"+password+"')");
     }
 }
