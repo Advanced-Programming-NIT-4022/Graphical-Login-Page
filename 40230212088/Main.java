@@ -19,7 +19,7 @@ public class Main {
         btn1.setBounds(150,300,100,30);
         btn2.setBounds(350,300,100,30);
 
-        lbl.setBackground(Color.PINK);
+        lbl.setBackground(Color.pink);
         btn1.setBackground(Color.LIGHT_GRAY);
         btn2.setBackground(Color.LIGHT_GRAY);
         btn1.setForeground(Color.DARK_GRAY);
@@ -110,7 +110,13 @@ public class Main {
 
                         password = new String(passwordField.getPassword());
                         PasswordUtil psu = new PasswordUtil();
-                        if (psu.isValidPassword(password)) {
+                        if (PasswordUtil.isValidPassword(password) == "true Your password is on level 5") {
+                            System.out.println("Password meets the strength criteria.");
+                            hashpassword = psu.hashPassword(password);
+                        }else if (PasswordUtil.isValidPassword(password) == "true Your password is on level 4") {
+                            System.out.println("Password meets the strength criteria.");
+                            hashpassword = psu.hashPassword(password);
+                        }else if (PasswordUtil.isValidPassword(password) == "true Your password is on level 3") {
                             System.out.println("Password meets the strength criteria.");
                             hashpassword = psu.hashPassword(password);
                         } else {
@@ -126,6 +132,8 @@ public class Main {
                         EmailValidator emailValidator = new EmailValidator();
                         if(emailValidator.isValidEmail(Emailp.getText())){
                             email = Emailp.getText();
+                            User lgn = new User();
+                            lgn.saveUserInfo(username, hashpassword, email);
                         }else {
                             JOptionPane.showMessageDialog(null,
                                             "Please enter a right email.",
@@ -133,8 +141,6 @@ public class Main {
                             Emailp.setText("");
                             return;
                         }
-                        User lgn = new User();
-                        lgn.saveUserInfo(username, hashpassword, email);
 
                         JFrame f = new JFrame("Login/Signup Page");
                         JPanel messagePanel = new JPanel();
