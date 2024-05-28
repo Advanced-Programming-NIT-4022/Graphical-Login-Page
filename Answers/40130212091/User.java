@@ -1,11 +1,11 @@
 public class User {
     private String username;
-    private String password;
+    private String hashedpassword;
     private String email;
 
     public User(String username, String password, String email){
         this.username = username;
-        this.password = password;
+        this.hashedpassword = PasswordUtils.hashingPassword(password);
         this.email = email;
     }
 
@@ -15,6 +15,10 @@ public class User {
     }
 
     public String getPassword(){
-        return password;
+        return hashedpassword;
+    }
+
+    public String getEmail(){
+        return email;
     }
 }

@@ -21,7 +21,7 @@ public class PasswordUtils {
         return "password must contain lowercase, uppercase and special character";
     }
 
-    public void hashingPassword(String password){
+    public static String hashingPassword(String password){
         if(password == null){
             throw new IllegalArgumentException("password cannot be null");
         }
@@ -39,8 +39,9 @@ public class PasswordUtils {
                 }
                 hexString.append(hex);
             }
+            return hexString.toString();
         }catch (NoSuchAlgorithmException e){
-
+            throw new RuntimeException(e);
         }
     }
 }

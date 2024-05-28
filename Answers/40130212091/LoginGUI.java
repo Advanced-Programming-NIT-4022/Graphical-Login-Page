@@ -13,45 +13,25 @@ public class LoginGUI {
         frame.setLocationRelativeTo(null);
 
         JPanel firstPanel = new JPanel(new FlowLayout());
+        JPanel register = new JPanel(new FlowLayout());
+        JPanel login = new JPanel(new FlowLayout());
+        JPanel page = new JPanel(new FlowLayout());
+
+        frame.add(firstPanel);
+
+        //firstpanel
         JButton rButton = new JButton("Register");
         JButton lButton = new JButton("Login");
         firstPanel.add(rButton);
         firstPanel.add(lButton);
 
-        JPanel register = new JPanel(new FlowLayout());
-        JLabel emailLabel = new JLabel("Email Address");
-        JTextField emailField = new JTextField(10);
-        JLabel usernameLabel = new JLabel("Username");
-        JTextField usernameField = new JTextField(10);
-        JLabel passwordLabel = new JLabel("Password");
-        JPasswordField passwordField = new JPasswordField(10);
-        JButton registerButton = new JButton("Register");
-        register.add(emailLabel);
-        register.add(emailField);
-        register.add(usernameLabel);
-        register.add(usernameField);
-        register.add(passwordLabel);
-        register.add(passwordField);
-        register.add(registerButton);
-
-        JPanel login = new JPanel(new FlowLayout());
-        login.add(usernameLabel);
-        login.add(usernameField);
-        login.add(passwordLabel);
-        login.add(passwordField);
-        JButton loginButton = new JButton("Login");
-        login.add(loginButton);
-
-        JPanel page = new JPanel(new FlowLayout());
-        JLabel welcome = new JLabel("WELCOME");
-        page.add(welcome);
-
-        frame.add(firstPanel);
         rButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 frame.remove(firstPanel);
                 frame.add(register);
+                frame.revalidate();
+                frame.repaint();
             }
         });
 
@@ -60,9 +40,27 @@ public class LoginGUI {
             public void actionPerformed(ActionEvent e) {
                 frame.remove(firstPanel);
                 frame.add(login);
+                frame.revalidate();
+                frame.repaint();
             }
         });
 
+
+        //register panel
+        JLabel emailLabel = new JLabel("Email Address", 10);
+        register.add(emailLabel);
+        JTextField emailField = new JTextField(20);
+        register.add(emailField);
+        JLabel usernameLabel = new JLabel("Username");
+        register.add(usernameLabel);
+        JTextField usernameField = new JTextField(20);
+        register.add(usernameField);
+        JLabel passwordLabel = new JLabel("Password");
+        register.add(passwordLabel);
+        JPasswordField passwordField = new JPasswordField(20);
+        register.add(passwordField);
+        JButton registerButton = new JButton("Register");
+        register.add(registerButton);
         registerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -73,38 +71,59 @@ public class LoginGUI {
                 JLabel message = new JLabel();
 
                 if(EmailValidator.emailValidation(email)){
-                    if(UserStore.registerUser(username, password, email)){
+                    if(UserStore.check(username)){
                         if (PasswordUtils.passwordStrength(password) == null){
+                            UserStore.registerUser(username, password, email);
                             frame.remove(register);
                             frame.add(page);
+                            frame.revalidate();
+                            frame.repaint();
+                        }else{
+                            JOptionPane.showMessageDialog(frame, PasswordUtils.passwordStrength(password));
                         }
-                        message.setText(PasswordUtils.passwordStrength(password));
+                    }else {
+                        JOptionPane.showMessageDialog(frame, "username already exist");
                     }
-                    message.setText("username already exist");
+                }else {
+                    JOptionPane.showMessageDialog(frame, "invalid email address");
                 }
-                message.setText("invalid email address");
             }
         });
+
+        //login panel
+        JLabel usernameLabelLogin = new JLabel("Username");
+        login.add(usernameLabelLogin);
+        JTextField usernameFieldLogin = new JTextField(20);
+        login.add(usernameFieldLogin);
+        JLabel passwordLabelLogin = new JLabel("Password");
+        login.add(passwordLabelLogin);
+        JPasswordField passwordFieldLogin = new JPasswordField(20);
+        login.add(passwordFieldLogin);
+        JButton loginButton = new JButton("Login");
+        login.add(loginButton);
 
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String username = usernameField.getText();
-                String password = new String(passwordField.getPassword());
+                String username = usernameFieldLogin.getText();
+                String password = new String(passwordFieldLogin.getPassword());
 
-                JLabel message = new JLabel();
 
                 if(UserStore.loginUser(username, password) == null){
                     frame.remove(login);
                     frame.add(page);
+                    frame.revalidate();
+                    frame.repaint();
                 }
                 else {
-                    message.setText(UserStore.loginUser(username, password));
+                    JOptionPane.showMessageDialog(frame, UserStore.loginUser(username, password));
                 }
             }
         });
 
-
+        //page panel
+        JLabel welcome = new JLabel("WELCOME");
+        page.add(welcome);
 
 
         frame.setVisible(true);
