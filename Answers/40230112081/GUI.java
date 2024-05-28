@@ -17,6 +17,7 @@ public class GUI implements signupPanel, loginPanel {
     JFrame menu;
     JFrame signup;
     JFrame login;
+    JFrame forgetPassword;
     ArrayList<String> list;
     boolean e_f, p_f, u_f;
     public GUI(){
@@ -320,14 +321,19 @@ public class GUI implements signupPanel, loginPanel {
         // buttons
         JButton loginButton = new JButton("Login");
         JButton backButton  = new JButton("Back");
+        JButton forget = new JButton("Forget");
         // buttons position
         buttons.setLayout(null);
         buttons.add(backButton);
+        buttons.add(forget);
         buttons.add(loginButton);
+        loginButton.setEnabled(false);
         loginButton.setBounds(75,130,100, 40);
+        forget.setBounds(200,130, 100,40);
         backButton.setBounds(325, 130, 100, 40);
         // buttons visibility
         loginButton.setVisible(true);
+        forget.setVisible(true);
         backButton.setVisible(true);
         // add buttons actions
         backButton.addActionListener(new ActionListener() {
