@@ -20,6 +20,7 @@ public class UserStore {
         }
     }
 
+
     // Method to retrieve user data from the file
     public static List<User> getUsers() {
         List<User> users = new ArrayList<>();

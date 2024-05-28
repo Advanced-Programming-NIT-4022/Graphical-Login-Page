@@ -8,6 +8,7 @@ public class User {
     private String Email;
     private String Password;
 
+
     public User(String UserName , String Password , String Email) {
         this.UserName = UserName;
         this.Email = Email;
