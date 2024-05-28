@@ -1,3 +1,5 @@
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -36,5 +38,27 @@ public class PasswordUtils {
         else if (hasLowercase && hasUppercase)
             return 2;
         return 1;
+    }
+
+    public static String hashPassword(String password) {
+
+        // creating message digest
+        MessageDigest messageDigest = null;
+        try {
+            messageDigest = MessageDigest.getInstance("SHA-256");
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
+        messageDigest.update(password.getBytes());
+
+        // convert byte array in to hex string
+        byte[] digest = messageDigest.digest();
+
+        StringBuffer hexString = new StringBuffer();
+
+        for (byte b : digest)
+            hexString.append(Integer.toHexString(0xFF & b));
+
+        return hexString.toString();
     }
 }
