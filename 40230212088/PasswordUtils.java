@@ -28,7 +28,7 @@ class PasswordUtil {
     private static final String PASSWORD_PATTERN5 =
             "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@\\-_\\.]).{8,}$";
     private static final String PASSWORD_PATTERN4 =
-            "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[@\\-_.]+$";
+            "^(?=.*\\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[_\\-@])[A-Za-z\\d_\\-@]{4,7}$";
     private static final String PASSWORD_PATTERN3 =
             "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]+$";
 
