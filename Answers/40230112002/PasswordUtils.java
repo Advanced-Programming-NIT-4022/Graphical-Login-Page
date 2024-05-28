@@ -6,6 +6,7 @@ public class PasswordUtils {
 
     public static boolean isStrongPassword(String password) {
         // Check if password meets the specified criteria
+
         boolean containsLower = false;
         boolean containsUpper = false;
         boolean containsDigit = false;

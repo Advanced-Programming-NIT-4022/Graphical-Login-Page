@@ -31,6 +31,7 @@ public class LoginGUI {
         panel.add(loginButton);
         panel.add(registerButton);
 
+
         frame.add(panel);
 
         // Configure frame settings

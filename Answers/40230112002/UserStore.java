@@ -11,6 +11,7 @@ public class UserStore {
     // Method to save user data to the file
 
     // Method to retrieve user data from the file
+
     public static void saveUser(User user) {
         try (FileWriter writer = new FileWriter("DataStorage.txt", true)) {
             String userData = user.getUserName() + "," + user.getPassword() + "," + user.getEmail() + "\n";

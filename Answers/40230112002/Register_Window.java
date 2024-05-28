@@ -25,6 +25,7 @@ public class Register_Window {
         EmailLabel = new JLabel("Email : ");
         EmailField = new JTextField(20);
 
+
         panel.add(UsernameLabel);
         panel.add(UserNameField);
         panel.add(PasswordLabel);

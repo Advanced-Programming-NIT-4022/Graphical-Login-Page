@@ -83,10 +83,6 @@ public class User {
         Password = password;
     }
 
-    public static void main(String[] args) {
-        User user = new User("Sadra" , "sdjflsj" , "@Sadraahmadi83");
-        user.Hash_SHA_256(user.getPassword());
-    }
 
 }
 

@@ -8,7 +8,7 @@ public class EmailValidator {
 
     // Method to validate email address
     public static boolean EmailValid(String email) {
-        Pattern EmailRegex = Pattern.compile("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$");
+        Pattern EmailRegex = Pattern.compile("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+.[A-Za-z0-9]");
         //I Chose the simplest Regex for Email Pattern . It could have been Longer and more Precise
         if (email == null || email.isEmpty()) {
             return false;
