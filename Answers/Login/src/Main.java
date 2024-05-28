@@ -7,7 +7,7 @@ import java.security.Signature;
 
 public class Main {
     public static void main(String[] args) {
-        FileWorking.copyFileOnNormalUser();
+        FileWorking.copyFileOnUser();
         JFrame frame1 = new JFrame("project");
         frame1.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         JLabel label1 = new JLabel("insert your gmail");
@@ -44,7 +44,7 @@ public class Main {
                         public void actionPerformed(ActionEvent e) {
                             resframe.setVisible(false);
                             FileWorking.copyUserOnFile();
-                            resframe.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+                            System.exit(0);
                         }
                     });
                     resframe.setLayout(null);
@@ -64,7 +64,7 @@ public class Main {
                         public void actionPerformed(ActionEvent e) {
                             resframe.setVisible(false);
                             FileWorking.copyUserOnFile();
-                            resframe.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+                            System.exit(0);
                         }
                     });
                     resframe.setLayout(null);
@@ -96,7 +96,7 @@ public class Main {
                                 public void actionPerformed(ActionEvent e) {
                                     resframe.setVisible(false);
                                     FileWorking.copyUserOnFile();
-                                    resframe.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+                                    System.exit(0);
                                 }
                             });
                     }
@@ -114,7 +114,7 @@ public class Main {
                             public void actionPerformed(ActionEvent e) {
                                 resframe.setVisible(false);
                                 FileWorking.copyUserOnFile();
-                                resframe.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+                                System.exit(0);
                             }
                         });
                     }
