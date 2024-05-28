@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class RegisterGUI {
     User user;
@@ -45,15 +47,103 @@ public class RegisterGUI {
         JButton registerationButton = new JButton("Register");
         registerationButton.setBounds(10, 210, 90, 25);
         panel.add(registerationButton);
-        registerationButton.addActionListener(e -> {
-            frame.dispose();
-            String usernameIn = usernameText.getText();
-            String passwordIn = new String(passwordField.getPassword());
-            String emailIn = emailText.getText();
-            user.setUsernameIn(usernameIn);
-            passwordUtils.setPasswordIn(passwordIn);
-            emailValidator.setEmailIn(emailIn);
-
+        JLabel labelPass = new JLabel();
+        JFrame error = new JFrame("idk");
+        JLabel labelPass2 = new JLabel("the password must be atleast 8 characters long.");
+        JLabel labelPass3= new JLabel("the password must contain uppercase ,lowercase ,number and special character.");
+        JButton errorButton = new JButton("Ok");
+        registerationButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                EmailValidator check1 = new EmailValidator();
+                String mail = new String(emailText.getText());
+                if(check1.validate(mail)==1)
+                {
+                    String pass = new String(passwordField.getPassword());
+                    PasswordUtils check2 = new PasswordUtils();
+                    int t = check2.checkpassword(pass);
+                    switch (t)
+                    {
+                        case 2:
+                        {
+                            labelPass.setText("low.");
+                            labelPass.setForeground(Color.RED);
+                            labelPass.setBounds(5, 10, 30, 30);
+                            error.add( labelPass);
+                            error.add(labelPass2);
+                            error.add(labelPass3);
+                            error.setVisible(true);
+                            errorButton.addActionListener(new ActionListener() {
+                                @Override
+                                public void actionPerformed(ActionEvent e)
+                                {
+                                    error.dispose();
+                                }
+                            });
+                            break;
+                        }
+                        case 1:
+                        {
+                            labelPass.setText("very low.");
+                            labelPass.setForeground(Color.RED);
+                            labelPass.setBounds(5, 10, 50, 30);
+                            error.add(labelPass);
+                            error.add(labelPass2);
+                            error.add(labelPass3);
+                            error.setVisible(true);
+                            errorButton.addActionListener(new ActionListener() {
+                                @Override
+                                public void actionPerformed(ActionEvent e)
+                                {
+                                    error.dispose();
+                                }
+                            });
+                            break;
+                        }
+                        default:
+                        {
+                            User user = new User(mail, usernameText.getText(), pass);
+                            UserStore userstore = new UserStore();
+                            userstore.saveData(user);
+                            JFrame success = new JFrame("Notice");
+                            JLabel huh = new JLabel("successfully Registered");
+                            JButton hmm = new JButton("YAYY");
+                            huh.setBounds(5, 30, 300, 30);
+                            hmm.setBounds(200, 120, 70, 25);
+                            success.add(huh);
+                            success.add(hmm);
+                            success.setSize(475, 200);
+                            success.setLayout(null);
+                            success.setResizable(false);
+                            success.setVisible(true);
+                            hmm.addActionListener(new ActionListener() {
+                                @Override
+                                public void actionPerformed(ActionEvent e)
+                                {
+                                    success.dispose();
+                                }
+                            });
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    labelPass.setText("email is not valid.");
+                    labelPass.setForeground(Color.RED);
+                    labelPass.setBounds(5, 10, 100, 30);
+                    error.add(labelPass);
+                    error.setVisible(true);
+                    errorButton.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e)
+                        {
+                            error.dispose();
+                        }
+                    });
+                }
+            }
         });
 
         frame.add(panel);

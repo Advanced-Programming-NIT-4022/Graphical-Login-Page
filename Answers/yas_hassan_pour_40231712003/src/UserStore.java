@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 public class UserStore {
     File dataFile = new File("UsersData.txt");
-    public void saveData (User user, PasswordUtils passwordUtils, EmailValidator email)
+    public void saveData (User user)
     {
         try{
             if(!dataFile.exists())
