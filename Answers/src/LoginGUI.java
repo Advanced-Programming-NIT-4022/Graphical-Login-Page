@@ -1,12 +1,14 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Arrays;
 
 public class LoginGUI extends JFrame {
     // JPanels
     private final JPanel loginPanel;
     private final JPanel registrationPanel;
+
+    // JProgressBar
+    private final JProgressBar jProgressBar;
 
     // register panel
     private final JButton registerButton;
@@ -41,7 +43,7 @@ public class LoginGUI extends JFrame {
         // name label
         gbc.gridx = 0; // x-coordinate for name label
         gbc.gridy = 0; // y-coordinate for name label
-        registrationPanel.add(new JLabel("Name: "), gbc);
+        registrationPanel.add(new JLabel("Username: "), gbc);
 
         // name text box
         gbc.gridx = 1;
@@ -61,8 +63,8 @@ public class LoginGUI extends JFrame {
         // show password button
         gbc.gridx = 2;
         registerShowPassword = new JLabel(showIcon);
-        registrationPanel.add(registerShowPassword, gbc);
         registerShowPassword.setVisible(false);
+        registrationPanel.add(registerShowPassword, gbc);
 
         // email label
         gbc.gridx = 0;
@@ -78,6 +80,7 @@ public class LoginGUI extends JFrame {
         gbc.gridx = 1;
         gbc.gridy = 3;
         registerButton = new JButton("Register");
+        registerButton.setEnabled(false);
         registrationPanel.add(registerButton, gbc);
 
         add(BorderLayout.WEST, registrationPanel);
@@ -88,7 +91,7 @@ public class LoginGUI extends JFrame {
         // name label
         gbc.gridx = 0;
         gbc.gridy = 0;
-        loginPanel.add(new JLabel("Name: "), gbc);
+        loginPanel.add(new JLabel("Username: "), gbc);
 
         // name text box
         gbc.gridx = 1;
@@ -108,25 +111,26 @@ public class LoginGUI extends JFrame {
         // show password button
         gbc.gridx = 2;
         loginShowPassword = new JLabel(showIcon);
+        loginShowPassword.setVisible(false);
         loginPanel.add(loginShowPassword, gbc);
 
         // login button
         gbc.gridx = 1;
         gbc.gridy = 2;
         loginButton = new JButton("Login");
+        loginButton.setEnabled(false);
         loginPanel.add(loginButton, gbc);
 
         add(BorderLayout.CENTER, loginPanel);
 
         // add JProgressBar
-        JProgressBar jProgressBar = new JProgressBar();
+        jProgressBar = new JProgressBar();
         jProgressBar.setValue(0);
         jProgressBar.setMinimum(0);
         jProgressBar.setMaximum(5);
         jProgressBar.setString("Password Strength 0%");
         jProgressBar.setStringPainted(true);
         add(jProgressBar, BorderLayout.SOUTH);
-        jProgressBar.setVisible(false);
 
         // add event-listeners
 
@@ -137,23 +141,93 @@ public class LoginGUI extends JFrame {
         // add mouse listener for loginShowPassword
         loginShowPassword.addMouseListener(new handleMouseListener(loginShowPassword));
 
-        // add action listener for register button
         registerButton.addActionListener(
                 new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
+                        registerButtonPress();
                     }
                 }
         );
 
-        // add key listener for JPasswordField
+        registerButton.addKeyListener(
+                new KeyAdapter() {
+                    @Override
+                    public void keyPressed(KeyEvent e) {
+                        super.keyPressed(e);
+                        if (e.getKeyCode() == KeyEvent.VK_ENTER)
+                            registerButtonPress();
+                    }
+                }
+        );
+
+        loginButton.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        loginButtonPress();
+                    }
+                }
+        );
+
+        loginButton.addKeyListener(
+                new KeyAdapter() {
+                    @Override
+                    public void keyPressed(KeyEvent e) {
+                        super.keyPressed(e);
+                        if (e.getKeyCode() == KeyEvent.VK_ENTER)
+                            loginButtonPress();
+                    }
+                }
+        );
+
+        registerNameField.addKeyListener(
+                new KeyAdapter() {
+                    @Override
+                    public void keyTyped(KeyEvent e) {
+                        super.keyTyped(e);
+                        if (registerPasswordField.getPassword().length > 0 &&
+                                !emailField.getText().isEmpty())
+                            registerButton.setEnabled(true);
+                    }
+
+                    @Override
+                    public void keyReleased(KeyEvent e) {
+                        super.keyReleased(e);
+                        if (registerNameField.getText().isEmpty())
+                            registerButton.setEnabled(false);
+                    }
+                }
+        );
+
+        loginNameField.addKeyListener(
+                new KeyAdapter() {
+                    @Override
+                    public void keyTyped(KeyEvent e) {
+                        super.keyTyped(e);
+                        if (loginPasswordField.getPassword().length > 0)
+                            loginButton.setEnabled(true);
+                    }
+
+                    @Override
+                    public void keyReleased(KeyEvent e) {
+                        super.keyReleased(e);
+                        if (loginNameField.getText().isEmpty())
+                            loginButton.setEnabled(false);
+                    }
+                }
+        );
+
         registerPasswordField.addKeyListener(
                 new KeyAdapter() {
                     @Override
                     public void keyTyped(KeyEvent e) {
                         super.keyTyped(e);
-
                         registerShowPassword.setVisible(true);
+
+                        if (!registerNameField.getText().isEmpty() &&
+                                !emailField.getText().isEmpty())
+                            registerButton.setEnabled(true);
                     }
 
                     @Override
@@ -166,23 +240,175 @@ public class LoginGUI extends JFrame {
                         jProgressBar.setValue(strength);
                         jProgressBar.setString("PasswordStrength" + strength * 20 + "%");
 
-                        if (strength == 0)
+                        if (strength == 0) {
                             registerShowPassword.setVisible(false);
+                            registerButton.setEnabled(false);
+                        }
                     }
                 }
         );
 
-        // add focus listener for register password field
-        registerPasswordField.addFocusListener(
-                new FocusAdapter() {
+        loginPasswordField.addKeyListener(
+                new KeyAdapter() {
                     @Override
-                    public void focusGained(FocusEvent e) {
-                        super.focusGained(e);
+                    public void keyTyped(KeyEvent e) {
+                        super.keyTyped(e);
 
-                        jProgressBar.setVisible(true);
+                        loginShowPassword.setVisible(true);
+                        if (!loginNameField.getText().isEmpty())
+                            loginButton.setEnabled(true);
+                    }
+
+                    @Override
+                    public void keyReleased(KeyEvent e) {
+                        super.keyReleased(e);
+                        if (loginPasswordField.getPassword().length == 0) {
+                            loginShowPassword.setVisible(false);
+                            loginButton.setEnabled(false);
+                        }
                     }
                 }
         );
+
+        emailField.addKeyListener(
+                new KeyAdapter() {
+                    @Override
+                    public void keyTyped(KeyEvent e) {
+                        super.keyTyped(e);
+                        if (!registerNameField.getText().isEmpty() &&
+                                registerPasswordField.getPassword().length > 0)
+                            registerButton.setEnabled(true);
+                    }
+
+                    @Override
+                    public void keyReleased(KeyEvent e) {
+                        super.keyReleased(e);
+                        if (emailField.getText().isEmpty())
+                            registerButton.setEnabled(false);
+                    }
+                }
+        );
+    }
+
+    private void registerButtonPress() {
+        // validate username
+        String username = registerNameField.getText();
+        if (username.length() < 6) {
+            JOptionPane.showMessageDialog(LoginGUI.this,
+                    "Username must be at least 6 characters.",
+                    "ERROR", JOptionPane.ERROR_MESSAGE);
+            registerNameField.requestFocus();
+            return;
+        } else if (username.contains(",")) {
+            JOptionPane.showMessageDialog(LoginGUI.this,
+                    "Username should not have comma.", "ERROR",
+                    JOptionPane.ERROR_MESSAGE);
+            registerNameField.requestFocus();
+            registerNameField.selectAll();
+            return;
+        } else if (!UserStore.isAcceptedUsername(username)) {
+            JOptionPane.showMessageDialog(LoginGUI.this,
+                    "This username already exists!", "ERROR",
+                    JOptionPane.ERROR_MESSAGE);
+            registerNameField.requestFocus();
+            return;
+        }
+
+        // validate password
+        String password = new String(registerPasswordField.getPassword());
+        if (password.length() < 4) {
+            JOptionPane.showMessageDialog(LoginGUI.this,
+                    "Password must be at least 4 characters.",
+                    "ERROR", JOptionPane.ERROR_MESSAGE);
+            registerPasswordField.requestFocus();
+            return;
+        }
+
+        // validate email
+        String email = emailField.getText();
+        if (!EmailValidator.isValidEmailAddress(email)) {
+            JOptionPane.showMessageDialog(LoginGUI.this,
+                    "Invalid email. Try again.", "ERROR",
+                    JOptionPane.ERROR_MESSAGE);
+            emailField.requestFocus();
+            emailField.selectAll();
+            return;
+        } else if (!UserStore.isAcceptedEmail(email)) {
+            JOptionPane.showMessageDialog(LoginGUI.this,
+                    "This email already exist!", "ERROR",
+                    JOptionPane.ERROR_MESSAGE);
+            emailField.requestFocus();
+            emailField.selectAll();
+            return;
+        }
+
+        // validate password strength
+        int strength = PasswordUtils.getPasswordStrength(registerPasswordField.getPassword()) * 25;
+        if (strength < 50) {
+            int response = JOptionPane.showConfirmDialog(this,
+                    "Your password is very weak. Do you want to change it?",
+                    "Password", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+
+            if (response == JOptionPane.YES_OPTION) {
+                registerPasswordField.requestFocus();
+                registerPasswordField.selectAll();
+                return;
+            }
+        }
+
+        // save user
+        UserStore.saveUser(new User(username,
+                PasswordUtils.hashPassword(password), email));
+
+        // show message to user
+        JOptionPane.showMessageDialog(LoginGUI.this,
+                "You registered successfully!", "Register",
+                JOptionPane.INFORMATION_MESSAGE);
+
+        // delete all of fields
+        registerNameField.setText("");
+        registerPasswordField.setText("");
+        emailField.setText("");
+        loginNameField.setText("");
+        loginPasswordField.setText("");
+        registerShowPassword.setVisible(false);
+        jProgressBar.setValue(0);
+        jProgressBar.setString("Password Strength 0%");
+        registerButton.setEnabled(false);
+        registerNameField.requestFocus();
+    }
+
+    private void loginButtonPress() {
+        User user = UserStore.retrieveUser(loginNameField.getText());
+
+        // user not found
+        if (user == null) {
+            JOptionPane.showMessageDialog(this, "User with username " +
+                            loginNameField.getText() + " not found!", "Not Found",
+                    JOptionPane.INFORMATION_MESSAGE);
+            // clear password field
+            loginPasswordField.setText("");
+            loginShowPassword.setVisible(false);
+            // set focus on username field
+            loginNameField.requestFocus();
+            loginButton.setEnabled(false);
+        }
+        // password was wrong
+        else if (!user.validateUser(new String(loginPasswordField.getPassword()))) {
+            JOptionPane.showMessageDialog(this,
+                    "Invalid password. Try again.", "Invalid Password",
+                    JOptionPane.ERROR_MESSAGE);
+            // clear password field and set focus on it
+            loginPasswordField.setText("");
+            loginShowPassword.setVisible(false);
+            loginPasswordField.requestFocus();
+            loginButton.setEnabled(false);
+        } else {
+            JOptionPane.showMessageDialog(this,
+                    "You logged in successfully\nwith this email: " + user.email(),
+                    "Login", JOptionPane.INFORMATION_MESSAGE);
+            System.exit(0);
+        }
     }
 
     private class handleMouseListener extends MouseAdapter {
@@ -191,7 +417,6 @@ public class LoginGUI extends JFrame {
 
         handleMouseListener(JLabel source) {
             this.source = source;
-
             passField = (source == loginShowPassword) ? loginPasswordField :
                     registerPasswordField;
         }
