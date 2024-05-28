@@ -9,18 +9,18 @@ public class StartUp extends JFrame {
 
 
 
-    JFrame registerWindow;
-
    public class registerClicked implements ActionListener{
        @Override
        public void actionPerformed(ActionEvent e) {
-           new Registeration();
+           new Registration();
+           setVisible(false);
        }
    }
     public class logInClicked implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e) {
-            new LogIn();
+           // new LogIn();
+            setVisible(false);
         }
     }
     StartUp(){
