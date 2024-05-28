@@ -209,7 +209,7 @@ public class Register {
                 if (e.getSource() == submit && usernameColor == greenie && emailColor == greenie && passColor == greenie) {
                     submitValidation.setText("hooray");
                     submitValidation.setForeground(pinkie);
-                    
+
                 } else {
                     submitValidation.setText("Wrong entry.");
                     submitValidation.setForeground(redie);
