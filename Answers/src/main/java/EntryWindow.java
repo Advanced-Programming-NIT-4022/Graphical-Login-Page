@@ -53,5 +53,6 @@ public class EntryWindow {
         frame.getContentPane().add(backgroundPanel);
 
         frame.setVisible(true);
+
     }
 }
