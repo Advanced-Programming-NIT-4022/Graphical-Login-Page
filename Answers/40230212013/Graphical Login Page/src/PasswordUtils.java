@@ -5,7 +5,7 @@ public class PasswordUtils {
   private static final Pattern Lowercase = Pattern.compile("[a-z]");
   private static final Pattern Uppercase = Pattern.compile("[A-Z]");
   private static final Pattern Digit = Pattern.compile("\\d");
-  public static boolean isStrong(String password)
+  public static int isStrong(String password)
   {
     int strength = 0;
     if(password.length()<= 8)
@@ -28,7 +28,7 @@ public class PasswordUtils {
     {
       strength++;
     }
-    if(specialChar)
+    if(special)
   {
     strength++;
   }

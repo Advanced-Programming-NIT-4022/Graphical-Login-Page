@@ -8,7 +8,7 @@ public class UserStore {
   {
     loadUsers();
   }
-  public boolean register(User user)
+  public static boolean register(User user)
   {
     if(users.containsKey(user.getUsername()))
     {
@@ -18,7 +18,7 @@ public class UserStore {
     saveUsers();
     return true;
   }
-  public boolean login(String username, String password)
+  public static boolean login(String username, String password)
   {
     User user = users.get(username);
     if (user == null)
@@ -28,7 +28,7 @@ public class UserStore {
     String hashPassword = User.hashPassword(password);
     return hashPassword.equals(user.getHashPassword());
   }
-  private void loadUers()
+  private void loadUsers()
   {
     try(BufferedReader bufr = new BufferedReader(new FileReader(file)))
     {
@@ -48,7 +48,7 @@ public class UserStore {
       e.printStackTrace();
     }
   }
-  private void saveUsers()
+  private static void saveUsers()
   {
   try(BufferedWriter bufw = new BufferedWriter(new FileWriter(file)))
   {
