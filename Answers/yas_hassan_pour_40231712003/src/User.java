@@ -20,6 +20,15 @@ public class User {
 
     private String passwordIn;
     private String usernameIn;
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     private String email;
     public User(){};
 public User(String username, String password)
