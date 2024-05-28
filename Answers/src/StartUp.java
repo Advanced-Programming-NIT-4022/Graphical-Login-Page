@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 
 public class StartUp extends JFrame {
     private JPasswordField password;
@@ -40,7 +41,17 @@ public class StartUp extends JFrame {
         butt.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+            User user=new User();
+                try {
 
+                   if(user.searchuser(username.getText(),password.getText())){
+                       JOptionPane.showMessageDialog(null, "welcome!");
+                   }else{
+                       JOptionPane.showMessageDialog(null, "not found!");
+                   }
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         });
     }

@@ -10,14 +10,17 @@ public class User {
         Email=email;
         Password=password;
     }
+    public User(){
+
+    }
     public void adduser(String username,String password,String email) throws SQLException {
         Db db=new Db();
-        db.statement.executeUpdate("INSERT INTO loginpage (Name,Email,Password) VALUES ('"+username+"','"+email+"','"+password+"')");
+        db.statement.executeUpdate("INSERT INTO user (Name,Email,Password) VALUES ('"+username+"','"+email+"','"+password+"')");
     }
     public boolean searchuser(String name,String password) throws SQLException {
         Db db=new Db();
 
-        ResultSet result=db.statement.executeQuery("SELECT * FROM loginpage WHERE Name='"+name+"' AND Password='"+password+"'");
+        ResultSet result=db.statement.executeQuery("SELECT * FROM user WHERE Name='"+name+"' AND Password='"+password+"'");
         return result.next();
     }
 }
