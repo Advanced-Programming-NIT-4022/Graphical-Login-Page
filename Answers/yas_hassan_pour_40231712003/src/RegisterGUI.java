@@ -37,9 +37,10 @@ public class RegisterGUI {
         emailText.setBounds(100,80,165,25);
         panel.add(emailText);
         JButton registerationButton = new JButton("Register");
-        registerationButton.setBounds(10, 130, 80, 25);
+        registerationButton.setBounds(10, 130, 90, 25);
         panel.add(registerationButton);
         registerationButton.addActionListener(e -> {
+            frame.dispose();
             String usernameIn = usernameText.getText();
             String passwordIn = new String(passwordField.getPassword());
             String emailIn = emailText.getText();

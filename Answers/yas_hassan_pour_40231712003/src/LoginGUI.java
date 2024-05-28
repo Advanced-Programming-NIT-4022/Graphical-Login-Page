@@ -3,10 +3,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 
-public class LoginGUI implements ActionListener {
+public class LoginGUI {
     User user;
     PasswordUtils passwordUtils;
-    RegisterGUI registerGUI;
+    RegisterGUI registerGUI = new RegisterGUI();
 
     public void login() {
         JFrame frame = new JFrame("Login");
@@ -38,26 +38,26 @@ public class LoginGUI implements ActionListener {
         panel.add(loginButton);
 
         loginButton.addActionListener(e -> {
-           String usernameIn = userText.getText();
-           String passwordIn = new String(passwordText.getPassword());
+            String usernameIn = userText.getText();
+            String passwordIn = new String(passwordText.getPassword());
             user.setUsernameIn(usernameIn);
             passwordUtils.setPasswordIn(passwordIn);
+            registerGUI.register();
         });
         JButton signUpButton = new JButton("No account?");
         signUpButton.setBounds(200, 130, 140, 25);
         panel.add(signUpButton);
-        signUpButton.addActionListener(new LoginGUI());
-
-
+        signUpButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                frame.dispose();
+                registerGUI.register();
+            }
+        });
         frame.add(panel);
         frame.setVisible(true);
     }
-
-
-
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        registerGUI.register();
-    }
 }
+
+
+
