@@ -3,7 +3,6 @@ package org.example;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Registration extends JFrame {
@@ -13,9 +12,7 @@ public class Registration extends JFrame {
      Pattern lowerCaseFinder = Pattern.compile("[a-z]");
      Pattern digitFinder = Pattern.compile("\\d");
      Pattern specialCharacterFinder = Pattern.compile("[!@#$%^&*()_+\\-=.`~><?;:]");
-
-
-    Matcher usernameMatcher, passwordMatcher, emailMatcher;
+     Pattern whiteSpaceFinder = Pattern.compile("\\s");
 
     JTextField usernameBox = new JTextField();
 
@@ -23,9 +20,17 @@ public class Registration extends JFrame {
 
     JTextField emailBox = new JTextField();
 
-    //boolean isStrong = false;
 
+    public boolean emailValidator(String email){
+        boolean isValid =  emailPattern.matcher(email).find();
+        if(isValid){
+            return true;
+        }
+        else{
+            return false;
+        }
 
+    }
     public String passwordValidator(String password) {
         boolean upperCaseFound = upperCaseFinder.matcher(password).find();
         boolean lowerCaseFound = lowerCaseFinder.matcher(password).find();
@@ -60,10 +65,11 @@ public class Registration extends JFrame {
         if (strengthLevel == 4){
             return "Strong";
         }
-        if (strengthLevel == 5){
-            return "Very Strong";
+        else{
+            return "Very strong";
         }
-        return null;
+
+
     }
 
     JButton registerButton = new JButton("Register");
@@ -73,6 +79,9 @@ public class Registration extends JFrame {
     Registration() {
 
         setSize(600, 600);
+
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+
         JLabel usernameLabel = new JLabel("Username:");
         JLabel passwordLabel = new JLabel("Password:");
         JLabel emailLabel = new JLabel("Email:");
@@ -96,6 +105,9 @@ public class Registration extends JFrame {
                 if(username.isEmpty()){
                     JOptionPane.showMessageDialog(null,"No field should remain empty","Error",JOptionPane.ERROR_MESSAGE);
                 }
+                else if(whiteSpaceFinder.matcher(username).find()){
+                    JOptionPane.showMessageDialog(null,"You can't use whitespace","Error",JOptionPane.ERROR_MESSAGE);
+                }
                 else {
                     passwordBox.requestFocus();
                 }
@@ -111,6 +123,9 @@ public class Registration extends JFrame {
                 String password = passwordBox.getText();
                 if(password.isEmpty()){
                     JOptionPane.showMessageDialog(null,"No field should remain empty","Error",JOptionPane.ERROR_MESSAGE);
+                }
+                else if(whiteSpaceFinder.matcher(password).find()){
+                    JOptionPane.showMessageDialog(null,"You can't use whitespace","Error",JOptionPane.ERROR_MESSAGE);
                 }
                 else {
                     passwordStrengthMessage.setText(passwordValidator(password));
@@ -129,6 +144,9 @@ public class Registration extends JFrame {
                 if(email.isEmpty()){
                     JOptionPane.showMessageDialog(null,"No field should remain empty","Error",JOptionPane.ERROR_MESSAGE);
                 }
+                else if(whiteSpaceFinder.matcher(email).find()){
+                    JOptionPane.showMessageDialog(null,"You can't use whitespace","Error",JOptionPane.ERROR_MESSAGE);
+                }
             }
         });
         emailLabel.setBounds(25, 220, 200, 30);
@@ -140,11 +158,17 @@ public class Registration extends JFrame {
                 String username = usernameBox.getText();
                 String password = passwordBox.getText();
                 String email = emailBox.getText();
+                if(username.isEmpty()||password.isEmpty()||email.isEmpty()){
+                    JOptionPane.showMessageDialog(null,"No field should remain empty","Error",JOptionPane.ERROR_MESSAGE);
+                }
+                else if(!emailValidator(email)){
+                    JOptionPane.showMessageDialog(null,"Email invalid","Error",JOptionPane.ERROR_MESSAGE);
+                }
+                else {
 
 
-
-                //user registration
-
+                    //user registration
+                }
 
 
             }
@@ -154,7 +178,8 @@ public class Registration extends JFrame {
         logInButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                setVisible(false);
+                new LogIn();
             }
         });
 

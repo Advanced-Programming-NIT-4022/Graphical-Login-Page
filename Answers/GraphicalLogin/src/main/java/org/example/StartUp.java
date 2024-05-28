@@ -12,18 +12,21 @@ public class StartUp extends JFrame {
    public class registerClicked implements ActionListener{
        @Override
        public void actionPerformed(ActionEvent e) {
-           new Registration();
            setVisible(false);
+           new Registration();
        }
    }
     public class logInClicked implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e) {
-           // new LogIn();
+            new LogIn();
             setVisible(false);
         }
     }
     StartUp(){
+
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+
         setTitle("Start up menu");
         JLabel Instructions = new JLabel("Hi and welcome! Register if you are new and log in if you are not!");
         JButton registerButton = new JButton("Register");
