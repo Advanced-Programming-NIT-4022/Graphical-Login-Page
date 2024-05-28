@@ -1,4 +1,6 @@
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.io.IOException;
 import java.util.Arrays;
@@ -59,13 +61,21 @@ class MainPanel extends JPanel {
     }
 }
 
+
 class LoginPanel extends JPanel {
+    void usernameFieldChange(){
+        isUsernameField=User.verifyUserName(usernameField.getText());
+    }
+    /*void passwordFieldChange(){
+        isPasswordField=(Password.(passwordField.getText())>3);
+    }*/
     FlowLayout layout = new FlowLayout();
     JButton loginButton = new JButton("Login");
     JButton mainMenuButton = new JButton("Back");
     JTextField usernameField = new JTextField(20);
-    JTextField emailField = new JTextField(22);
+    boolean isUsernameField=false;
     JPasswordField passwordField = new JPasswordField(20);
+    boolean isPasswordField=false;
     JPanel panel1 = new JPanel();
     JPanel panel2 = new JPanel();
     JPanel panel3 = new JPanel();
@@ -86,6 +96,17 @@ class LoginPanel extends JPanel {
         panel4.add(mainMenuButton);
         panel4.setLayout(new FlowLayout());
         //setMaximumSize(new Dimension(1000, 1006));
+        usernameField.getDocument().addDocumentListener(new DocumentListener() {
+            public void changedUpdate(DocumentEvent e) {
+                usernameFieldChange();
+            }
+            public void removeUpdate(DocumentEvent e) {
+                usernameFieldChange();
+            }
+            public void insertUpdate(DocumentEvent e) {
+                usernameFieldChange();
+            }});
+
         setLayout(panelsLayout);
         add(panel1);
         add(panel3);
