@@ -14,6 +14,7 @@ public class Register_Window {
     JTextField UserNameField;
     JTextField EmailField;
 
+
     Register_Window(){
         frame = new JFrame("Login page");
         panel = new JPanel();

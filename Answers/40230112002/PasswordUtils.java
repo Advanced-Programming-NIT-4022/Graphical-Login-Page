@@ -25,6 +25,7 @@ public class PasswordUtils {
             }
         }
 
+
         return containsLower && containsUpper && containsDigit && containsSpecial && isLongEnough;
     }
 

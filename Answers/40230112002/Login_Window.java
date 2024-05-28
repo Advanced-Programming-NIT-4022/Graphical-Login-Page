@@ -8,6 +8,7 @@ public class Login_Window {
     JFrame frame;
     JPanel panel;
     JButton LoginButton;
+
     JLabel UsernameLabel;
     JLabel PasswordLabel;
 

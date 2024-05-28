@@ -83,7 +83,6 @@ public class LoginGUI {
         // Add action listener to register button
 
     }
-
     // Method to authenticate user credentials
 
     public static void main(String[] args) {

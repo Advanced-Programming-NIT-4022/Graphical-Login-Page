@@ -3,7 +3,6 @@ import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
 public class EmailValidator {
-
     //Contains method for validating email addresses using regex
 
     // Method to validate email address

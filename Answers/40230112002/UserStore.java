@@ -7,7 +7,6 @@ import java.util.List;
 
 public class UserStore {
     //Handles storing and retrieving user data from files
-
     // Method to save user data to the file
 
     // Method to retrieve user data from the file
