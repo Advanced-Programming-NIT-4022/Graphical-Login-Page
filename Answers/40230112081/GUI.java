@@ -149,32 +149,7 @@ public class GUI implements signupPanel, loginPanel {
         textFieldsPanel.add(p_label);
         textFieldsPanel.add(p_level);
         // add actions to text fields
-        password.getDocument().addDocumentListener(new DocumentListener() {
-            @Override
-            public void insertUpdate(DocumentEvent e) {
-                if(vld.passwordValidator(password.getText()))
-                    signUp.setEnabled(true);
-                else
-                    signUp.setEnabled(true);
-            }
 
-            @Override
-            public void removeUpdate(DocumentEvent e) {
-                if(vld.passwordValidator(password.getText()))
-                    signUp.setEnabled(true);
-                else
-                    signUp.setEnabled(true);
-            }
-
-            @Override
-            public void changedUpdate(DocumentEvent e) {
-                if(vld.passwordValidator(password.getText()))
-                    signUp.setEnabled(true);
-                else
-                    signUp.setEnabled(true);
-            }
-
-        });
         email.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
@@ -204,35 +179,35 @@ public class GUI implements signupPanel, loginPanel {
         password.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
-                if (vld.passwordValidator(password.getText())){
+                if (vld.passwordValidator(password.getText()) && vld.emailValidator(email.getText())){
                     signUp.setEnabled(true);
                     p_level.setText(vld.passwordStrengthLevel(password.getText()));
                     set_color(password.getText());
                 }
                 else {
                     signUp.setEnabled(false);
-                    p_level.setText("Wrong format.");
+                    p_level.setText("Wrong email.");
                     set_color(password.getText());
                 }
             }
 
             @Override
             public void removeUpdate(DocumentEvent e) {
-                if(vld.passwordValidator(password.getText())){
+                if(vld.passwordValidator(password.getText()) && vld.emailValidator(email.getText())){
                     signUp.setEnabled(true);
                     p_level.setText(vld.passwordStrengthLevel(password.getText()));
                     set_color(password.getText());
                 }
                 else {
                     signUp.setEnabled(false);
-                    p_level.setText("Wrong format.");
+                    p_level.setText("Wrong email.");
                     set_color(password.getText());
                 }
             }
 
             @Override
             public void changedUpdate(DocumentEvent e) {
-                if(vld.passwordValidator(password.getText())) {
+                if(vld.passwordValidator(password.getText()) && vld.emailValidator(email.getText())) {
                     signUp.setEnabled(true);
                     p_level.setText(vld.passwordStrengthLevel(password.getText()));
                     set_color(password.getText());
@@ -372,20 +347,17 @@ public class GUI implements signupPanel, loginPanel {
         username = new JTextField(100);
         pass = new JPasswordField(100);
         e_label = new JLabel("Email");
-        u_label = new JLabel("Username");
+
         p_label = new JLabel("Password");
         email.setBounds(150,50,190,30);
-        username.setBounds(150, 100, 190, 30);
-        pass.setBounds(150, 150, 190, 30);
+        pass.setBounds(150, 100, 190, 30);
         e_label.setBounds(70,50,50,30);
-        u_label.setBounds(70, 100, 100,30);
-        p_label.setBounds(70, 150, 100,30);
+        p_label.setBounds(70, 100, 100,30);
         email.setVisible(true);
         pass.setVisible(true);
         username.setVisible(true);
         p_label.setVisible(true);
         e_label.setVisible(true);
-        u_label.setVisible(true);
         // add validators to fields
         email.getDocument().addDocumentListener(new DocumentListener() {
             @Override
@@ -413,12 +385,61 @@ public class GUI implements signupPanel, loginPanel {
             }
         });
 
+        username.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                if(vld.emailValidator(email.getText()) && db.searchInTable("username", username.getText()))
+                    loginButton.setEnabled(true);
+                else
+                    loginButton.setEnabled(false);
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                if(vld.emailValidator(email.getText()) && db.searchInTable("username", username.getText()))
+                    loginButton.setEnabled(true);
+                else
+                    loginButton.setEnabled(false);
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                if(vld.emailValidator(email.getText()) && db.searchInTable("username", username.getText()))
+                    loginButton.setEnabled(true);
+                else
+                    loginButton.setEnabled(false);
+            }
+        });
+
+        // login button action
+        loginButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(db.searchInTable("email", email.getText().toLowerCase())){
+                    if(vld.hashingPassword(new String(pass.getPassword())).equals(db.findPassword(email.getText()))){
+                        JOptionPane.showMessageDialog(login, "Welcome to your panel");
+                        login.setVisible(false);
+                        menu.setVisible(true);
+                    }
+                    else{
+                        JOptionPane.showMessageDialog(login, "This password don't match");
+                        pass.setText("");
+                        email.setText("");
+                    }
+
+                }else{
+                    JOptionPane.showMessageDialog(login, "This email not found in repository.");
+                    pass.setText("");
+                    email.setText("");
+                }
+            }
+        });
+
         // add components to panel
         fields.add(email);
         fields.add(username);
         fields.add(pass);
         fields.add(e_label);
-        fields.add(u_label);
         fields.add(p_label);
         // adding panel
         fields.setVisible(true);
