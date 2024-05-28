@@ -35,4 +35,21 @@ public class PasswordUtils {
             strengthPoints++;
         return strengthPoints;
     }
+
+    public static String printPassworStrength(int pass) {
+        switch (pass) {
+            case 1:
+                return("very weak(illegal)");
+            case 2:
+                return("weak(illegal)");
+            case 3:
+                return("medium(illegal)");
+            case 4:
+                return("Strong");
+            case 5:
+                return("Very Strong");
+            default:
+            return null;
+        }
+    }
 }

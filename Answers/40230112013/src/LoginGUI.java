@@ -121,24 +121,52 @@ public class LoginGUI {
         passwordField.setEchoChar('*');
         JLabel passwordStrengthLabel = new JLabel("Password strength: 0");
         JLabel emailValidationLabel = new JLabel("");
+        JLabel userUnique = new JLabel("");
+        
         JButton submitButton = new JButton("Submit");
+        userText.addKeyListener(new KeyAdapter() {
+            boolean unique = false;
+            public void keyReleased(KeyEvent e) {
+            try {
+                unique = UserStore.isUsernameUnique(userText.getText());
+            } catch (IOException e1) {
+                unique = false;
+                e1.printStackTrace();
+            }
+            userUnique.setText(unique? "is valid": "Username is duplicate, please enter another value");
+            submitButton.setEnabled(unique && EmailValidator.validateEmail(emailText.getText())
+            && PasswordUtils.calculatePasswordStrength(new String(passwordField.getPassword())) >= 4);
+            }
+        });
 
         emailText.addKeyListener(new KeyAdapter() {
             public void keyReleased(KeyEvent e) {
                 boolean matches = EmailValidator.validateEmail(emailText.getText());
                 emailValidationLabel.setText(matches ? "Email is valid" : "Email is invalid");
-                submitButton.setEnabled(matches
-                        && PasswordUtils.calculatePasswordStrength(new String(passwordField.getPassword())) >= 4);
+                try {
+                    submitButton.setEnabled(UserStore.isUsernameUnique(userText.getText()) && matches
+                            && PasswordUtils.calculatePasswordStrength(new String(passwordField.getPassword())) >= 4);
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
             }
         });
 
         passwordField.addKeyListener(new KeyAdapter() {
             public void keyReleased(KeyEvent e) {
+                boolean unique=false;
+                try {
+                    unique =UserStore.isUsernameUnique(userText.getText());
+                } catch (IOException e1) {
+                    unique = false;
+                    e1.printStackTrace();
+                }
                 boolean matches = EmailValidator.validateEmail(emailText.getText());
                 int passwordStrength = PasswordUtils
                         .calculatePasswordStrength(new String(passwordField.getPassword()));
-                passwordStrengthLabel.setText("Password strength: " + passwordStrength);
-                submitButton.setEnabled(passwordStrength >= 4 && matches);
+                passwordStrengthLabel.setText("strength:" + PasswordUtils.printPassworStrength(passwordStrength));
+
+                submitButton.setEnabled(unique && passwordStrength >= 4 && matches);
             }
         });
 
@@ -158,9 +186,11 @@ public class LoginGUI {
             }
         });
 
-        registrationDialog.setLayout(new GridLayout(6, 2));
+        registrationDialog.setLayout(new GridLayout(7, 2));
         registrationDialog.add(userLabel);
         registrationDialog.add(userText);
+        registrationDialog.add(userUnique);
+        registrationDialog.add(new JLabel());
         registrationDialog.add(emailLabel);
         registrationDialog.add(emailText);
         registrationDialog.add(emailValidationLabel);

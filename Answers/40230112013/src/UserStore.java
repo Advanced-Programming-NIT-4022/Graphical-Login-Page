@@ -1,6 +1,5 @@
 import java.io.*;
 import java.security.NoSuchAlgorithmException;
-import java.util.*;
 
 public class UserStore {
     public static void addUser(String name, String email, String password) throws IOException {
@@ -12,7 +11,6 @@ public class UserStore {
     }
 
     public static boolean validateUser(String usernameOrEmail, String password) throws IOException, NoSuchAlgorithmException {
-        boolean isAuthenticated = false;
         String hashedInputPassword = PasswordUtils.hashPassword(password);
 
         try {
@@ -24,7 +22,6 @@ public class UserStore {
                 String[] userDetails = line.split(",");
                 if ((userDetails[0].equals(usernameOrEmail) || userDetails[1].equals(usernameOrEmail))
                         && userDetails[2].equals(hashedInputPassword)) {
-                    isAuthenticated = true;
                     return true;
                 }
             }
@@ -33,5 +30,25 @@ public class UserStore {
         } catch (Exception e) {
             return false;
         }
+        
     }
+
+    public static boolean isUsernameUnique(String username) throws IOException {
+        File file = new File("users.txt");
+        if (!file.exists()) {
+            return true; // No users registered yet
+        }
+        BufferedReader reader = new BufferedReader(new FileReader(file));
+        String line;
+        while ((line = reader.readLine()) != null) {
+            String[] userDetails = line.split(",");
+            if (userDetails[0].equals(username)) {
+                reader.close();
+                return false; // Username already exists
+            }
+        }
+        reader.close();
+        return true; // Username is unique
+    }
+
 }
