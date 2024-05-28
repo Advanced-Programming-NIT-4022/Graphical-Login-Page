@@ -1,6 +1,4 @@
 import javax.swing.*;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -8,8 +6,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Formatter;
 import java.util.FormatterClosedException;
-import java.util.Scanner;
 import java.util.NoSuchElementException;
+import java.util.Scanner;
 
 public class UserStore {
     private static final Path PATH = Paths.get(".users.txt");
@@ -39,7 +37,7 @@ public class UserStore {
                     return new User(temp[0], temp[1], temp[2]);
                 }
             }
-        } catch (NoSuchElementException elementException) {
+        } catch (NoSuchElementException | IndexOutOfBoundsException elementException) {
             JOptionPane.showMessageDialog(Main.login,
                     "Application file was destroyed. Terminating...", "ERROR",
                     JOptionPane.ERROR_MESSAGE);
