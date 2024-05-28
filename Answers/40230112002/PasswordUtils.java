@@ -1,3 +1,6 @@
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 public class PasswordUtils {
     //Contains utility methods for password strength evaluation and hashing
 
@@ -29,5 +32,21 @@ public class PasswordUtils {
         String specialCharacters = "@-_.";
 
         return specialCharacters.contains(Character.toString(ch));
+    }
+
+
+    public static String hashPassword(String password) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hashBytes = digest.digest(password.getBytes());
+            StringBuilder builder = new StringBuilder();
+            for (byte b : hashBytes) {
+                builder.append(String.format("%02x", b));
+            }
+            return builder.toString();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

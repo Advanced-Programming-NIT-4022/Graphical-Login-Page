@@ -71,7 +71,7 @@ public class UserStore {
 
     public static boolean authenticate(String username, String password) {
         List<User> users = UserStore.getUsers();
-        String enteredHashedPassword = User.Hash_SHA_256(password); // Hash the entered password
+        String enteredHashedPassword = PasswordUtils.hashPassword(password); // Hash the entered password
         for (User user : users) {
             if (user.getUserName().equals(username) && user.getPassword().equals(enteredHashedPassword)) {
                 return true;

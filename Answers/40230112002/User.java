@@ -8,10 +8,10 @@ public class User {
     private String Email;
     private String Password;
 
-    public User(String UserName , String Email , String Password) {
+    public User(String UserName , String Password , String Email) {
         this.UserName = UserName;
         this.Email = Email;
-        this.Password = Password;
+        this.Password = Hash_SHA_256(Password);
     }
 
     public User(String username, String hashedPassword, String email, boolean hashed) {
@@ -23,8 +23,13 @@ public class User {
         }
         this.Email = email;
     }
+    /*
+    Added another constructor for when we already have the user Stored, and we want to log in
+     so when we use getUsers method and making new user to add to ArrayList ,
+     we wouldn't have to hash the already Hashed Password
+     */
 
-    public static String Hash_SHA_256(String Password) {
+    public String Hash_SHA_256(String Password) {
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
             /*
