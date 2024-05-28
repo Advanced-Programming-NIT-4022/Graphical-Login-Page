@@ -51,8 +51,26 @@ public class EntryWindow {
         backgroundPanel.add(loginButton);
         backgroundPanel.add(registerButton);
         frame.getContentPane().add(backgroundPanel);
-
         frame.setVisible(true);
+        
+        loginButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (e.getSource() == loginButton) {
+                    Login login = new Login();
+                    login.loginPanel();
+                }
+            }
+        });
 
+        registerButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (e.getSource() == registerButton) {
+                    Register register = new Register();
+                    register.registerPanel();
+                }
+            }
+        });
     }
 }
