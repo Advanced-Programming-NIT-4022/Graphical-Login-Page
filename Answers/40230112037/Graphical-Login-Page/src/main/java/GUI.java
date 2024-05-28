@@ -32,6 +32,10 @@ public class GUI extends JFrame {
                 // Todo
             }
         });
+        loginPanel.loginButton.addActionListener(actionEvent -> {
+            User loginuser=userHandler.getUser(loginPanel.usernameField.getText());
+            JOptionPane.showMessageDialog(null,((loginuser!=null)?"login Successful":"login failed"));
+        });
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true);
     }
@@ -66,9 +70,9 @@ class LoginPanel extends JPanel {
     void usernameFieldChange(){
         isUsernameField=User.verifyUserName(usernameField.getText());
     }
-    /*void passwordFieldChange(){
-        isPasswordField=(Password.(passwordField.getText())>3);
-    }*/
+//    void passwordFieldChange(){
+//        isPasswordField=(Password.passwordLevel(passwordField.getPassword())>3);
+//    }
     FlowLayout layout = new FlowLayout();
     JButton loginButton = new JButton("Login");
     JButton mainMenuButton = new JButton("Back");
@@ -92,7 +96,7 @@ class LoginPanel extends JPanel {
         panel3.add(passwordField);
         panel3.setLayout(new FlowLayout());
         panel4.add(loginButton);
-        loginButton.setEnabled(false);
+        //loginButton.setEnabled(false);
         panel4.add(mainMenuButton);
         panel4.setLayout(new FlowLayout());
         //setMaximumSize(new Dimension(1000, 1006));

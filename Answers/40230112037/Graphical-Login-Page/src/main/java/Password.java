@@ -35,6 +35,9 @@ public class Password {
         return hashedPassword.equals(DigestUtils.sha256Hex(password));
     }
     // Todo : password level
+//    static int passwordLevel(String password){
+//        return
+//    }
 
     @Override
     public String toString() {
