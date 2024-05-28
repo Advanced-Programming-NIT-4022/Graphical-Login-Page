@@ -207,9 +207,14 @@ public class Register {
                 Color emailColor = emailValidation.getForeground();
                 Color usernameColor = usernameValidation.getForeground();
                 if (e.getSource() == submit && usernameColor == greenie && emailColor == greenie && passColor == greenie) {
-                    submitValidation.setText("hooray");
+                    submitValidation.setText("registered.");
                     submitValidation.setForeground(pinkie);
-
+                    UserStore userAdding = new UserStore();
+                    try {
+                        userAdding.addMyUser(usernameField.getText(), emailField.getText(), String.valueOf(passwordField.getPassword()));
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
                 } else {
                     submitValidation.setText("Wrong entry.");
                     submitValidation.setForeground(redie);
