@@ -5,10 +5,10 @@ import java.util.regex.Pattern;
 
 public class PasswordUtils {
     public static int Strength(String Password){
-        String regexPasswordlvl1="[a-z0-9A-Z]{2,}";
-        String regexPasswordlvl2="^(?=.*[a-z])(?=.*[A-Z])[a-zA-Z]{4,}$";
-        String regexPasswordlvl3="(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z0-9]{8,}";
-        String regexPasswordlvl4= "/(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@_,.-])[a-zA-Z0-9!@#$%^&-_.]{8,}";
+        String regexPasswordlvl1="[A-Z]+|[a-z]+|[0-9]+";
+        String regexPasswordlvl2="^(?=.*[a-z])(?=.*[A-Z])[A-Za-z]{4,}$";
+        String regexPasswordlvl3="(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[A-Za-z\\d]{8,}";
+        String regexPasswordlvl4= "(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@_,.-])[A-Za-z\\d@$!%*#?&]{8,}";
         if(Pattern.matches(regexPasswordlvl1,Password))
             return 1;
         if(Pattern.matches(regexPasswordlvl2,Password))

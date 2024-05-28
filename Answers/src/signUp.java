@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 public class signUp extends JFrame {
     JTextField username;
     JLabel title,message,passwordlbl,usernamelbl;
+    JTextField password;
     JButton butt;
     public signUp(){
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -12,7 +13,7 @@ public class signUp extends JFrame {
         this.setTitle("GUI");
         this.setLocationRelativeTo(null);
         this.setLayout(null);
-        JTextField password=new JPasswordField();
+
         password=new JPasswordField();
 
 
@@ -48,7 +49,23 @@ public class signUp extends JFrame {
         butt.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                if(!EmailValidator.emailValidation(email.getText())){
+                    JOptionPane.showMessageDialog(null,"enter a valid email");
+                }
+                else{
+                   if(PasswordUtils.Strength(password.getText())==1){
+                       JOptionPane.showMessageDialog(null,"weak");
+                   }
+                    if(PasswordUtils.Strength(password.getText())==2){
+                        JOptionPane.showMessageDialog(null,"not so weak");
+                    }
+                    if(PasswordUtils.Strength(password.getText())==3){
+                        JOptionPane.showMessageDialog(null,"medium");
+                    }
+                    if(PasswordUtils.Strength(password.getText())==4){
+                        JOptionPane.showMessageDialog(null,"strong");
+                    }
+                }
             }
         });
     }
