@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.regex.Matcher;
@@ -24,13 +25,37 @@ class PasswordUtil {
         }
     }
 
-    private static final String PASSWORD_PATTERN =
+    private static final String PASSWORD_PATTERN5 =
             "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@\\-_\\.]).{8,}$";
+    private static final String PASSWORD_PATTERN4 =
+            "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[@\\-_.]+$";
+    private static final String PASSWORD_PATTERN3 =
+            "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]+$";
 
-    public static boolean isValidPassword(String password) {
-        Pattern pattern = Pattern.compile(PASSWORD_PATTERN);
-        Matcher matcher = pattern.matcher(password);
-        return matcher.matches();
+    public static String isValidPassword(String password) {
+        Pattern pattern5 = Pattern.compile(PASSWORD_PATTERN5);
+        Pattern pattern4 = Pattern.compile(PASSWORD_PATTERN4);
+        Pattern pattern3 = Pattern.compile(PASSWORD_PATTERN3);
+
+        Matcher matcher5 = pattern5.matcher(password);
+        Matcher matcher4 = pattern4.matcher(password);
+        Matcher matcher3 = pattern3.matcher(password);
+
+        if (matcher5.matches()) {
+            JOptionPane.showMessageDialog(null, "Your password is on level 5",
+                    "Password", JOptionPane.INFORMATION_MESSAGE);
+            return "true Your password is on level 5";
+        } else if (matcher4.matches()) {
+            JOptionPane.showMessageDialog(null, "Your password is on level 4",
+                    "Password", JOptionPane.INFORMATION_MESSAGE);
+            return "true Your password is on level 4";
+        } else if (matcher3.matches()) {
+            JOptionPane.showMessageDialog(null, "Your password is on level 3",
+                    "Password", JOptionPane.INFORMATION_MESSAGE);
+            return "true Your password is on level 3";
+        }
+
+        return "false";
     }
 }
 
