@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Graphical-Login-Page:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Graphical_Login_Page_jar</output-path>
+    <root id="archive" name="Graphical-Login-Page.jar">
+      <element id="module-output" name="Graphical-Login-Page" />
+    </root>
+  </artifact>
+</component>
