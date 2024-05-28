@@ -1,5 +1,11 @@
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class Register {
@@ -86,4 +92,129 @@ public class Register {
 
         registerFrame.getContentPane().add(backgroundPanel);
         registerFrame.setVisible(true);
-    }
+
+        usernameField.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                checkUsername();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                checkUsername();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                checkUsername();
+            }
+
+            public void checkUsername() {
+                String usernameInput = usernameField.getText();
+                Pattern pr = Pattern.compile("[a-zA-Z0-9_.]+");
+                Matcher mr = pr.matcher(usernameInput);
+                if (mr.matches()) {
+                    usernameValidation.setText("Valid username.");
+                    usernameValidation.setForeground(greenie);
+                } else {
+                    usernameValidation.setText("Invalid username.");
+                    usernameValidation.setForeground(redie);
+                }
+            }
+        });
+        passwordField.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                checkPassword();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                checkPassword();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                checkPassword();
+            }
+
+            private void checkPassword() {
+                String passwordInput = String.valueOf(passwordField.getPassword());
+                Pattern pass1 = Pattern.compile("[A-Z]+|[a-z]+|[0-9]+");
+                Pattern pass2 = Pattern.compile("[a-zA-Z]+");
+                Pattern pass3 = Pattern.compile("[a-zA-Z0-9]+");
+                Pattern pass4 = Pattern.compile("[a-zA-Z0-9!\"#$%&\'()*+,\\-\\./:;<>=?@\\[\\]^_{}|]{1,7}");
+                Pattern pass5 = Pattern.compile("[a-zA-Z0-9!\"#$%&\'()*+,\\-\\./:;<>=?@\\[\\]^_{}|]{8,100}");
+                Matcher mr1 = pass1.matcher(passwordInput);
+                Matcher mr2 = pass2.matcher(passwordInput);
+                Matcher mr3 = pass3.matcher(passwordInput);
+                Matcher mr4 = pass4.matcher(passwordInput);
+                Matcher mr5 = pass5.matcher(passwordInput);
+                if (mr1.matches()) {
+                    passwordValidation.setText("Level 1 password, not a good one :(");
+                    passwordValidation.setForeground(redie);
+                } else if (mr2.matches()) {
+                    passwordValidation.setText("Level 2 password, not a good one :(");
+                    passwordValidation.setForeground(redie);
+                } else if (mr3.matches()) {
+                    passwordValidation.setText("Ready to use but still guessable.");
+                    passwordValidation.setForeground(greenie);
+                } else if (mr4.matches()) {
+                    passwordValidation.setText("Level 4 password, it's okay.");
+                    passwordValidation.setForeground(greenie);
+                } else if (mr5.matches()) {
+                    passwordValidation.setText("Your password is excellent. You are good to go!");
+                    passwordValidation.setForeground(greenie);
+                } else {
+                    passwordValidation.setText("Invalid password format.");
+                    passwordValidation.setForeground(redie);
+                }
+            }
+        });
+        emailField.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                checkEmail();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                checkEmail();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                checkEmail();
+            }
+
+            public void checkEmail() {
+                String emailInput = emailField.getText();
+                Pattern pr = Pattern.compile("(^[a-zA-Z0-9]+(?:[\\.\\-_]{1}[a-zA-Z0-9]+)*)@([a-zA-Z]+[0-9]*(?:[\\.\\-_]{1}[a-zA-Z0-9]+)*)\\.([a-zA-Z]{2,})");
+                Matcher mr = pr.matcher(emailInput);
+                if (mr.matches()) {
+                    emailValidation.setText("Valid email input.");
+                    emailValidation.setForeground(greenie);
+                } else {
+                    emailValidation.setText("Invalid email input.");
+                    emailValidation.setForeground(redie);
+                }
+            }
+        });
+        submit.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Color passColor = passwordValidation.getForeground();
+                Color emailColor = emailValidation.getForeground();
+                Color usernameColor = usernameValidation.getForeground();
+                if (e.getSource() == submit && usernameColor == greenie && emailColor == greenie && passColor == greenie) {
+                    submitValidation.setText("hooray");
+                    submitValidation.setForeground(pinkie);
+                    
+                } else {
+                    submitValidation.setText("Wrong entry.");
+                    submitValidation.setForeground(redie);
+                }
+
+            }
+        });
+    }}

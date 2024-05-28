@@ -52,7 +52,7 @@ public class EntryWindow {
         backgroundPanel.add(registerButton);
         frame.getContentPane().add(backgroundPanel);
         frame.setVisible(true);
-        
+
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
