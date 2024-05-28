@@ -10,7 +10,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class GUI implements signupPanel, loginPanel {
+public class GUI implements signupPanel, loginPanel, forgetPassword {
 
     Database db;
     Validator vld;
@@ -417,6 +417,13 @@ public class GUI implements signupPanel, loginPanel {
             }
         });
 
+        // forget button action
+        forget.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                forgetpassword();
+            }
+        });
         // login button action
         loginButton.addActionListener(new ActionListener() {
             @Override
@@ -453,6 +460,92 @@ public class GUI implements signupPanel, loginPanel {
         login.add(buttons);
         login.setLayout(myLayout);
         login.setVisible(true);
+    }
+
+    @Override
+    public void forgetpassword() {
+        db = new Database("jdbc:mysql://localhost:3306/users_swing","Amir13810325**","root","user_repo");
+        vld  = new Validator();
+        forgetPassword = new JFrame();
+        forgetPassword.setSize(400, 300);
+        JPanel fields = new JPanel();
+        JPanel buttons = new JPanel();
+        fields.setLayout(null);
+        buttons.setLayout(null);
+        JButton done = new JButton("Done");
+        JTextField email = new JTextField(100);
+        JTextField newPass = new JTextField(100);
+        JLabel e_l = new JLabel("Email");
+        JLabel p_l = new JLabel("New_Password");
+        GridLayout myLayout = new GridLayout(2,1);
+
+        // position
+        fields.setSize(400,150);
+        buttons.setSize(400,150);
+        e_l.setBounds(50,30,100,40);
+        email.setBounds(150,30,200,30);
+        p_l.setBounds(50, 70, 100, 40);
+        newPass.setBounds(150,70,200,30);
+        done.setBounds(150,30,100,40);
+        email.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                if(vld.emailValidator(email.getText()))
+                    done.setEnabled(true);
+                else
+                    done.setEnabled(false);
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                if(vld.emailValidator(email.getText()))
+                    done.setEnabled(true);
+                else
+                    done.setEnabled(false);
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                if(vld.emailValidator(email.getText()))
+                    done.setEnabled(true);
+                else
+                    done.setEnabled(false);
+            }
+        });
+        // done action
+        done.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(db.searchInTable("email", email.getText().toLowerCase()))
+                {
+                    JOptionPane.showMessageDialog(forgetPassword, db.setNewPass("email",newPass.getText(),email.getText().toLowerCase()));
+                    forgetPassword.setVisible(false);
+                }
+                else{
+                    JOptionPane.showMessageDialog(forgetPassword, "This email is wrong or not in repository.");
+                    email.setText("");
+                    newPass.setText("");
+                }
+            }
+        });
+
+        email.setVisible(true);
+        done.setVisible(true);
+        newPass.setVisible(true);
+        e_l.setVisible(true);
+        p_l.setVisible(true);
+        fields.add(email);
+        fields.add(p_l);
+        fields.add(newPass);
+        fields.add(e_l);
+        buttons.add(done);
+        fields.setVisible(true);
+        buttons.setVisible(true);
+        forgetPassword.add(fields);
+        forgetPassword.add(buttons);
+        forgetPassword.setLayout(myLayout);
+        forgetPassword.setVisible(true);
+
     }
 }
 
