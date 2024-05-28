@@ -83,8 +83,9 @@ public class Registration extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         JLabel usernameLabel = new JLabel("Username:");
-        JLabel passwordLabel = new JLabel("Password:");
+        JLabel passwordLabel = new JLabel("Password:" );
         JLabel emailLabel = new JLabel("Email:");
+        JLabel validationHint = new JLabel("(Press Enter for password validation)");
 
         add(usernameBox);
         add(usernameLabel);
@@ -92,6 +93,7 @@ public class Registration extends JFrame {
         add(passwordLabel);
         add(emailBox);
         add(emailLabel);
+        add(validationHint);
         add(registerButton);
         add(alternativeOption);
         add(logInButton);
@@ -151,6 +153,8 @@ public class Registration extends JFrame {
         });
         emailLabel.setBounds(25, 220, 200, 30);
 
+        validationHint.setBounds(93,187,400,30);
+
         registerButton.setBounds(100, 260, 120, 20);
         registerButton.addActionListener(new ActionListener() {
             @Override
@@ -165,9 +169,9 @@ public class Registration extends JFrame {
                     JOptionPane.showMessageDialog(null,"Email invalid","Error",JOptionPane.ERROR_MESSAGE);
                 }
                 else {
-
-
-                    //user registration
+                    User user = new User();
+                    user.registrate(username,password,email);
+                    JOptionPane.showMessageDialog(null,"User added","Register completed",JOptionPane.INFORMATION_MESSAGE);
                 }
 
 

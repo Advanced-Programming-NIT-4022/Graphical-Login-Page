@@ -65,7 +65,16 @@ public class LogIn extends JFrame {
         logInButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //user logs in
+                String username = usernameBox.getText();
+                String password = passwordBox.getText();
+
+                User logInUtil = new User();
+                if(logInUtil.userSearch(username,password)){
+                    JOptionPane.showMessageDialog(null,"Log in Successful","Logged in",JOptionPane.INFORMATION_MESSAGE);
+                }
+                else{
+                    JOptionPane.showMessageDialog(null,"User or password is invalid","Error",JOptionPane.ERROR_MESSAGE);
+                }
             }
         });
 
