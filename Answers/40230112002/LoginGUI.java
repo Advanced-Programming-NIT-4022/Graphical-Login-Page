@@ -4,102 +4,90 @@ import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.List;
 
-    //Handles the GUI components and events.
+public class LoginGUI {
 
-    public class LoginGUI {
-        private JFrame frame;
-        private JPanel panel;
-        private JTextField usernameField;
-        private JPasswordField passwordField;
-        private JTextField emailField;
-        private JButton loginButton;
-        private JButton registerButton;
+    private JFrame frame;
+    private JPanel panel;
+    private JButton loginButton;
+    private JButton registerButton;
 
-        public LoginGUI() {
+    private JLabel label;
 
-            frame = new JFrame("Graphical User Login GUI");
-            panel = new JPanel();
+    public LoginGUI() {
 
-            usernameField = new JTextField(20);
-            passwordField = new JPasswordField(20);
-            loginButton = new JButton("Login");
+        frame = new JFrame("Graphical User Login GUI");
+        // Initialize frame and panel
+        panel = new JPanel();
 
-            emailField = new JTextField(20);
-            registerButton = new JButton("Register");
+        // Initialize components for login
+        loginButton = new JButton("Login");
 
-            panel.add(new JLabel("Username:"));
-            panel.add(usernameField);
-            panel.add(new JLabel("Password:"));
-            panel.add(passwordField);
-            panel.add(loginButton);
+        // Initialize components for registration
+        registerButton = new JButton("Register");
 
+        label = new JLabel("                                                                                Welcome                                                                                  " );
 
-            panel.add(new JLabel("Email:"));
-            panel.add(emailField);
-            panel.add(registerButton);
+        panel.add(label);
+        panel.add(loginButton);
+        panel.add(registerButton);
 
-            frame.add(panel);
+        frame.add(panel);
 
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.pack();
-            frame.setVisible(true);
+        // Configure frame settings
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(200, 200);
+        frame.setVisible(true);
 
-            loginButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    String username = usernameField.getText();
-                    String password = String.valueOf(passwordField.getPassword());
+        loginButton.addActionListener(new ActionListener() {
 
-                    // Perform login authentication
-                    boolean isAuthenticated = false;
-
-                    isAuthenticated = UserStore.authenticate(username, password);
-
-                    if (isAuthenticated) {
-                        JOptionPane.showMessageDialog(frame, "Login successful!");
-                        // Proceed to main application or dashboard
-                    } else {
-                        JOptionPane.showMessageDialog(frame, "Invalid username or password. Please try again.");
-                    }
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(e.getSource() == loginButton){
+                    //dispose gets rid of the extra windows that the user my open
+                    frame.dispose();
+                    Login_Window window = new Login_Window();
                 }
-            });
+            }
+        });
 
-            registerButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    String username = usernameField.getText();
-                    String password = String.valueOf(passwordField.getPassword());
-                    String email = emailField.getText();
+        registerButton.addActionListener(new ActionListener() {
 
-                    if (!PasswordUtils.isStrongPassword(password)) {
-                        JOptionPane.showMessageDialog(frame, "Password is not strong enough. Please try again.");
-                        return;
-                    }
-
-                    if (!EmailValidator.EmailValid(email)) {
-                        JOptionPane.showMessageDialog(frame, "Email is not valid. Please try again.");
-                        return;
-                    }
-
-
-                    if (UserStore.isUsernameTaken(username)) {
-                        JOptionPane.showMessageDialog(frame, "Username is already taken. Please choose another one.");
-                        return;
-                    }
-
-                    if (UserStore.isEmailRegistered(email)) {
-                        JOptionPane.showMessageDialog(frame, "Email is already registered. Please use another one.");
-                        return;
-                    }
-
-                    User newUser = new User(username, password, email);
-                    UserStore.saveUser(newUser);
-                    JOptionPane.showMessageDialog(frame, "Registration successful! You can now log in.");
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(e.getSource() == registerButton){
+                    frame.dispose();
+                    Register_Window window = new Register_Window();
                 }
-            });
-        }
+            }
+        });
+        // Add components to panel for login
+//        panel.add(new JLabel("Username:"));
+//        panel.add(usernameField);
+//        panel.add(new JLabel("Password:"));
+//        panel.add(passwordField);
+//        panel.add(loginButton);
 
-        public static void main(String[] args) {
-            new LoginGUI();
-        }
+        // Add components to panel for registration
+//        panel.add(new JLabel("Email:"));
+//        panel.add(emailField);
+//        panel.add(registerButton);
+
+        // Add panel to frame
+
+        // Add action listener to login button
+
+
+
+
+        // Add action listener to register button
+
     }
+
+    // Method to authenticate user credentials
+
+    public static void main(String[] args) {
+        // Create and display the login GUI
+        SwingUtilities.invokeLater(LoginGUI::new);
+    }
+}
+
