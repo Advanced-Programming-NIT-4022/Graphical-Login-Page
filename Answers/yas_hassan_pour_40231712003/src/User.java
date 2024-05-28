@@ -30,12 +30,14 @@ public class User {
     }
 
     private String email;
+    PasswordUtils hashCode = new PasswordUtils();
     public User(){};
-public User(String username, String password)
-{
-    this.passwordIn = password;
-    this.usernameIn = username;
-}
+    public User(String email , String username , String password)
+    {
+        setEmail(email);
+        setUsernameIn(username);
+        this.passwordIn = hashCode.SHA_256(password);
+    }
 
 
 

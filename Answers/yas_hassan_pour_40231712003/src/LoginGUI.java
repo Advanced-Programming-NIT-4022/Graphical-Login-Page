@@ -60,17 +60,83 @@ public class LoginGUI {
         });
 
         JFrame errorFrame = new JFrame("Error");
-        errorFrame.setSize(500,200);
-        JLabel errorLabel = new JLabel();
+        errorFrame.setLayout(null);
+        errorFrame.setSize(300,250);
         JButton errorButton = new JButton("Okay");
+        JPanel errorPanel = new JPanel();
+        errorPanel.setLayout(null);
+        errorFrame.add(errorPanel);
+        JLabel errorLabel = new JLabel();
+
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String username = User.
+                String password = new String(passwordText.getPassword());
+                UserStore userStore = new UserStore();
+                int i = userStore.read(userText.getText(),password);
+                switch (i){
+                    case 0:
+                    {
+
+                        errorLabel.setText("No such user found.");
+
+
+                        errorLabel.setBackground(Color.RED);
+                        errorLabel.setBounds(10, 100, 120, 25);
+                        errorPanel.add(errorLabel);
+
+                        errorFrame.setVisible(true);
+                        errorButton.setBounds(100,150,80,30);
+                        errorPanel.add(errorButton);
+                        errorButton.addActionListener(new ActionListener() {
+                            @Override
+                            public void actionPerformed(ActionEvent e) {
+                                errorFrame.dispose();
+                            }
+                        });
+                        break;
+                    }
+                    case 1:{
+                        errorLabel.setText("Wrong password.");
+                        errorLabel.setBounds(10, 100, 120, 25);
+                        errorButton.setBounds(100,150,80,30);
+                        errorPanel.add(errorLabel);
+                        errorPanel.add(errorButton);
+                        errorButton.addActionListener(new ActionListener() {
+                            @Override
+                            public void actionPerformed(ActionEvent e) {
+                                errorFrame.dispose();
+                            }
+                        });
+                        errorFrame.setVisible(true);
+                        break;
+                    }
+                    default:
+                    {
+                        JFrame successful = new JFrame("Logged in!");
+                        errorLabel.setText("Successfully logged in!");
+                        JButton Sbutton = new JButton("Hip hip, hooray!");
+                        errorLabel.setBounds(5,30,300,30);
+                        Sbutton.setBounds(200,120,70,25);
+                        errorPanel.add(errorLabel);
+                        errorPanel.add(Sbutton);
+                        successful.add(errorPanel);
+                        Sbutton.addActionListener(new ActionListener() {
+                            @Override
+                            public void actionPerformed(ActionEvent e) {
+                                successful.dispose();
+                            }
+                        });
+                        break;
+
+
+                    }
+                }
             }
         });
 
-
+        frame.add(panel);
+        frame.setVisible(true);
     }
 }
 
