@@ -61,7 +61,7 @@ public class StartUp extends JFrame {
             User user=new User();
                 try {
 
-                   if(user.searchuser(username.getText(),password.getText())){
+                   if(user.searchuser(username.getText(),PasswordUtils.hashing(password.getText()))){
                        JOptionPane.showMessageDialog(null, "welcome!");
                    }else{
                        JOptionPane.showMessageDialog(null, "not found!");

@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 
 public class signUp extends JFrame {
     JTextField username;
@@ -64,6 +65,13 @@ public class signUp extends JFrame {
                     }
                     if(PasswordUtils.Strength(password.getText())==4){
                         JOptionPane.showMessageDialog(null,"strong");
+                        User user=new User();
+                        try {
+                            user.adduser(username.getText(),PasswordUtils.hashing(password.getText()),email.getText());
+
+                        } catch (SQLException ex) {
+                            throw new RuntimeException(ex);
+                        }
                     }
                 }
             }
