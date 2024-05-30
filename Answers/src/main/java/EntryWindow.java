@@ -28,21 +28,21 @@ public class EntryWindow {
 
         JLabel label = new JLabel("Welcome <3!");
         label.setForeground(Color.white);
-        label.setBounds(210, 90, 300, 30);
-        label.setFont(new Font("Georgia", Font.BOLD, 14));
+        label.setBounds(180, 120, 300, 30);
+        label.setFont(new Font("Georgia", Font.BOLD, 20));
 
         JLabel label2 = new JLabel("If you are a new user please register below :");
         label2.setForeground(Color.white);
-        label2.setBounds(100,120,350,30);
+        label2.setBounds(100,160,350,30);
         label2.setFont(new Font("Georgia", Font.BOLD, 14));
 
         JButton loginButton = new JButton("Login");
-        loginButton.setBounds(195, 220, 100, 30);
+        loginButton.setBounds(195, 260, 100, 30);
         loginButton.setForeground(forButton);
         loginButton.setFont(new Font("Times New Roman", Font.BOLD, 14));
 
         JButton registerButton = new JButton("Register");
-        registerButton.setBounds(195, 170, 100, 30);
+        registerButton.setBounds(195, 210, 100, 30);
         registerButton.setForeground(forButton);
         registerButton.setFont(new Font("Times New Roman", Font.BOLD, 14));
 
@@ -51,12 +51,12 @@ public class EntryWindow {
         backgroundPanel.add(loginButton);
         backgroundPanel.add(registerButton);
         frame.getContentPane().add(backgroundPanel);
-        frame.setVisible(true);
 
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (e.getSource() == loginButton) {
+                    frame.setVisible(false);
                     Login login = new Login();
                     login.loginPanel();
                 }
@@ -67,10 +67,12 @@ public class EntryWindow {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (e.getSource() == registerButton) {
+                    frame.setVisible(false);
                     Register register = new Register();
                     register.registerPanel();
                 }
             }
         });
+        frame.setVisible(true);
     }
 }
