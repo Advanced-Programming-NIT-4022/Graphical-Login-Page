@@ -11,9 +11,15 @@ public class GUI extends JFrame {
     private final MainPanel mainPanel = new MainPanel();
     private final RegisterPanel registerPanel = new RegisterPanel();
     private JPanel currentPanel = mainPanel;
-    private final UserHandler userHandler = new UserHandler("users.txt");
+    private final UserHandler userHandler;
 
     GUI() {
+        try {
+            userHandler= new UserHandler("users.txt");
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null,"couldn't read file!");
+            throw new RuntimeException(e);
+        }
         setLayout(layout);
         add(mainPanel);
         loginPanel.setVisible(false);
@@ -27,14 +33,15 @@ public class GUI extends JFrame {
         registerPanel.mainMenuButton.addActionListener(actionEvent -> changePanel(mainPanel));
         registerPanel.registerButton.addActionListener(actionEvent -> {
             try {
-                userHandler.addUser(new User(registerPanel.usernameField.getText(),new Password(Arrays.toString(registerPanel.passwordField.getPassword())),registerPanel.emailField.getText()));
+                userHandler.addUser(new User(registerPanel.usernameField.getText(), new Password(Arrays.toString(registerPanel.passwordField.getPassword())), registerPanel.emailField.getText()));
             } catch (IOException e) {
                 // Todo
+
             }
         });
         loginPanel.loginButton.addActionListener(actionEvent -> {
-            User loginuser=userHandler.getUser(loginPanel.usernameField.getText());
-            JOptionPane.showMessageDialog(null,((loginuser!=null)?"login Successful":"login failed"));
+            User loginuser = userHandler.getUser(loginPanel.usernameField.getText());
+            JOptionPane.showMessageDialog(null, ((loginuser == null || !loginuser.password.verifyPassword(Arrays.toString(loginPanel.passwordField.getPassword()))) ? "login failed" : "login Successful"));
         });
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true);
@@ -46,7 +53,8 @@ public class GUI extends JFrame {
         fit();
         currentPanel = newPanel;
     }
-    void fit(){
+
+    void fit() {
         //setMinimumSize(new Dimension(0,0));
         pack();
         //setMinimumSize(getSize());
@@ -67,28 +75,10 @@ class MainPanel extends JPanel {
 
 
 class LoginPanel extends JPanel {
-    void usernameFieldChange(){
-        isUsernameField=User.verifyUserName(usernameField.getText());
-    }
-//    void passwordFieldChange(){
-//        isPasswordField=(Password.passwordLevel(passwordField.getPassword())>3);
-//    }
-    FlowLayout layout = new FlowLayout();
-    JButton loginButton = new JButton("Login");
-    JButton mainMenuButton = new JButton("Back");
-    JTextField usernameField = new JTextField(20);
-    boolean isUsernameField=false;
-    JPasswordField passwordField = new JPasswordField(20);
-    boolean isPasswordField=false;
-    JPanel panel1 = new JPanel();
-    JPanel panel2 = new JPanel();
-    JPanel panel3 = new JPanel();
-    JPanel panel4 = new JPanel();
-
-    GridLayout panelsLayout = new GridLayout(3, 1);
+    boolean isUsernameField = false;
+    boolean isPasswordField = false;
 
     LoginPanel() {
-
         panel1.add(new JLabel("Username: "));
         panel1.add(usernameField);
         panel1.setLayout(new FlowLayout());
@@ -96,7 +86,7 @@ class LoginPanel extends JPanel {
         panel3.add(passwordField);
         panel3.setLayout(new FlowLayout());
         panel4.add(loginButton);
-        //loginButton.setEnabled(false);
+        loginButton.setEnabled(false);
         panel4.add(mainMenuButton);
         panel4.setLayout(new FlowLayout());
         //setMaximumSize(new Dimension(1000, 1006));
@@ -104,17 +94,59 @@ class LoginPanel extends JPanel {
             public void changedUpdate(DocumentEvent e) {
                 usernameFieldChange();
             }
+
             public void removeUpdate(DocumentEvent e) {
                 usernameFieldChange();
             }
+
             public void insertUpdate(DocumentEvent e) {
                 usernameFieldChange();
-            }});
+            }
+        });
 
+        passwordField.getDocument().addDocumentListener(new DocumentListener() {
+            public void changedUpdate(DocumentEvent e) {
+                passwordFieldChange();
+            }
+
+            public void removeUpdate(DocumentEvent e) {
+                passwordFieldChange();
+            }
+
+            public void insertUpdate(DocumentEvent e) {
+                passwordFieldChange();
+            }
+        });
         setLayout(panelsLayout);
         add(panel1);
         add(panel3);
         add(panel4);
+    }
+
+    FlowLayout layout = new FlowLayout();
+    JButton loginButton = new JButton("Login");
+    JButton mainMenuButton = new JButton("Back");
+    JTextField usernameField = new JTextField(20);
+
+    void usernameFieldChange() {
+        isUsernameField = User.verifyUserName(usernameField.getText());
+        fieldsUpdate();
+    }
+    JPasswordField passwordField = new JPasswordField(20);
+
+    void passwordFieldChange() {
+        isPasswordField = (Password.passwordLevel(new String(passwordField.getPassword())) > 3);
+        fieldsUpdate();
+    }
+    JPanel panel1 = new JPanel();
+    JPanel panel2 = new JPanel();
+    JPanel panel3 = new JPanel();
+    JPanel panel4 = new JPanel();
+
+    GridLayout panelsLayout = new GridLayout(3, 1);
+
+    void fieldsUpdate() {
+        loginButton.setEnabled(isUsernameField && isPasswordField);
     }
 }
 
@@ -144,7 +176,7 @@ class RegisterPanel extends JPanel {
         panel3.add(passwordField);
         panel3.setLayout(new FlowLayout());
         panel4.add(registerButton);
-        //registerButton.setEnabled(false);
+        registerButton.setEnabled(false);
         panel4.add(mainMenuButton);
         panel4.setLayout(new FlowLayout());
         //setMaximumSize(new Dimension(1000, 1006));
