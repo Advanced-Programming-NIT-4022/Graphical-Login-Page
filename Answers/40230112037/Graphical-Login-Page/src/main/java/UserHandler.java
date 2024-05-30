@@ -11,11 +11,12 @@ public class UserHandler {
     private final String filename;
     private HashMap<String, User> users = new HashMap<>();
 
-    UserHandler(String filename) {
+    UserHandler(String filename) throws IOException {
         this.filename = filename;
+        readUsersFromFile();
     }
 
-    void readUsersFromFile(String username) throws IOException {
+    void readUsersFromFile() throws IOException {
         File file = new File(filename);
         try (Scanner scanner = new Scanner(file)) {
             String nextLine;
@@ -24,7 +25,7 @@ public class UserHandler {
             while (scanner.hasNextLine()) {
                 nextLine = scanner.nextLine();
                 String[] nextLineSplit = nextLine.split(",");
-                if (nextLineSplit.length == 3 && (newUser = User.getValidatedUser(nextLineSplit[0], nextLineSplit[1], nextLineSplit[2])) != null && !result.containsKey(username)) {
+                if (nextLineSplit.length == 3 && (newUser = User.getValidatedUser(nextLineSplit[0], nextLineSplit[1], nextLineSplit[2])) != null && !result.containsKey(nextLineSplit[0])) {
                     result.put(newUser.username, newUser);
                 }
             }
@@ -40,7 +41,7 @@ public class UserHandler {
         File createFile = new File(filename);
         createFile.createNewFile();
 
-        try (FileWriter file = new FileWriter(filename,true)) {
+        try (FileWriter file = new FileWriter(filename, true)) {
             file.write(newUser.toString() + '\n');
         }
     }
