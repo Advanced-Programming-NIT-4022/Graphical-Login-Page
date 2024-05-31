@@ -6,22 +6,18 @@ import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static java.awt.Color.green;
-import static java.awt.Color.red;
-
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
 
-    public static boolean emaicheck(String s){
+    public static boolean emailcheck(String s){
         Pattern pr1 = Pattern.compile("^([a-zA-Z0-9]+(?:[\\.\\-\\_]{1}[a-zA-Z0-9]+)*)@([a-zA-Z0-9]+\\.)+[a-zA-Z]+$");
         Matcher m1 = pr1.matcher(s);
 
@@ -32,6 +28,25 @@ public class Main {
             return false;
         }
     }
+
+    public static boolean usernamecheck(String S){
+        try (BufferedReader reader = new BufferedReader(new FileReader("file.txt"))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(",");
+                if (parts[0].trim().equals(S)) {
+                    return false;
+                }
+            }
+        } catch (FileNotFoundException ex) {
+            // If the file doesn't exist, we consider the name unique (first entry)
+            return true;
+        } catch (IOException ex) {
+            System.err.println("Error reading file: " + ex.getMessage());
+        }
+        return true;
+    }
+
     private static String bytesToHex(byte[] hash) {
         StringBuilder hexString = new StringBuilder(2 * hash.length);
         for (byte b : hash) {
@@ -65,13 +80,13 @@ public class Main {
         label4.setBounds(155 ,65,160 ,30 );
         label4.setFont(new Font("Garamond", Font.BOLD,39 ));
 
-        JTextField textField1 = new JTextField("  ");
+        JTextField textField1 = new JTextField("");
         textField1.setBounds(260, 150 , 150 ,20  );
         JLabel label1= new JLabel("Username :   ");
         label1.setBounds(100 ,150,120 ,20 );
         label1.setFont(new Font("Garamond", Font.BOLD, 21));
 
-        JTextField textField4 = new JTextField("  ");
+        JTextField textField4 = new JTextField("");
         textField4.setBounds(260, 150 , 150 ,20  );
         JLabel label6= new JLabel("Username :   ");
         label6.setBounds(100 ,150,120 ,20 );
@@ -100,8 +115,6 @@ public class Main {
         JCheckBox showPasswordCheckBox1 = new JCheckBox("");
         showPasswordCheckBox1.setBounds(390, 200 , 20 ,20);
 
-//        JTextField  = new JTextField("  ");
-//        textField5.setBounds(260, 200 , 130 ,20 );
         JLabel label7= new JLabel("Password :   ");
         label7.setBounds(100 ,200,120 ,20 );
         label7.setFont(new Font("Garamond", Font.BOLD, 21));
@@ -484,6 +497,7 @@ public class Main {
 
             }
         });
+
         textField3.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
@@ -497,6 +511,8 @@ public class Main {
             public void changedUpdate(DocumentEvent e) {
                 handleDocumentEvent();
             }
+
+
             private void handleDocumentEvent() {
                 String email = textField3.getText();
                 Pattern pr1 = Pattern.compile("^([a-zA-Z0-9]+(?:[\\.\\-\\_]{1}[a-zA-Z0-9]+)*)@([a-zA-Z0-9]+\\.)+[a-zA-Z]+$");
@@ -516,43 +532,38 @@ public class Main {
         Button1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent s) {
-
+                boolean usertekrari=false;
                 String username = textField1.getText();
-                username=username.trim();
-                String password = passwordField.getText();
-                password=password.trim();
-                String hashedPassword = hashPassword(password);
-                String email = textField3.getText();
-                email=email.trim();
-                if(emaicheck(email)) {
-                    Member M = new Member(username, hashedPassword, email);
-                    Memberarray.members.add(M);
-                    System.out.println("Dear " + username + "! You have been successfully registered.");
-                    try {
-                        FileWriter writer = new FileWriter("output.txt",true);
-                        String f = username +","+ password +","+ email ;
-                        System.out.println(f);
-                        writer.write(f);
-                        writer.close();
-                        System.out.println("Successfully wrote to the file.");
-                    } catch (IOException e) {
-                        System.out.println("An error occurred.");
-                        e.printStackTrace();
+                username = username.trim();
+                if (!usernamecheck(username)) {
+                    System.out.println("This username is already taken. please choose another one");
+                    usertekrari = true;
+                } else {
+                    String password = passwordField.getText();
+                    password = password.trim();
+                    String hashedPassword = hashPassword(password);
+                    String email = textField3.getText();
+                    email = email.trim();
+                    if (emailcheck(email)) {
+                        Member M = new Member(username, hashedPassword, email);
+                        Memberarray.members.add(M);
+                        System.out.println("Dear " + username + "! You have been successfully registered.");
+                        try {
+                            FileWriter writer = new FileWriter("file.txt", true);
+                            String f = username + "," + hashedPassword + "," + email + "\n";
+                            writer.write(f);
+                            writer.close();
+                        } catch (IOException e) {
+                            System.out.println("An error occurred.");
+                            e.printStackTrace();
+                        }
+                    } else {
+                        System.out.println("Wrong entry please check out your email address");
                     }
                 }
-                else {
-                    System.out.println("Wrong entry please check out your email address");
-                }
             }
         });
 
-        Button2.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                frame.setVisible(false);
-                frame1.setVisible(true);
-            }
-        });
 
         Button3.addActionListener(new ActionListener() {
             @Override
@@ -563,9 +574,43 @@ public class Main {
                 String password = passwordField1.getText();
                 password=password.trim();
                 String hashedPassword = hashPassword(password);
-                for (Member M : Memberarray.members) {
-                    if(username.equals(M.getname()) && password.equals(M.getpassword()))
-                        System.out.println("ghj");}
+                String searchfor= username +","+ hashedPassword;
+                BufferedReader reader = null;
+                try {
+                    reader = new BufferedReader(new FileReader("file.txt"));
+                } catch (FileNotFoundException ex) {
+                    throw new RuntimeException(ex);
+                }
+                String line;
+                int lineNumber = 0;
+                boolean found = false;
+
+                while (true) {
+                    try {
+                        if ((line = reader.readLine()) == null) break;
+                    } catch (IOException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                    lineNumber++;
+                    if (line.contains(searchfor)) {
+                        found = true;
+                        System.out.println("Found the member \"" + username + "\" at line " + lineNumber + ": " + line);
+                    }
+                }
+
+                if (!found) {
+                    System.out.println("The member \"" + username + "\" was not found in the file.");
+                }
+
+                try {
+                    reader.close();
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+
+//                for (Member M : Memberarray.members) {
+//                    if(username.equals(M.getname()) && hashedPassword.equals(M.getpassword()))
+//                }
             }
         });
 
