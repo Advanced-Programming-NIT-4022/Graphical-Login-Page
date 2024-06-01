@@ -564,6 +564,13 @@ public class Main {
             }
         });
 
+        Button2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                frame1.setVisible(true);
+                frame.setVisible(false);
+            }
+        });
 
         Button3.addActionListener(new ActionListener() {
             @Override
