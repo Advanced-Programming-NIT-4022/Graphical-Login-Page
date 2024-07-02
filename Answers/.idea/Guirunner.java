@@ -169,7 +169,6 @@ public class Guirunner {
                             System.out.println("this user doesnt exist!");
                         } else {
                             System.out.println("password level: " + pslva);
-                            uo.regist(unamea, hashedpa, emaila);
                             welcomegui();
                         }
                     }
