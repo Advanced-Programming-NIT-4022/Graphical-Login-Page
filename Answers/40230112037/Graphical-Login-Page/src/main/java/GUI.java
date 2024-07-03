@@ -1,3 +1,5 @@
+import com.sun.jdi.request.DuplicateRequestException;
+
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -15,9 +17,9 @@ public class GUI extends JFrame {
 
     GUI() {
         try {
-            userHandler= new UserHandler("users.txt");
+            userHandler = new UserHandler("users.txt");
         } catch (IOException e) {
-            JOptionPane.showMessageDialog(null,"couldn't read file!");
+            JOptionPane.showMessageDialog(null, "couldn't read file!");
             throw new RuntimeException(e);
         }
         setLayout(layout);
@@ -27,6 +29,7 @@ public class GUI extends JFrame {
         registerPanel.setVisible(false);
         add(registerPanel);
         pack();
+        setLocationRelativeTo(null);
         mainPanel.loginButton.addActionListener(actionEvent -> changePanel(loginPanel));
         mainPanel.registerButton.addActionListener(actionEvent -> changePanel(registerPanel));
         loginPanel.mainMenuButton.addActionListener(actionEvent -> changePanel(mainPanel));
@@ -34,8 +37,11 @@ public class GUI extends JFrame {
         registerPanel.registerButton.addActionListener(actionEvent -> {
             try {
                 userHandler.addUser(new User(registerPanel.usernameField.getText(), new Password(Arrays.toString(registerPanel.passwordField.getPassword())), registerPanel.emailField.getText()));
+                JOptionPane.showMessageDialog(null, "Register Successful!");
             } catch (IOException e) {
                 // Todo
+            } catch (DuplicateRequestException e){
+                JOptionPane.showMessageDialog(null, "Register Failed!(Username is taken)");
 
             }
         });
@@ -55,9 +61,9 @@ public class GUI extends JFrame {
     }
 
     void fit() {
-        //setMinimumSize(new Dimension(0,0));
+        setMinimumSize(new Dimension(0, 0));
         pack();
-        //setMinimumSize(getSize());
+        setMinimumSize(getSize());
     }
 }
 
@@ -123,7 +129,6 @@ class LoginPanel extends JPanel {
         add(panel4);
     }
 
-    FlowLayout layout = new FlowLayout();
     JButton loginButton = new JButton("Login");
     JButton mainMenuButton = new JButton("Back");
     JTextField usernameField = new JTextField(20);
@@ -132,14 +137,15 @@ class LoginPanel extends JPanel {
         isUsernameField = User.verifyUserName(usernameField.getText());
         fieldsUpdate();
     }
+
     JPasswordField passwordField = new JPasswordField(20);
 
     void passwordFieldChange() {
         isPasswordField = (Password.passwordLevel(new String(passwordField.getPassword())) > 3);
         fieldsUpdate();
     }
+
     JPanel panel1 = new JPanel();
-    JPanel panel2 = new JPanel();
     JPanel panel3 = new JPanel();
     JPanel panel4 = new JPanel();
 
@@ -151,7 +157,6 @@ class LoginPanel extends JPanel {
 }
 
 class RegisterPanel extends JPanel {
-    FlowLayout layout = new FlowLayout();
     JButton registerButton = new JButton("Register");
     JButton mainMenuButton = new JButton("Back");
     JTextField usernameField = new JTextField(20);
@@ -163,6 +168,9 @@ class RegisterPanel extends JPanel {
     JPanel panel4 = new JPanel();
 
     GridLayout panelsLayout = new GridLayout(4, 1);
+    boolean isUsernameField = false;
+    boolean isPasswordField = false;
+    boolean isEmailField = false;
 
     RegisterPanel() {
 
@@ -185,5 +193,64 @@ class RegisterPanel extends JPanel {
         add(panel2);
         add(panel3);
         add(panel4);
+        usernameField.getDocument().addDocumentListener(new DocumentListener() {
+            public void changedUpdate(DocumentEvent e) {
+                usernameFieldChange();
+            }
+
+            public void removeUpdate(DocumentEvent e) {
+                usernameFieldChange();
+            }
+
+            public void insertUpdate(DocumentEvent e) {
+                usernameFieldChange();
+            }
+        });
+
+        passwordField.getDocument().addDocumentListener(new DocumentListener() {
+            public void changedUpdate(DocumentEvent e) {
+                passwordFieldChange();
+            }
+
+            public void removeUpdate(DocumentEvent e) {
+                passwordFieldChange();
+            }
+
+            public void insertUpdate(DocumentEvent e) {
+                passwordFieldChange();
+            }
+        });
+        emailField.getDocument().addDocumentListener(new DocumentListener() {
+            public void changedUpdate(DocumentEvent e) {
+                emailFieldChange();
+            }
+
+            public void removeUpdate(DocumentEvent e) {
+                emailFieldChange();
+            }
+
+            public void insertUpdate(DocumentEvent e) {
+                emailFieldChange();
+            }
+        });
+    }
+
+    void usernameFieldChange() {
+        isUsernameField = User.verifyUserName(usernameField.getText());
+        fieldsUpdate();
+    }
+
+    void passwordFieldChange() {
+        isPasswordField = (Password.passwordLevel(new String(passwordField.getPassword())) > 3);
+        fieldsUpdate();
+    }
+
+    void emailFieldChange() {
+        isEmailField = (EmailValidator.validate(emailField.getText()));
+        fieldsUpdate();
+    }
+
+    void fieldsUpdate() {
+        registerButton.setEnabled(isUsernameField && isPasswordField && isEmailField);
     }
 }
