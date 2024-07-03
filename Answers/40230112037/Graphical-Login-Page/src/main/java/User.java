@@ -1,4 +1,5 @@
 import java.util.Objects;
+import java.util.regex.Pattern;
 
 public class User {
     Password password;
@@ -12,8 +13,7 @@ public class User {
     }
 
     static boolean verifyUserName(String username) {
-        // Todo
-        return true;
+        return Pattern.matches("^[a-zA-Z]\\w{3,}[a-zA-Z0-9]$",username);
     }
 
     static User getValidatedUser(String username, String hashedPassword, String email) {
